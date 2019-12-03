@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using WebApplicationForTest.Models;
 
 namespace WebApplicationForTest.Controllers
 {
@@ -10,20 +11,21 @@ namespace WebApplicationForTest.Controllers
     {
         public ActionResult Index()
         {
+           
             return View();
         }
-
-        public ActionResult About()
+      
+        [HttpPost]
+        public ActionResult Menu(string login, string password)
         {
-            ViewBag.Message = "Your application description page.";
-
+            ViewBag.Login = login;
+            ViewBag.Password = password;
             return View();
         }
-
-        public ActionResult Contact()
+        [HttpPost]
+        public ActionResult ActionUsers(string login, string password)
         {
-            ViewBag.Message = "Your contact page.";
-
+           
             return View();
         }
     }

@@ -80,8 +80,8 @@ D:\repositoriy\WebApplicationForTest\WebApplicationForTest\bin\ru\System.Web.Raz
 D:\repositoriy\WebApplicationForTest\WebApplicationForTest\bin\ru\System.Web.WebPages.resources.dll
 D:\repositoriy\WebApplicationForTest\WebApplicationForTest\bin\ru\System.Web.WebPages.Deployment.resources.dll
 D:\repositoriy\WebApplicationForTest\WebApplicationForTest\bin\ru\System.Web.WebPages.Razor.resources.dll
-D:\repositoriy\WebApplicationForTest\WebApplicationForTest\obj\Debug\WebApplicationForTest.csprojAssemblyReference.cache
 D:\repositoriy\WebApplicationForTest\WebApplicationForTest\obj\Debug\WebApplicationForTest.csproj.CoreCompileInputs.cache
 D:\repositoriy\WebApplicationForTest\WebApplicationForTest\obj\Debug\WebApplicationForTest.csproj.CopyComplete
 D:\repositoriy\WebApplicationForTest\WebApplicationForTest\obj\Debug\WebApplicationForTest.dll
 D:\repositoriy\WebApplicationForTest\WebApplicationForTest\obj\Debug\WebApplicationForTest.pdb
+D:\repositoriy\WebApplicationForTest\WebApplicationForTest\obj\Debug\WebApplicationForTest.csprojAssemblyReference.cache

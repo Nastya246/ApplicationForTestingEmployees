@@ -133,7 +133,7 @@
     </Compile>
     <Compile Include="Models\AnswerPractice.cs" />
     <Compile Include="Models\AnswerTheory.cs" />
-    <Compile Include="Models\Context.cs" />
+    <Compile Include="Models\BDForTestingContext.cs" />
     <Compile Include="Models\LogUser.cs" />
     <Compile Include="Models\Position.cs" />
     <Compile Include="Models\Practice.cs" />
@@ -146,6 +146,7 @@
     <Compile Include="Models\Units.cs" />
     <Compile Include="Models\UnitsPositions.cs" />
     <Compile Include="Models\Users.cs" />
+    <Compile Include="Models\UsersInit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -181,9 +182,9 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\Menu.cshtml" />
+    <Content Include="Views\Home\ActionUsers.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

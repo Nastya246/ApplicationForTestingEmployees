@@ -8,8 +8,8 @@ namespace WebApplicationForTest.Models
     public class ResultTest
     {   [Key]
         public int LogId { get; set; }
-        [Key]
-        public int TestId { get; set; }
+       // [Key]
+      //  public int TestId { get; set; }
         
     }
 }

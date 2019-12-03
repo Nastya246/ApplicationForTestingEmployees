@@ -1,0 +1,80 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div>
+    <h3>Выберите действие</h3>
+
+    @if ((ViewBag.Login == "redactor") && (ViewBag.Password == "redactor12345"))
+    {
+        <form method="post" action="ActionUsers">
+            <table>
+                <tr><td><p><a href="/Home/ConfigTest/">Настройка теста</a> </p> </td> </tr>
+                <tr><td><p><a href="/Home/AddTheory/"> Добавить теоретические вопросы</a> </p></td> </tr>
+                <tr><td><p><a href="/Home/AddPractice/">Добавить практические задания</a> </p></td> </tr>
+                <tr><td><p><a href="/Home/RedactTask/">Внести изменения в базу данных заданий</a> </p></td> </tr>
+
+            </table>
+        </form>
+    }
+    else if ((ViewBag.Login == "admin") && (ViewBag.Password == "admin12345"))
+    {
+        <form method="post" action="ActionUsers">
+            <table>
+                <tr> <td> <p><a href="/Home/AddTemplateReport/">Создать шаблон отчета</a> </p></td> </tr>
+                <tr> <td> <p><a href="/Home/ViewReport/">Сгенерировать отчет</a> </p></td> </tr>
+
+
+            </table>
+        </form>
+    }
+    else if ((ViewBag.Login == "user") && (ViewBag.Password == "user12345"))
+    {
+        <form method="post" action="ActionUsers">
+            <table>
+                <tr>
+                    <td><p>Фамилия:</p></td>
+                    <td><input type="text" name="LastName" /></td>
+                </tr>
+                <tr>
+                    <td><p>Имя: </p> </td>
+                    <td><input type="text" name="FirstName" /></td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>Отчество: </p>
+                    </td>
+                    <td><input type="text" name="Otchectvo" /></td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>Подразделение: </p>
+                    </td>
+                    <td><input type="text" name="Unit" /></td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>Должность: </p>
+                    </td>
+                    <td><input type="text" name="Position" /></td>
+                </tr>
+                <tr>
+                    <td>
+                        <p><big>Дата:@DateTime.Now.ToString("MM/dd/yyyy HH:mm") </big></p>
+                    </td>
+                    
+                </tr>
+                <tr><td><input type="submit" value="Тестирование" /> </td><td></td></tr>
+            </table>
+        </form>
+    }
+    else
+    {
+        <table>
+            <tr>
+                <td><p>Ошибка ввода данных!</p></td>
+                <td>   <p><a href="/Home/Index/">Вернуться</a></p></td>
+            </tr>
+            </table>
+                }
+
+</div>

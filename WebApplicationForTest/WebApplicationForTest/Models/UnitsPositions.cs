@@ -9,8 +9,8 @@ namespace WebApplicationForTest.Models
     {
         [Key]
         public int UnitsId { get; set; }
-        [Key]
-        public int PositionsId { get; set; }
+       // [Key]
+        //public int PositionsId { get; set; }
     }
 
 }
