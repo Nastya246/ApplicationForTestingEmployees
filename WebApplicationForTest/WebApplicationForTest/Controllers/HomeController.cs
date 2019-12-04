@@ -12,21 +12,28 @@ namespace WebApplicationForTest.Controllers
         public ActionResult Index()
         {
            
-            return View();
-        }
-      
-        [HttpPost]
-        public ActionResult Menu(string login, string password)
-        {
-            ViewBag.Login = login;
-            ViewBag.Password = password;
-            return View();
+            return View(); //стартовая стр авторизации
         }
         [HttpPost]
-        public ActionResult ActionUsers(string login, string password)
+        public ActionResult Index(string Error)
         {
+
+            return View(); //возврат на дом. стр. если ошибка данных
+        }
+        [HttpPost]
+        public ActionResult Menu(string Login, string Password)
+        {
+            ViewBag.Login = Login;
+            ViewBag.Password = Password;
+            return View("~/Views/Home/Menu.cshtml"); //открываем меню, соответствующее пользователю
+        }
+     //   [HttpPost]
+     /*   public ActionResult ActionUsers(string LastName, string FirstName, string Otchectvo, string Unit, string Position)
+        {
+            
            
-            return View();
+           return View();
         }
+        */
     }
 }

@@ -6,7 +6,7 @@
 
     @if ((ViewBag.Login == "redactor") && (ViewBag.Password == "redactor12345"))
     {
-        <form method="post" action="ActionUsers">
+        <form method="post" action="ActionRedactor">
             <table>
                 <tr><td><p><a href="/Home/ConfigTest/">Настройка теста</a> </p> </td> </tr>
                 <tr><td><p><a href="/Home/AddTheory/"> Добавить теоретические вопросы</a> </p></td> </tr>
@@ -18,7 +18,7 @@
     }
     else if ((ViewBag.Login == "admin") && (ViewBag.Password == "admin12345"))
     {
-        <form method="post" action="ActionUsers">
+        <form method="post" action="ActionAdmin">
             <table>
                 <tr> <td> <p><a href="/Home/AddTemplateReport/">Создать шаблон отчета</a> </p></td> </tr>
                 <tr> <td> <p><a href="/Home/ViewReport/">Сгенерировать отчет</a> </p></td> </tr>
@@ -27,9 +27,10 @@
             </table>
         </form>
     }
-    else if ((ViewBag.Login == "user") && (ViewBag.Password == "user12345"))
+    else
+    //((ViewBag.Login == "user") && (ViewBag.Password == "user12345"))
     {
-        <form method="post" action="ActionUsers">
+        <form method="post" action="~/Actions/ActionUsers">
             <table>
                 <tr>
                     <td><p>Фамилия:</p></td>
@@ -57,24 +58,48 @@
                     </td>
                     <td><input type="text" name="Position" /></td>
                 </tr>
+
                 <tr>
                     <td>
-                        <p><big>Дата:@DateTime.Now.ToString("MM/dd/yyyy HH:mm") </big></p>
+
+                        <span>Теория</span>
+
+                        <big>
+                            @Html.CheckBox("EnableTheory", true)
+                        </big> <br /><br />
                     </td>
-                    
+                </tr>
+                        <tr>
+                            <td>
+                <span>Практика</span>
+            <big>
+                @Html.CheckBox("EnablePractice", false)<br /><br />
+            </big>
+                             </td>
+
+                        </tr>
+                <tr>
+                    <td>
+                        <p><big>Дата:@DateTime.Now.ToString("MM/dd/yyyy HH:mm") </big></p><br />
+                    </td>
+
                 </tr>
                 <tr><td><input type="submit" value="Тестирование" /> </td><td></td></tr>
             </table>
         </form>
     }
-    else
-    {
-        <table>
-            <tr>
-                <td><p>Ошибка ввода данных!</p></td>
-                <td>   <p><a href="/Home/Index/">Вернуться</a></p></td>
-            </tr>
-            </table>
-                }
+    <!-- else
+     {
+         <form method="post" action="Index">
+             <table>
+                 <tr>
+                     <td><p>Ошибка ввода данных!</p></td>
+                 </tr>
+                 <tr>   <td>   <p> <input type="hidden" value="0" name="Error" /></p></td></tr>
+                 <tr><td><input type="submit" value="Ввести снова" /> </td><td></td></tr>
 
+             </table>
+         </form>
+             }
+             -->
 </div>
