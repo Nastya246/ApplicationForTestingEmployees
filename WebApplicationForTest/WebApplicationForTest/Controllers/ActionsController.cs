@@ -13,13 +13,20 @@ namespace WebApplicationForTest.Controllers
         {
             return View();
         }
-         [HttpPost]
-           public ActionResult ActionUsers(string LastName, string FirstName, string Otchectvo, string Unit, string Position)
-           {
+        [HttpPost]
+        public ActionResult ActionUsers(string LastName, string FirstName, string Otchectvo, string Unit, string Position)
+        {
 
-            
-              return View();
-           }
            
+            return View();
+        }
+        [HttpPost]
+        public ActionResult ResultUsesrs(string LastName, string FirstName, string Otchectvo, string Unit, string Position)
+        {
+
+
+            return View();
+
+        }
     }
 }
