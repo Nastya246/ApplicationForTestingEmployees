@@ -1,0 +1,35 @@
+﻿@model IEnumerable<WebApplicationForTest.Models.Тесты>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Доступные тесты по теме "@ViewBag.НазваниеТемы"</h2>
+
+
+<form method="post" action="~/Тесты/Index">
+    <table class="table">
+
+      
+        @foreach (var item in Model)
+        {
+            <tr>
+                
+                <td>
+                    @Html.DisplayFor(modelItem => item.Название_теста)
+                    @Html.DisplayFor(modelItem => item.Количество_вопросов)
+                    @Html.RadioButtonFor(modelItem => item.Название_теста, item.Название_теста) <br /><br />
+                </td>
+
+
+                <th></th>
+            </tr>
+
+
+        }
+
+        <tr><td><input type="submit" value="Начать" /> </td><td></td></tr>
+       
+    </table>
+</form>

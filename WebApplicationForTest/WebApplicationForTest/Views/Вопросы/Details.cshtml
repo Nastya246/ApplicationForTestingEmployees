@@ -1,0 +1,43 @@
+﻿@model WebApplicationForTest.Models.Вопросы
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Вопросы</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Текст_вопроса)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Текст_вопроса)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Тип_ответа)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Тип_ответа)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Тесты.Название_теста)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Тесты.Название_теста)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.id_вопроса }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

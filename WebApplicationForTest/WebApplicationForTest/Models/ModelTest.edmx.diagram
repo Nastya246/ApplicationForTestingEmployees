@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="e0558bd8974641fca5c265d5a43067dd" Name="Diagram1">
+        <EntityTypeShape EntityType="TestModel.sysdiagrams" Width="1.5" PointX="0.75" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="TestModel.Вопросы" Width="1.5" PointX="7.5" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="TestModel.Должность" Width="1.5" PointX="0.75" PointY="9.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="TestModel.Общий_результат" Width="1.5" PointX="5.25" PointY="1.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="TestModel.Ответы" Width="1.5" PointX="9.75" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="TestModel.Подразделение" Width="1.5" PointX="3" PointY="9.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="TestModel.Пользователи" Width="1.5" PointX="5.25" PointY="8.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="TestModel.Разделы" Width="1.5" PointX="0.75" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="TestModel.Результат_вопроса" Width="1.5" PointX="9.75" PointY="6.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="TestModel.Результат_теста" Width="1.5" PointX="7.5" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TestModel.Темы" Width="1.5" PointX="3" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="TestModel.Тесты" Width="1.5" PointX="5.25" PointY="5" IsExpanded="true" />
+        <AssociationConnector Association="TestModel.FK_Вопросы_Тесты1" ManuallyRouted="false" />
+        <AssociationConnector Association="TestModel.FK_Ответы_Вопросы1" ManuallyRouted="false" />
+        <AssociationConnector Association="TestModel.FK_Результат_вопроса_Вопросы1" ManuallyRouted="false" />
+        <AssociationConnector Association="TestModel.FK_Результат_теста_Общий_результат" ManuallyRouted="false" />
+        <AssociationConnector Association="TestModel.FK_Пользователи_Подразделение" ManuallyRouted="false" />
+        <AssociationConnector Association="TestModel.FK_Результат_теста_Пользователи" ManuallyRouted="false" />
+        <AssociationConnector Association="TestModel.FK_Темы_Разделы1" ManuallyRouted="false" />
+        <AssociationConnector Association="TestModel.FK_Результат_теста_Тесты1" ManuallyRouted="false" />
+        <AssociationConnector Association="TestModel.FK_Тесты_Темы" ManuallyRouted="false" />
+        <AssociationConnector Association="TestModel.ДолжностьПодразделение" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

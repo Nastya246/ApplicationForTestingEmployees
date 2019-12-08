@@ -1,0 +1,41 @@
+﻿@model IEnumerable<WebApplicationForTest.Models.Вопросы>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Тесты.Название_теста)
+        </th>
+       
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Текст_вопроса)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Тип_ответа)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Тесты.Название_теста)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.id_вопроса }) |
+            @Html.ActionLink("Details", "Details", new { id=item.id_вопроса }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.id_вопроса })
+        </td>
+    </tr>
+}
+
+</table>
