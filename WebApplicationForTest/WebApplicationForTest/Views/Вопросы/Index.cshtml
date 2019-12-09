@@ -12,7 +12,8 @@
     <table class="table">
         <tr>
 
-            <th>Выберите верный ответ</th>
+            <th>Выберите верный ответ<br /><br /></th>
+
 
 
         </tr>
@@ -21,26 +22,29 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Текст_вопроса)
+                    <br /><br /> @Html.DisplayFor(m => item.Текст_вопроса)<br /><br />
                 </td>
+
             </tr>
+
+
+            foreach (var itemO in item.Ответы)
+            {
+
             <tr>
                 <td>
-                    
-                      
-                    
+                    @Html.DisplayFor(m=>itemO.Текст_ответа)
                 </td>
-            </tr>
-            <tr>
                 <td>
-                  
-                    @Html.RadioButtonFor(modelItem => item.Ответы, item.Ответы)
+
+                    @Html.RadioButton((item.id_вопроса).ToString(), itemO.Текст_ответа)
                 </td>
-
             </tr>
-        }
+                    }
+                
+            }
 
-        <tr><td><input type="submit" value="Отправить" /> </td><td></td></tr>
+            <tr><td><br /><br /><input type="submit" value="Отправить" /> </td><td></td></tr>
 
-    </table>
+        </table>
 </form>

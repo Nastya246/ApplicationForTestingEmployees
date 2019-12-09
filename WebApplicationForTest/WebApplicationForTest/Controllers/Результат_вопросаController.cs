@@ -21,7 +21,12 @@ namespace WebApplicationForTest.Controllers
             var результат_вопроса = db.Результат_вопроса.Include(р => р.Вопросы);
             return View(await результат_вопроса.ToListAsync());
         }
-
+        [HttpPost]
+        public async Task<ActionResult> Index(Ответы itemO)
+        {
+            var результат_вопроса = db.Результат_вопроса.Include(р => р.Вопросы);
+            return View(await результат_вопроса.ToListAsync());
+        }
         // GET: Результат_вопроса/Details/5
         public async Task<ActionResult> Details(int? id)
         {
