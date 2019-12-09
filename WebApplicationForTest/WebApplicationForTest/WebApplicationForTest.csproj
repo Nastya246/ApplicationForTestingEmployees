@@ -131,7 +131,9 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ВопросыController.cs" />
+    <Compile Include="Controllers\ОтветыController.cs" />
     <Compile Include="Controllers\РазделыController.cs" />
+    <Compile Include="Controllers\Результат_вопросаController.cs" />
     <Compile Include="Controllers\ТемыController.cs" />
     <Compile Include="Controllers\ТестыController.cs" />
     <Compile Include="Global.asax.cs">
@@ -278,6 +280,16 @@
     <Content Include="Views\Тесты\Details.cshtml" />
     <Content Include="Views\Тесты\Edit.cshtml" />
     <Content Include="Views\Тесты\Index.cshtml" />
+    <Content Include="Views\Результат_вопроса\Create.cshtml" />
+    <Content Include="Views\Результат_вопроса\Delete.cshtml" />
+    <Content Include="Views\Результат_вопроса\Details.cshtml" />
+    <Content Include="Views\Результат_вопроса\Edit.cshtml" />
+    <Content Include="Views\Результат_вопроса\Index.cshtml" />
+    <Content Include="Views\Ответы\Create.cshtml" />
+    <Content Include="Views\Ответы\Delete.cshtml" />
+    <Content Include="Views\Ответы\Details.cshtml" />
+    <Content Include="Views\Ответы\Edit.cshtml" />
+    <Content Include="Views\Ответы\Index.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

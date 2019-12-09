@@ -21,12 +21,22 @@ namespace WebApplicationForTest.Controllers
             var вопросы = db.Вопросы.Include(в => в.Тесты).Include(в=>в.Тесты);
             return View(await вопросы.ToListAsync());
         }
-        [HttpPost]
-        public async Task<ActionResult> Index(Темы item)
+        [HttpPost] // доступные вопросы по тесту
+        public async Task<ActionResult> Index(Тесты item)
         {
-            string usersTopic = item.Название_темы;
-
-            var вопросы = db.Вопросы.Include(в => в.Тесты);
+            string nameTest = item.Название_теста;
+            ViewBag.НазваниеТеста = nameTest;
+            int userТестId = 0;
+            foreach (var t in db.Тесты)
+            {
+                if (t.Название_теста == nameTest)
+                {
+                    userТестId = t.id_теста;
+                }
+            }
+            var вопросы = db.Вопросы.Include(в => в.Тесты).Include(в => в.Ответы).Include(в=>в.Результат_вопроса);
+            вопросы = (from v in db.Вопросы where v.id_Теста == userТестId select v).Include(v=>v.Ответы);
+           
             return View(await вопросы.ToListAsync());
         }
         // GET: Вопросы/Details/5

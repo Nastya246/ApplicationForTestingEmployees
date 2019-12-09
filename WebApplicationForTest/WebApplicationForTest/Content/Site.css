@@ -29,6 +29,7 @@ table {
     vertical-align: top;
     text-align: left;
     table-layout: fixed;
+    padding: 12px 10px;
 }
 
 .header {

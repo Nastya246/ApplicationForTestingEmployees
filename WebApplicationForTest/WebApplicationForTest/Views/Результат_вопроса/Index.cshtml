@@ -1,0 +1,52 @@
+﻿@model IEnumerable<WebApplicationForTest.Models.Результат_вопроса>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Номер_ответа)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Номер_вопроса)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Правильность_ответа)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Вопросы.Текст_вопроса)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Номер_ответа)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Номер_вопроса)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Правильность_ответа)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Вопросы.Текст_вопроса)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.id_результата }) |
+            @Html.ActionLink("Details", "Details", new { id=item.id_результата }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.id_результата })
+        </td>
+    </tr>
+}
+
+</table>

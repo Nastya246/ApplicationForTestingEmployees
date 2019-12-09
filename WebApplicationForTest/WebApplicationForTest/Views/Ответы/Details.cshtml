@@ -1,0 +1,43 @@
+﻿@model WebApplicationForTest.Models.Ответы
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Ответы</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Текст_ответа)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Текст_ответа)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Флаг_правильного_ответа)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Флаг_правильного_ответа)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Вопросы.Текст_вопроса)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Вопросы.Текст_вопроса)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.id_ответа }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
