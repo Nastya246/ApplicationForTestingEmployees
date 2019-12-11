@@ -22,8 +22,17 @@ namespace WebApplicationForTest.Controllers
             return View(await результат_вопроса.ToListAsync());
         }
         [HttpPost]
-        public async Task<ActionResult> Index(Ответы itemO)
+        public async Task<ActionResult> Index( FormCollection form)
         {
+            string result = "";
+            var k = form.Keys;
+            foreach (var r in k)
+            {
+               var t= form.GetValue(r.ToString());
+                result += t.AttemptedValue +".";
+            }
+            
+           
             var результат_вопроса = db.Результат_вопроса.Include(р => р.Вопросы);
             return View(await результат_вопроса.ToListAsync());
         }

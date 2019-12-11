@@ -5,30 +5,42 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<h2>Выбор темы из раздела</h2> <br />
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Название_раздела)
-        </th>
-        <th></th>
-    </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Название_раздела)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.id_раздела }) |
-            @Html.ActionLink("Details", "Details", new { id=item.id_раздела }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.id_раздела })
-        </td>
-    </tr>
-}
+<form method="post" action="~/Тесты/Index">
+    <table class="table">
+      
 
-</table>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <br /><br /><big><big> @Html.DisplayFor(m => item.Название_раздела)</big></big><br /><br />
+                </td>
+
+            </tr>
+
+
+            foreach (var itemO in item.Темы)
+            {
+
+                <tr>
+                    <td>
+                        @Html.DisplayFor(m=>(itemO.Название_темы))
+                    </td>
+                    <td>
+                       
+
+                        @Html.RadioButtonFor(m=>itemO.id_темы, itemO.id_темы)
+
+                    </td>
+                </tr>
+            }
+
+        }
+
+        <tr><td><br /><br /><input type="submit" value="Отправить" /> </td><td></td></tr>
+
+    </table>
+</form>

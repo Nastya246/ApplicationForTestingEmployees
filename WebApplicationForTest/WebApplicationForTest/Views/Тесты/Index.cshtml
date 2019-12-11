@@ -5,39 +5,47 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Доступные тесты по теме "@ViewBag.НазваниеТемы"</h2> <br /><br />
+<h2>Доступные тесты из раздела "@ViewBag.НазваниеРаздела" по теме "@ViewBag.НазваниеТемы"</h2> <br /><br />
 
 
 <form method="post" action="~/Вопросы/Index">
     <table class="table">
         <tr>
-           
-                <th>Название теста</th>
-            
-            
-                <th>Число вопросов</th>
-                
-            
+
+            <th>
+                Название теста<br />
+                <br />
+            </th>
+
+
+            <th>Число вопросов<br /><br /></th>
+
+
         </tr>
-        
+
         @foreach (var item in Model)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Название_теста)
-            </td>
-            <td>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Название_теста)<br />
+                    <br />
+                </td>
+                <td>
 
-                @Html.DisplayFor(modelItem => item.Количество_вопросов)
-            </td>
-            <td>
-                @Html.RadioButtonFor(modelItem => item.Название_теста, item.Название_теста)
-            </td>
-           
-        </tr>
+                    @Html.DisplayFor(modelItem => item.Количество_вопросов)<br />
+                    <br />
+                </td>
+                <td>
+                    @Html.RadioButtonFor(modelItem => item.Название_теста, item.Название_теста)<br /><br />
+                </td>
+
+            </tr>
         }
-
-        <tr><td><input type="submit" value="Начать" /> </td><td></td></tr>
+        
+        <tr><td>
+    <br />
+    <br /><input type="submit" value="Начать" />
+</td><td></td></tr>
 
     </table>
 </form>

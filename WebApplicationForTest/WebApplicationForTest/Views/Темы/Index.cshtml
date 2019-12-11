@@ -16,11 +16,11 @@
         {
             <tr>
                 <th>
-                    @Html.DisplayFor(modelItem => item.Разделы.Название_раздела) <br /><br />
+                    @Html.DisplayFor( m=>item.Разделы.Название_раздела) <br /><br />
                 </th>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Название_темы)
-                    @Html.RadioButtonFor(modelItem => item.Название_темы, item.Название_темы) <br /><br />
+                    @Html.DisplayFor(m=> item.Название_темы)
+                    @Html.RadioButton(item.Название_темы, item.Название_темы) <br /><br />
                 </td>
 
 

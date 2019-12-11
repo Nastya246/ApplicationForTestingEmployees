@@ -22,24 +22,55 @@ namespace WebApplicationForTest.Controllers
             return View(await тесты.ToListAsync());
         }
 
-        [HttpPost] // доступные тесты по теме
-        public async Task<ActionResult> Index(Темы item)
+        [HttpPost] // доступные вопросы по тесту
+        public async Task<ActionResult> Index( Темы itemO)
         {
-            string usersTopic = item.Название_темы;
-            ViewBag.НазваниеТемы = usersTopic;
-            int userTopicId = 0;
-            foreach (var t in db.Темы)
+            /*string nameTopic = itemO.Название_теста;
+            ViewBag.НазваниеТемы = nameTest;
+            int userТестId = 0;
+            foreach (var t in db.Тесты)
             {
-                if (t.Название_темы==usersTopic)
+                if (t.Название_теста == nameTest)
                 {
-                    userTopicId = t.id_темы;
+                    userТестId = t.id_теста;
                 }
             }
-            var тесты = db.Тесты.Include(в => в.Темы).Include(в=>в.Вопросы);
-            тесты = from t in db.Тесты where t.id_Темы == userTopicId select t;
+            var вопросы = db.Вопросы.Include(в => в.Тесты).Include(в => в.Ответы).Include(в => в.Результат_вопроса);
+            вопросы = (from v in db.Вопросы where v.id_Теста == userТестId select v).Include(v => v.Ответы);
+            */
+            int temp=0;
+             int  idTopic = itemO.id_темы;
+            foreach(var e in db.Темы)
+            {
+                if (e.id_темы==idTopic)
+                {
+                 
+                    ViewBag.НазваниеТемы = e.Название_темы;
+                   temp  = e.id_Раздела;
+                }
+            }
+            foreach (var e in db.Разделы)
+            {
+                if (e.id_раздела == temp)
+                {
+
+                    ViewBag.НазваниеРаздела = e.Название_раздела;
+                    
+                }
+            }
+            
+
+
+
+                var тесты = (db.Тесты.Include(в => в.Темы).Include(в => в.Вопросы).Where(в=> в.id_Темы==idTopic));
            
             return View(await тесты.ToListAsync());
         }
+        
+            
+           
+            
+        
         // GET: Тесты/Details/5
         public async Task<ActionResult> Details(int? id)
         {
