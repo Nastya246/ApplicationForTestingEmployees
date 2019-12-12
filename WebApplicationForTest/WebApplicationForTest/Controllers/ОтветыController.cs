@@ -21,7 +21,7 @@ namespace WebApplicationForTest.Controllers
             var ответы = db.Ответы.Include(о => о.Вопросы);
             return View(await ответы.ToListAsync());
         }
-        [HttpPost] // доступные вопросы по тесту
+     /*   [HttpPost] // доступные вопросы по тесту
         public async Task<ActionResult> Index(Тесты item)
         {
             string nameTest = item.Название_теста;
@@ -43,7 +43,7 @@ namespace WebApplicationForTest.Controllers
            
 
             return View(await ответы.ToListAsync());
-        }
+        } */
         // GET: Ответы/Details/5
         public async Task<ActionResult> Details(int? id)
         {

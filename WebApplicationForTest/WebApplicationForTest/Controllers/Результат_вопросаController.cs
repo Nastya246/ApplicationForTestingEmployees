@@ -22,17 +22,51 @@ namespace WebApplicationForTest.Controllers
             return View(await результат_вопроса.ToListAsync());
         }
         [HttpPost]
-        public async Task<ActionResult> Index( FormCollection form)
+        public async Task<ActionResult> Index( FormCollection form) //обработка результатов по тесту
         {
-            string result = "";
+          
             var k = form.Keys;
+            List<string> ResultQuestion = new List<string>(k.Count); //для хранения результатов верно/неверно
+           
+           
+            int nQ = 1; // для перечисления вопросов
+            int Answ = 0; //число правильных ответов
+            Dictionary<int, string> resultAnswer = new Dictionary<int, string>(k.Count); //для значений, которые отметил пользователь
             foreach (var r in k)
             {
                var t= form.GetValue(r.ToString());
-                result += t.AttemptedValue +".";
+                resultAnswer.Add(Convert.ToInt32(r), t.AttemptedValue); //заполняем словарь значениями, которые соответствуют вопросу и ответу
+               // result += t.AttemptedValue +" ";
             }
+            foreach (var id_q in resultAnswer) //проверяем правильно ли ответил пользователь
+            {
+                foreach (var id_o in db.Ответы)
+                {
+                    if (id_q.Key == id_o.id_Вопроса) 
+                    {
+                        if (id_q.Value==id_o.Текст_ответа)
+                        {
+                            if (id_o.Флаг_правильного_ответа == true)
+                            {
+                                ResultQuestion.Add(nQ.ToString()+" "+"Верно");
+                                Answ++;
+                            }
+                            else
+                            {
+                                ResultQuestion.Add(nQ.ToString() + " " + "Неверно");
+                            }
+                           
+                            nQ++;
+                        }
+                    }
+                }            
+                
+            }
+            double resulProcentTheory = ((double)Answ / (double)(k.Count))*100.0; //результат теста в процентах
+            ViewBag.ResultProcent = resulProcentTheory; //передаем результат в % в представление
+            ViewBag.ResultQuestion = ResultQuestion; // передаем в представление список , где указано , что верно, а что нет
             
-           
+                nQ = 0;
             var результат_вопроса = db.Результат_вопроса.Include(р => р.Вопросы);
             return View(await результат_вопроса.ToListAsync());
         }

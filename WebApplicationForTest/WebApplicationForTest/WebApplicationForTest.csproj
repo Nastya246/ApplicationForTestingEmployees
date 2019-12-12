@@ -290,6 +290,11 @@
     <Content Include="Views\Ответы\Details.cshtml" />
     <Content Include="Views\Ответы\Edit.cshtml" />
     <Content Include="Views\Ответы\Index.cshtml" />
+    <Content Include="Views\Пользователи\Create.cshtml" />
+    <Content Include="Views\Пользователи\Delete.cshtml" />
+    <Content Include="Views\Пользователи\Details.cshtml" />
+    <Content Include="Views\Пользователи\Edit.cshtml" />
+    <Content Include="Views\Пользователи\Index.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

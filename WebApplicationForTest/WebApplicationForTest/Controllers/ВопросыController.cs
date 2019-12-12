@@ -21,13 +21,13 @@ namespace WebApplicationForTest.Controllers
             var вопросы = db.Вопросы.Include(в => в.Тесты).Include(в=>в.Тесты);
             return View(await вопросы.ToListAsync());
         }
-        [HttpPost] // доступные вопросы по тесту
+        [HttpPost] // доступные вопросы по выбранному тесту
         public async Task<ActionResult> Index(Тесты item)
         {
             string nameTest = item.Название_теста;
-            ViewBag.НазваниеТеста = nameTest;
+            ViewBag.НазваниеТеста = nameTest; //передаем название теста в представление
             int userТестId = 0;
-            foreach (var t in db.Тесты)
+            foreach (var t in db.Тесты) //определяем id выбранного теста
             {
                 if (t.Название_теста == nameTest)
                 {
@@ -35,7 +35,7 @@ namespace WebApplicationForTest.Controllers
                 }
             }
             var вопросы = db.Вопросы.Include(в => в.Тесты).Include(в => в.Ответы).Include(в=>в.Результат_вопроса);
-            вопросы = (from v in db.Вопросы where v.id_Теста == userТестId select v).Include(v=>v.Ответы);
+            вопросы = (from v in db.Вопросы where v.id_Теста == userТестId select v).Include(v=>v.Ответы); //выбираем вопросы для кокретного теста по id теста
            
             return View(await вопросы.ToListAsync());
         }
