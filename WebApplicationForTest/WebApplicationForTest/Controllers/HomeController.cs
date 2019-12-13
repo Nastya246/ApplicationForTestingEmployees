@@ -31,6 +31,8 @@ namespace WebApplicationForTest.Controllers
             ViewBag.Password = Password;
             return View("~/Views/Home/Menu.cshtml"); //открываем меню, соответствующее пользователю
         }
+      
+
         [HttpPost]
         public ActionResult UserAdd(string LastName, string FirstName, string Otchectvo, string Unit, string Position)
         {

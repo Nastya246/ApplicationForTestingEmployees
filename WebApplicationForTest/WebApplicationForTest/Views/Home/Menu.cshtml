@@ -18,7 +18,7 @@
     }
     else if ((ViewBag.Login == "otchet") && (ViewBag.Password == "otchet12345"))
     {
-        <form method="post" action="ActionAdmin">
+        <form method="post" action="ActionOtchet">
             <table>
                 <tr> <td> <p><a href="/Home/AddTemplateReport/">Создать шаблон отчета</a> </p></td> </tr>
                 <tr> <td> <p><a href="/Home/ViewReport/">Сгенерировать отчет</a> </p></td> </tr>
@@ -26,6 +26,17 @@
 
             </table>
         </form>
+    }
+    else if ((ViewBag.Login == "admin") && (ViewBag.Password == "admin12345"))
+    {
+        
+            <table>
+                <tr> <td> <p><a href="~/Подразделение/Index">Подразделения</a> </p></td> </tr>
+                <tr> <td> <p><a href="~/Должность/Index">Должности</a> </p></td> </tr>
+
+
+            </table>
+       
     }
     else
     //((ViewBag.Login == "user") && (ViewBag.Password == "user12345"))
@@ -69,15 +80,15 @@
                         </big> <br /><br />
                     </td>
                 </tr>
-                        <tr>
-                            <td>
-                <span>Практика</span>
-            <big>
-                @Html.CheckBox("EnablePractice", false)<br /><br />
-            </big>
-                             </td>
+                <tr>
+                    <td>
+                        <span>Практика</span>
+                        <big>
+                            @Html.CheckBox("EnablePractice", false)<br /><br />
+                        </big>
+                    </td>
 
-                        </tr>
+                </tr>
                 <tr>
                     <td>
                         <p><big>Дата:@DateTime.Now.ToString("MM/dd/yyyy HH:mm") </big></p><br />

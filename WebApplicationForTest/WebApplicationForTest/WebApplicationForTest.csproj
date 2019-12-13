@@ -131,7 +131,9 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ВопросыController.cs" />
+    <Compile Include="Controllers\ДолжностьController.cs" />
     <Compile Include="Controllers\ОтветыController.cs" />
+    <Compile Include="Controllers\ПодразделениеController.cs" />
     <Compile Include="Controllers\РазделыController.cs" />
     <Compile Include="Controllers\Результат_вопросаController.cs" />
     <Compile Include="Controllers\ТемыController.cs" />
@@ -295,6 +297,16 @@
     <Content Include="Views\Пользователи\Details.cshtml" />
     <Content Include="Views\Пользователи\Edit.cshtml" />
     <Content Include="Views\Пользователи\Index.cshtml" />
+    <Content Include="Views\Подразделение\Create.cshtml" />
+    <Content Include="Views\Подразделение\Delete.cshtml" />
+    <Content Include="Views\Подразделение\Details.cshtml" />
+    <Content Include="Views\Подразделение\Edit.cshtml" />
+    <Content Include="Views\Подразделение\Index.cshtml" />
+    <Content Include="Views\Должность\Create.cshtml" />
+    <Content Include="Views\Должность\Delete.cshtml" />
+    <Content Include="Views\Должность\Details.cshtml" />
+    <Content Include="Views\Должность\Edit.cshtml" />
+    <Content Include="Views\Должность\Index.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

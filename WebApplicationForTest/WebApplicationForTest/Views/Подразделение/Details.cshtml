@@ -1,0 +1,27 @@
+﻿@model WebApplicationForTest.Models.Подразделение
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Подразделение</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Название_подразделения)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Название_подразделения)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id_подразделения }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
