@@ -84,3 +84,4 @@ D:\repositoriy\WebApplicationForTest\WebApplicationForTest\obj\Debug\WebApplicat
 D:\repositoriy\WebApplicationForTest\WebApplicationForTest\obj\Debug\WebApplicationForTest.csproj.CopyComplete
 D:\repositoriy\WebApplicationForTest\WebApplicationForTest\obj\Debug\WebApplicationForTest.dll
 D:\repositoriy\WebApplicationForTest\WebApplicationForTest\obj\Debug\WebApplicationForTest.pdb
+D:\repositoriy\WebApplicationForTest\WebApplicationForTest\obj\Debug\WebApplicationForTest.csprojAssemblyReference.cache

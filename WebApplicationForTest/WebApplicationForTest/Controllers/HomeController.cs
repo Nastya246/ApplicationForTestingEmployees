@@ -25,46 +25,47 @@ namespace WebApplicationForTest.Controllers
             return View(); //возврат на дом. стр. если ошибка данных
         }
         [HttpPost]
-        public ActionResult Menu(string Login, string Password)
+        public async Task<ActionResult> Menu(string Login, string Password)
         {
+            SelectList units = new SelectList(db.Подразделение, "Id_подразделения", "Название_подразделения");
+            ViewBag.Units = units;
+            SelectList positions = new SelectList(db.Должность, "Id_должности", "Название_должности");
+            ViewBag.Positions = positions;
             ViewBag.Login = Login;
             ViewBag.Password = Password;
-            return View("~/Views/Home/Menu.cshtml"); //открываем меню, соответствующее пользователю
+            var подразделения = db.Подразделение.Include(p => p.Должность);
+            return View(await подразделения.ToListAsync());
+           
+          //  return View("~/Views/Home/Menu.cshtml"); //открываем меню, соответствующее пользователю
         }
-      
 
         [HttpPost]
-        public ActionResult UserAdd(string LastName, string FirstName, string Otchectvo, string Unit, string Position)
+        public async Task<ActionResult> AddUser(string LastName, string FirstName, string Otchectvo, string Id_подразделения, string Id_должности)
         {
-            bool exist = false; //флаг существования сотрудника в бд
-            var userUnit = db.Пользователи.Include(v => v.Подразделение.Должность);
-            /*  foreach (var user in userUnit)
-              {
-                  if ((user.Имя == FirstName) && (user.Фамилия == LastName) && (user.Отчество == Otchectvo) && (user.Подразделение.Название_подразделения == Unit))
-                  {
-                      foreach (var u in userUnit.)
-                          {
-                          if ((u.Название_должности == Position))
-                          {
-                              exist = true; //сотрудник на такой должности есть
-                          }
-                      }
-                  }
-              }*/
 
-            var us = from v in db.Пользователи.Include((v => v.Подразделение.Должность)) where (v.Имя==FirstName && v.Фамилия==LastName && v.Отчество==Otchectvo && v.Подразделение.Название_подразделения == Unit ) select v;
-            if (us != null) //пользователь с таким именем в этом подразделении  есть
+            var UnitTemp = from v in db.Должность where v.Id_должности == Convert.ToInt32(Id_должности) select v;
+            if (UnitTemp != null)
             {
-                exist = true;
+                ViewBag.Flag = 1;
+                Пользователи newПользователь = new Пользователи();
+                newПользователь.id_подразделения = Convert.ToInt32(Id_подразделения);
+                newПользователь.Имя = FirstName;
+                newПользователь.Фамилия = LastName;
+                newПользователь.Отчество = Otchectvo;
+                
             }
             else
             {
-               // Пользователи user = new Пользователи();
+                ViewBag.Flag = 0; //такой должности в подразделении нет
             }
-          //  var разделы = db.Разделы.Include(т => т.Темы);
-          //  return View(await разделы.ToListAsync());
-            return View("~/Views/Разделы/Index.cshtml");
+          
+
+              
+
+              
+            return View(); 
         }
-        
+
+
     }
 }

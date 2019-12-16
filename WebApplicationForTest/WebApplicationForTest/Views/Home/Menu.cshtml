@@ -1,4 +1,6 @@
-﻿@{
+﻿@model  IEnumerable <WebApplicationForTest.Models.Подразделение>
+
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div>
@@ -29,14 +31,14 @@
     }
     else if ((ViewBag.Login == "admin") && (ViewBag.Password == "admin12345"))
     {
-        
-            <table>
-                <tr> <td> <p><a href="~/Подразделение/Index">Подразделения</a> </p></td> </tr>
-                <tr> <td> <p><a href="~/Должность/Index">Должности</a> </p></td> </tr>
+
+        <table>
+            <tr> <td> <p><a href="~/Подразделение/Index">Подразделения</a> </p></td> </tr>
+            <tr> <td> <p><a href="~/Должность/Index">Должности</a> </p></td> </tr>
 
 
-            </table>
-       
+        </table>
+
     }
     else
     //((ViewBag.Login == "user") && (ViewBag.Password == "user12345"))
@@ -61,13 +63,21 @@
                     <td>
                         <p>Подразделение: </p>
                     </td>
-                    <td><input type="text" name="Unit" /></td>
+
+                    <td>
+                        @Html.DropDownList("Id_подразделения", ViewBag.Units as SelectList)
+                    </td>
+
                 </tr>
                 <tr>
                     <td>
                         <p>Должность: </p>
                     </td>
-                    <td><input type="text" name="Position" /></td>
+                    <td>
+
+                        @Html.DropDownList("Id_должности", ViewBag.Positions as SelectList)
+
+                    </td>
                 </tr>
 
                 <tr>

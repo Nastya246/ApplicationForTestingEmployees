@@ -18,12 +18,19 @@ namespace WebApplicationForTest.Controllers
         // GET: Разделы
         public async Task<ActionResult> Index()
         {
+
             var  разделы = db.Разделы.Include(т => т.Темы);
             return View(await разделы.ToListAsync());
         }
-       
-            // GET: Разделы/Details/5
-            public async Task<ActionResult> Details(int? id)
+        [HttpPost]
+        public async Task<ActionResult> Index(string LastName, string FirstName,string Otchectvo, string Id_подразделения, string Id_должности)
+        {
+            
+            var разделы = db.Разделы.Include(т => т.Темы);
+            return View(await разделы.ToListAsync());
+        }
+        // GET: Разделы/Details/5
+        public async Task<ActionResult> Details(int? id)
         {
             if (id == null)
             {

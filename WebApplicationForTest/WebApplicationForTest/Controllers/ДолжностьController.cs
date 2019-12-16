@@ -18,6 +18,8 @@ namespace WebApplicationForTest.Controllers
         // GET: Должность
         public async Task<ActionResult> Index()
         {
+            ViewBag.Login = "admin";
+            ViewBag.Password = "admin12345";
             return View(await db.Должность.ToListAsync());
         }
 
@@ -39,6 +41,7 @@ namespace WebApplicationForTest.Controllers
         // GET: Должность/Create
         public ActionResult Create()
         {
+
             return View();
         }
 
@@ -51,9 +54,16 @@ namespace WebApplicationForTest.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Должность.Add(должность);
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
+                if ((db.Должность.FindAsync(должность.Название_должности)) == null)
+                {
+                    db.Должность.Add(должность);
+                    await db.SaveChangesAsync();
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return RedirectToAction("Index");
+                }
             }
 
             return View(должность);
@@ -83,9 +93,16 @@ namespace WebApplicationForTest.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(должность).State = EntityState.Modified;
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
+                if ((db.Должность.FindAsync(должность.Название_должности)) == null)
+                {
+                    db.Entry(должность).State = EntityState.Modified;
+                    await db.SaveChangesAsync();
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return RedirectToAction("Index");
+                }
             }
             return View(должность);
         }

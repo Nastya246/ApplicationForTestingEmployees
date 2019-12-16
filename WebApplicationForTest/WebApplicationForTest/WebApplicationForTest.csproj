@@ -307,6 +307,7 @@
     <Content Include="Views\Должность\Details.cshtml" />
     <Content Include="Views\Должность\Edit.cshtml" />
     <Content Include="Views\Должность\Index.cshtml" />
+    <Content Include="Views\Home\AddUser.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

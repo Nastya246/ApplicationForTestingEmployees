@@ -52,9 +52,13 @@ namespace WebApplicationForTest.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Подразделение.Add(подразделение);
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
+                if ((db.Подразделение.FindAsync(подразделение.Название_подразделения)) == null)
+                {
+                    db.Подразделение.Add(подразделение);
+                    await db.SaveChangesAsync();
+                    return RedirectToAction("Index");
+                }
+                else { return RedirectToAction("Index"); }
             }
 
             return View(подразделение);
@@ -72,6 +76,7 @@ namespace WebApplicationForTest.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.Position = db.Должность.ToList();
             return View(подразделение);
         }
 
@@ -80,15 +85,31 @@ namespace WebApplicationForTest.Controllers
         // сведения см. в статье https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id_подразделения,Название_подразделения")] Подразделение подразделение)
+        public async Task<ActionResult> Edit([Bind(Include = "Id_подразделения,Название_подразделения")] Подразделение подразделение, int[] selectedPosition)
         {
-            if (ModelState.IsValid)
+            
+                Подразделение Newподразделение = await db.Подразделение.FindAsync(подразделение.Id_подразделения);
+            if ((db.Подразделение.FindAsync(подразделение.Название_подразделения)) == null)
             {
-                db.Entry(подразделение).State = EntityState.Modified;
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
+                Newподразделение.Название_подразделения = подразделение.Название_подразделения;
             }
-            return View(подразделение);
+                Newподразделение.Должность.Clear();
+                if (selectedPosition != null)
+                {
+                    foreach (var c in db.Должность.Where(co => selectedPosition.Contains(co.Id_должности)))
+                    { Newподразделение.Должность.Add(c); }
+                }
+                db.Entry(Newподразделение).State = EntityState.Modified;
+                await db.SaveChangesAsync();
+            
+            return RedirectToAction("Index");
+            /*  if (ModelState.IsValid)
+              {
+                  db.Entry(подразделение).State = EntityState.Modified;
+                  await db.SaveChangesAsync();
+                  return RedirectToAction("Index");
+              }*/
+          //  return View(подразделение);
         }
 
         // GET: Подразделение/Delete/5
