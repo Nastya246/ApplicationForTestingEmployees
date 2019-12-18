@@ -5,17 +5,16 @@ using System.Web;
 using System.Web.Mvc;
 using WebApplicationForTest;
 using System.Data.Entity;
-using System.Linq;
 using WebApplicationForTest.Models;
 using System.Threading.Tasks;
-namespace WebApplicationForTest.Controllers
+namespace WebApplicationForTest.Controllersd
 {
     public class HomeController : Controller
     {
         private TestEntities db = new TestEntities();
         public ActionResult Index()
         {
-           
+            
             return View(); //стартовая стр авторизации
         }
         [HttpPost]
@@ -27,18 +26,64 @@ namespace WebApplicationForTest.Controllers
         [HttpPost]
         public async Task<ActionResult> Menu(string Login, string Password)
         {
-            SelectList units = new SelectList(db.Подразделение, "Id_подразделения", "Название_подразделения");
-            ViewBag.Units = units;
-            SelectList positions = new SelectList(db.Должность, "Id_должности", "Название_должности");
-            ViewBag.Positions = positions;
+            
+            int selectedIndex = 1;
+            SelectList подразделения = new SelectList(db.Подразделение, "Id_подразделения", "Название_подразделения", selectedIndex); //для передачи в представление списка подразделений
+            ViewBag.Подразделения = подразделения;
+
+            List<Должность> ДолжностьList = db.Должность.ToList(); // для передачи в представление списка должностей
+            ДолжностьList.Clear();
+            foreach (Подразделение temp in db.Подразделение.Include(t => t.Должность))
+            {
+                if (temp.Id_подразделения == selectedIndex)
+                {
+                    foreach (Должность temp2 in temp.Должность)
+                    {
+                        ДолжностьList.Add(temp2);
+                    }
+                }
+               
+            }
+            SelectList должности = new SelectList(ДолжностьList, "Id_должности", "Название_должности");
+            ViewBag.Должности = должности;
+           
             ViewBag.Login = Login;
             ViewBag.Password = Password;
-            var подразделения = db.Подразделение.Include(p => p.Должность);
-            return View(await подразделения.ToListAsync());
+        
+            return View(); //открываем меню, соответ. пользователю
            
-          //  return View("~/Views/Home/Menu.cshtml"); //открываем меню, соответствующее пользователю
+         
+        }
+        public ActionResult GetItems(int id) //для динамического обновления списка должностей при выборе другого подразделения
+        {
+           
+            List<Должность> ДолжностьList1 = db.Должность.ToList();
+            ДолжностьList1.Clear();
+            foreach (Подразделение temp in db.Подразделение.Include(t => t.Должность))
+            {
+                if (temp.Id_подразделения == id)
+                {
+                    foreach (Должность temp2 in temp.Должность)
+                    {
+                        ДолжностьList1.Add(temp2);
+                       
+                    }
+                }
+            }
+           
+            return PartialView(ДолжностьList1.ToList());
+        }
+      
+        public ActionResult AutocompleteSearch(string term) // автодополнение слов, пока что не используется
+        {
+            var models = db.Подразделение.Where(a => a.Название_подразделения.Contains(term))
+                            .Select(a => new { value = a.Название_подразделения })
+                            .Distinct();
+
+            return Json(models, JsonRequestBehavior.AllowGet);
         }
 
+        
         [HttpPost]
         public async Task<ActionResult> AddUser(string LastName, string FirstName, string Otchectvo, string Id_подразделения, string Id_должности)
         {
@@ -59,10 +104,7 @@ namespace WebApplicationForTest.Controllers
                 ViewBag.Flag = 0; //такой должности в подразделении нет
             }
           
-
-              
-
-              
+            
             return View(); 
         }
 

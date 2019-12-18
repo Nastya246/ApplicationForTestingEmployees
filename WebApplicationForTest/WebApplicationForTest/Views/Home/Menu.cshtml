@@ -1,9 +1,14 @@
-﻿@model  IEnumerable <WebApplicationForTest.Models.Подразделение>
+﻿@model  WebApplicationForTest.Models.Подразделение
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+
+
 <div>
+    <link href='@Url.Content("~/Content/themes/base/all.css")' rel="stylesheet" type="text/css" />
+    <script src='@Url.Content("~/Scripts/jquery-ui-1.12.1.min.js")' type="text/javascript"></script>
     <h3>Выберите действие</h3>
 
     @if ((ViewBag.Login == "redactor") && (ViewBag.Password == "redactor12345"))
@@ -60,44 +65,21 @@
                     <td><input type="text" name="Otchectvo" /></td>
                 </tr>
                 <tr>
-                    <td>
-                        <p>Подразделение: </p>
-                    </td>
+
+
 
                     <td>
-                        @Html.DropDownList("Id_подразделения", ViewBag.Units as SelectList)
-                    </td>
 
-                </tr>
-                <tr>
-                    <td>
-                        <p>Должность: </p>
-                    </td>
-                    <td>
-
-                        @Html.DropDownList("Id_должности", ViewBag.Positions as SelectList)
-
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-
-                        <span>Теория</span>
-
-                        <big>
-                            @Html.CheckBox("EnableTheory", true)
-                        </big> <br /><br />
+                        <p>Выберите подразделение</p>
+                        @Html.DropDownList("Units", ViewBag.Подразделения as SelectList, "--Выбор подразделения--", new { id = "unit" })
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <span>Практика</span>
-                        <big>
-                            @Html.CheckBox("EnablePractice", false)<br /><br />
-                        </big>
-                    </td>
+                        <p>Выберите должность</p>
+                        @Html.DropDownList("Position", ViewBag.Должности as SelectList, "--Выбор должности--", new { id = "position" })
 
+                    </td>
                 </tr>
                 <tr>
                     <td>
@@ -108,19 +90,43 @@
                 <tr><td><input type="submit" value="Тестирование" /> </td><td></td></tr>
             </table>
         </form>
-    }
-    <!-- else
-     {
-         <form method="post" action="Index">
-             <table>
-                 <tr>
-                     <td><p>Ошибка ввода данных!</p></td>
-                 </tr>
-                 <tr>   <td>   <p> <input type="hidden" value="0" name="Error" /></p></td></tr>
-                 <tr><td><input type="submit" value="Ввести снова" /> </td><td></td></tr>
+        
+        @section scripts{
+            <script type="text/javascript">
+    $(function () {
 
-             </table>
-         </form>
-             }
-             -->
-</div>
+        $('#unit').change(function()
+        {
+            // получаем выбранный id
+            var id = $(this).val();
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("GetItems")/' + id,
+                success: function (data) {
+
+                    // заменяем содержимое присланным частичным представлением
+                    $('#position').replaceWith(data);
+                }
+            });
+        });
+    })
+            </script>
+
+
+}
+
+    }       <!-- else
+         {
+             <form method="post" action="Index">
+                 <table>
+                     <tr>
+                         <td><p>Ошибка ввода данных!</p></td>
+                     </tr>
+                     <tr>   <td>   <p> <input type="hidden" value="0" name="Error" /></p></td></tr>
+                     <tr><td><input type="submit" value="Ввести снова" /> </td><td></td></tr>
+
+                 </table>
+             </form>
+                 }
+                 -->
+    

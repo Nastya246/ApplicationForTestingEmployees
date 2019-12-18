@@ -1,0 +1,14 @@
+﻿@model  IEnumerable<WebApplicationForTest.Models.Подразделение>
+@using (Ajax.BeginForm("SelectUnit", "Home",
+new AjaxOptions { UpdateTargetId = "Unit" }))
+{
+    @Html.DropDownList( "Id_подразделения",
+            new SelectList(Model, "Id_подразделения", "Название_подразделения"),
+           string.Empty
+        )
+}
+<script type="text/javascript">
+    $('#Id_подразделения').change(function () {
+        $(this).parents('form').submit();
+    });
+</script>
