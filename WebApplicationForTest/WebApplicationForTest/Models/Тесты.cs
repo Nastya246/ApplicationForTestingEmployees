@@ -22,14 +22,14 @@ namespace WebApplicationForTest.Models
         }
     
         public int id_теста { get; set; }
-        public string Название_теста { get; set; }
+        public string Название_темы_теста { get; set; }
         public int Количество_вопросов { get; set; }
-        public int id_Темы { get; set; }
+        public int Id_Раздела { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Вопросы> Вопросы { get; set; }
+        public virtual Разделы Разделы { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Результат_теста> Результат_теста { get; set; }
-        public virtual Темы Темы { get; set; }
     }
 }

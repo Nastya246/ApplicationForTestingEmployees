@@ -27,7 +27,9 @@ namespace WebApplicationForTest.Models
         public string Логин { get; set; }
         public string Пароль { get; set; }
         public int id_подразделения { get; set; }
+        public int id_должности { get; set; }
     
+        public virtual Должность Должность { get; set; }
         public virtual Подразделение Подразделение { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Результат_теста> Результат_теста { get; set; }

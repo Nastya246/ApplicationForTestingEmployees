@@ -17,13 +17,13 @@ namespace WebApplicationForTest.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Разделы()
         {
-            this.Темы = new HashSet<Темы>();
+            this.Тесты = new HashSet<Тесты>();
         }
     
-        public int id_раздела { get; set; }
+        public int id_Раздела { get; set; }
         public string Название_раздела { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Темы> Темы { get; set; }
+        public virtual ICollection<Тесты> Тесты { get; set; }
     }
 }

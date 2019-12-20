@@ -18,10 +18,11 @@ namespace WebApplicationForTest.Models
         public Nullable<System.DateTime> Дата_сдачи_теории { get; set; }
         public Nullable<int> Оценка_за_теорию { get; set; }
         public int id_Теста { get; set; }
-        public int id_Общего_результата { get; set; }
         public int id_User { get; set; }
+        public Nullable<System.DateTime> Дата_сдачи_практики { get; set; }
+        public Nullable<bool> Отметка_о_практике { get; set; }
+        public string Общий_результат { get; set; }
     
-        public virtual Общий_результат Общий_результат { get; set; }
         public virtual Пользователи Пользователи { get; set; }
         public virtual Тесты Тесты { get; set; }
     }

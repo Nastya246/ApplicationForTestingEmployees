@@ -23,11 +23,19 @@ namespace WebApplicationForTest.Controllersd
 
             return View(); //возврат на дом. стр. если ошибка данных
         }
+        
         [HttpPost]
         public async Task<ActionResult> Menu(string Login, string Password)
         {
-            
-            int selectedIndex = 1;
+         //   Dictionary<string, string> loginPass = new Dictionary<string, string>(db.Пользователи.Count()); //отправляем все логины и пароли в представление
+
+         /*   foreach (var i in db.Пользователи)
+            {
+                loginPass.Add(i.Логин.Replace(" ", ""), i.Пароль.Replace(" ", ""));
+            }
+            ViewBag.LoginPassword = loginPass;
+            */
+            int selectedIndex = 0;
             SelectList подразделения = new SelectList(db.Подразделение, "Id_подразделения", "Название_подразделения", selectedIndex); //для передачи в представление списка подразделений
             ViewBag.Подразделения = подразделения;
 
@@ -49,12 +57,31 @@ namespace WebApplicationForTest.Controllersd
            
             ViewBag.Login = Login;
             ViewBag.Password = Password;
-        
+            int flagLog = 0;
+            int flagPas = 0;
+            foreach (var temp in db.Пользователи) //если ввели логи и пароль, то корректно ли
+            {
+                if (temp.Логин.Replace(" ", "") == Login)
+                {
+                    flagLog = 1;
+                    if (temp.Пароль.Replace(" ", "") == Password)
+                    {
+                        flagPas = 1;
+                    }
+                    }
+            }
+            if ((flagLog==1)&&(flagPas==1))
+                    {
+                ViewBag.LogPas = "Success";
+            }
+
             return View(); //открываем меню, соответ. пользователю
            
          
         }
-        public ActionResult GetItems(int id) //для динамического обновления списка должностей при выборе другого подразделения
+       
+
+            public ActionResult GetItems(int id) //для динамического обновления списка должностей при выборе другого подразделения
         {
            
             List<Должность> ДолжностьList1 = db.Должность.ToList();
@@ -83,31 +110,82 @@ namespace WebApplicationForTest.Controllersd
             return Json(models, JsonRequestBehavior.AllowGet);
         }
 
-        
+        public bool LoginEx(string login) //проверяем логин на существование
+        {
+            foreach (var temp in db.Пользователи) 
+            {
+                if (temp.Логин.Replace(" ", "") == login)
+                {
+                    return true;
+                }
+
+            }
+                return false;
+        }
         [HttpPost]
-        public async Task<ActionResult> AddUser(string LastName, string FirstName, string Otchectvo, string Id_подразделения, string Id_должности)
+        public async Task<ActionResult> AddUser(string LastName, string FirstName, string Otchectvo, int? Units, int? Position,  string Date)
         {
 
-            var UnitTemp = from v in db.Должность where v.Id_должности == Convert.ToInt32(Id_должности) select v;
-            if (UnitTemp != null)
+            if ((LastName != null) && (FirstName != null) && (Units != null) && (Position != null)) //проверка, что введены все данные
             {
-                ViewBag.Flag = 1;
-                Пользователи newПользователь = new Пользователи();
-                newПользователь.id_подразделения = Convert.ToInt32(Id_подразделения);
-                newПользователь.Имя = FirstName;
-                newПользователь.Фамилия = LastName;
-                newПользователь.Отчество = Otchectvo;
-                
+                ViewBag.CorrectData = "1";
+               int flagEx = 0;
+                foreach (var temp in db.Пользователи) //ищем пользователя с такими же данными
+                {
+                    if ((temp.Фамилия.Replace(" ", "") == LastName)&&(temp.Имя.Replace(" ", "") == FirstName) &&(temp.Отчество.Replace(" ", "") == Otchectvo) &&(temp.id_должности == Position) &&(temp.id_подразделения == Units))
+                    {
+                                        flagEx = 1;
+       
+                    }
+                }
+                if (flagEx == 0) //если нет пользователя с такими данными - вносим его в Бд
+                {
+                    Пользователи пользователь = new Пользователи();
+                    пользователь.Фамилия = LastName;
+                    пользователь.Имя = FirstName;
+                    пользователь.Отчество = Otchectvo;
+                    пользователь.id_подразделения = (int)Units;
+                    пользователь.id_должности = (int)Position;
+                    string login = LastName.Substring(0, 1) + FirstName.Substring(0, 1) + Otchectvo.Substring(0, 1); //его логин
+
+                    if (LoginEx(login)) //если логин есть
+                    {
+                        string loginTemp = login;
+                        int loginDigital = 0;
+                        while (LoginEx(login)) //подбираем логин, котрый не занят 
+                        {
+                            login = loginTemp;
+                            login = login + loginDigital.ToString();
+                            loginDigital++;
+                        }
+
+                    }
+                    string passw = login + Date.Substring(0, 2) + Date.Substring(3, 2); //пароль пользователя
+                    пользователь.Логин = login;
+                    пользователь.Пароль = passw;
+                    db.Пользователи.Add(пользователь); //добавляем пользователя в БД
+                    await db.SaveChangesAsync(); // сохраняем изменения
+                    ViewBag.Id_user = пользователь.id_user; // передаем данные пользоватля в представление
+                    ViewBag.Login = login;
+                    ViewBag.Passw = passw;
+                }
+                else //если такой пользователь уже есть
+                {
+                    ViewBag.CorrectData = "2";
+                }
+
+                return View();
             }
             else
             {
-                ViewBag.Flag = 0; //такой должности в подразделении нет
+                ViewBag.CorrectData = "3";
+                return View();
             }
-          
-            
-            return View(); 
+           
+
         }
 
-
+    
     }
+    
 }

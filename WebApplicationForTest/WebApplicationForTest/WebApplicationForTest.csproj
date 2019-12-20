@@ -124,14 +124,8 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ВопросыController.cs" />
     <Compile Include="Controllers\ДолжностьController.cs" />
-    <Compile Include="Controllers\ОтветыController.cs" />
     <Compile Include="Controllers\ПодразделениеController.cs" />
-    <Compile Include="Controllers\РазделыController.cs" />
-    <Compile Include="Controllers\Результат_вопросаController.cs" />
-    <Compile Include="Controllers\ТемыController.cs" />
-    <Compile Include="Controllers\ТестыController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -156,7 +150,7 @@
     <Compile Include="Models\sp_helpdiagrams_Result.cs">
       <DependentUpon>ModelTest.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\sysdiagrams.cs">
+    <Compile Include="Models\sysdiagram.cs">
       <DependentUpon>ModelTest.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Вопросы.cs">
@@ -165,29 +159,19 @@
     <Compile Include="Models\Должность.cs">
       <DependentUpon>ModelTest.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Общий_результат.cs">
-      <DependentUpon>ModelTest.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Ответы.cs">
       <DependentUpon>ModelTest.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Подразделение.cs">
       <DependentUpon>ModelTest.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\ПодразделениеДолжности.cs" />
     <Compile Include="Models\Пользователи.cs">
       <DependentUpon>ModelTest.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Разделы.cs">
       <DependentUpon>ModelTest.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Результат_вопроса.cs">
-      <DependentUpon>ModelTest.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Результат_теста.cs">
-      <DependentUpon>ModelTest.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Темы.cs">
       <DependentUpon>ModelTest.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Тесты.cs">
@@ -196,10 +180,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\Test.mdf" />
-    <Content Include="App_Data\Test_log.ldf">
-      <DependentUpon>Test.mdf</DependentUpon>
-    </Content>
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
     <Content Include="Content\bootstrap-reboot.css" />
@@ -252,20 +232,13 @@
     <Content Include="Content\Site.css" />
     <Content Include="Models\ModelTest.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ModelTest.Context.cs</LastGenOutput>
       <DependentUpon>ModelTest.edmx</DependentUpon>
+      <LastGenOutput>ModelTest.Context.cs</LastGenOutput>
     </Content>
     <Content Include="Models\ModelTest.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>ModelTest.edmx</DependentUpon>
       <LastGenOutput>ModelTest.cs</LastGenOutput>
-    </Content>
-    <EntityDeploy Include="Models\ModelTest.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>ModelTest.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\ModelTest.edmx.diagram">
-      <DependentUpon>ModelTest.edmx</DependentUpon>
     </Content>
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -290,6 +263,13 @@
     <Content Include="Content\bootstrap-reboot.css.map" />
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
+    <EntityDeploy Include="Models\ModelTest.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ModelTest.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\ModelTest.edmx.diagram">
+      <DependentUpon>ModelTest.edmx</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -378,6 +358,11 @@
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />
     <Content Include="Scripts\umd\popper.min.js" />
+    <Content Include="Views\Home\AddUser.cshtml" />
+    <Content Include="Views\Home\GetItems.cshtml" />
+    <Content Include="Views\Home\Menu.cshtml" />
+    <Content Include="Views\Home\Positions.cshtml" />
+    <Content Include="Views\Home\Units.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -392,59 +377,6 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Home\Menu.cshtml" />
-    <Content Include="Views\Actions\ActionUsers.cshtml" />
-    <Content Include="Views\ActionsUsers\Create.cshtml" />
-    <Content Include="Views\ActionsUsers\Delete.cshtml" />
-    <Content Include="Views\ActionsUsers\Details.cshtml" />
-    <Content Include="Views\ActionsUsers\Edit.cshtml" />
-    <Content Include="Views\ActionsUsers\Index.cshtml" />
-    <Content Include="Views\Вопросы\Create.cshtml" />
-    <Content Include="Views\Вопросы\Delete.cshtml" />
-    <Content Include="Views\Вопросы\Details.cshtml" />
-    <Content Include="Views\Вопросы\Edit.cshtml" />
-    <Content Include="Views\Вопросы\Index.cshtml" />
-    <Content Include="Views\Разделы\Create.cshtml" />
-    <Content Include="Views\Разделы\Delete.cshtml" />
-    <Content Include="Views\Разделы\Details.cshtml" />
-    <Content Include="Views\Разделы\Edit.cshtml" />
-    <Content Include="Views\Разделы\Index.cshtml" />
-    <Content Include="Views\Темы\Create.cshtml" />
-    <Content Include="Views\Темы\Delete.cshtml" />
-    <Content Include="Views\Темы\Details.cshtml" />
-    <Content Include="Views\Темы\Edit.cshtml" />
-    <Content Include="Views\Темы\Index.cshtml" />
-    <Content Include="Views\Тесты\Create.cshtml" />
-    <Content Include="Views\Тесты\Delete.cshtml" />
-    <Content Include="Views\Тесты\Details.cshtml" />
-    <Content Include="Views\Тесты\Edit.cshtml" />
-    <Content Include="Views\Тесты\Index.cshtml" />
-    <Content Include="Views\Результат_вопроса\Create.cshtml" />
-    <Content Include="Views\Результат_вопроса\Delete.cshtml" />
-    <Content Include="Views\Результат_вопроса\Details.cshtml" />
-    <Content Include="Views\Результат_вопроса\Edit.cshtml" />
-    <Content Include="Views\Результат_вопроса\Index.cshtml" />
-    <Content Include="Views\Ответы\Create.cshtml" />
-    <Content Include="Views\Ответы\Delete.cshtml" />
-    <Content Include="Views\Ответы\Details.cshtml" />
-    <Content Include="Views\Ответы\Edit.cshtml" />
-    <Content Include="Views\Ответы\Index.cshtml" />
-    <Content Include="Views\Пользователи\Create.cshtml" />
-    <Content Include="Views\Пользователи\Delete.cshtml" />
-    <Content Include="Views\Пользователи\Details.cshtml" />
-    <Content Include="Views\Пользователи\Edit.cshtml" />
-    <Content Include="Views\Пользователи\Index.cshtml" />
-    <Content Include="Views\Подразделение\Create.cshtml" />
-    <Content Include="Views\Подразделение\Delete.cshtml" />
-    <Content Include="Views\Подразделение\Details.cshtml" />
-    <Content Include="Views\Подразделение\Edit.cshtml" />
-    <Content Include="Views\Подразделение\Index.cshtml" />
-    <Content Include="Views\Должность\Create.cshtml" />
-    <Content Include="Views\Должность\Delete.cshtml" />
-    <Content Include="Views\Должность\Details.cshtml" />
-    <Content Include="Views\Должность\Edit.cshtml" />
-    <Content Include="Views\Должность\Index.cshtml" />
-    <Content Include="Views\Home\AddUser.cshtml" />
     <Content Include="Scripts\umd\popper.min.js.map" />
     <Content Include="Scripts\umd\popper.js.map" />
     <Content Include="Scripts\umd\popper.js.flow" />
@@ -455,9 +387,16 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
-    <Content Include="Views\Home\Units.cshtml" />
-    <Content Include="Views\Home\Positions.cshtml" />
-    <Content Include="Views\Home\GetItems.cshtml" />
+    <Content Include="Views\Подразделение\Create.cshtml" />
+    <Content Include="Views\Подразделение\Delete.cshtml" />
+    <Content Include="Views\Подразделение\Details.cshtml" />
+    <Content Include="Views\Подразделение\Edit.cshtml" />
+    <Content Include="Views\Подразделение\Index.cshtml" />
+    <Content Include="Views\Должность\Create.cshtml" />
+    <Content Include="Views\Должность\Delete.cshtml" />
+    <Content Include="Views\Должность\Details.cshtml" />
+    <Content Include="Views\Должность\Edit.cshtml" />
+    <Content Include="Views\Должность\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\index.d.ts" />
@@ -468,6 +407,9 @@
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

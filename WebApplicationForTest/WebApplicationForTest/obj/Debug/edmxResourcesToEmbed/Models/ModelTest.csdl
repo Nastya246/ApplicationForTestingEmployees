@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="TestModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-  <EntityType Name="sysdiagrams">
+  <EntityType Name="sysdiagram">
     <Key>
       <PropertyRef Name="diagram_id" />
     </Key>
@@ -16,29 +16,20 @@
     </Key>
     <Property Name="id_вопроса" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="id_Теста" Type="Int32" Nullable="false" />
-    <Property Name="Текст_вопроса" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
-    <Property Name="Тип_ответа" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
+    <Property Name="Текст_вопроса" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
+    <Property Name="Тип_ответа" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+    <Property Name="Номер_подвопроса" Type="Int32" />
     <NavigationProperty Name="Тесты" Relationship="Self.FK_Вопросы_Тесты1" FromRole="Вопросы" ToRole="Тесты" />
     <NavigationProperty Name="Ответы" Relationship="Self.FK_Ответы_Вопросы1" FromRole="Вопросы" ToRole="Ответы" />
-    <NavigationProperty Name="Результат_вопроса" Relationship="Self.FK_Результат_вопроса_Вопросы1" FromRole="Вопросы" ToRole="Результат_вопроса" />
   </EntityType>
   <EntityType Name="Должность">
     <Key>
       <PropertyRef Name="Id_должности" />
     </Key>
-    <Property Name="Название_должности" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="Название_должности" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
     <Property Name="Id_должности" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <NavigationProperty Name="Пользователи" Relationship="Self.FK_Пользователи_Должность" FromRole="Должность" ToRole="Пользователи" />
     <NavigationProperty Name="Подразделение" Relationship="Self.ДолжностьПодразделение" FromRole="Должность" ToRole="Подразделение" />
-  </EntityType>
-  <EntityType Name="Общий_результат">
-    <Key>
-      <PropertyRef Name="id_общего_результата" />
-    </Key>
-    <Property Name="id_общего_результата" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="Дата_сдачи_практики" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
-    <Property Name="Отметка_о_практике" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
-    <Property Name="Общий_результат1" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
-    <NavigationProperty Name="Результат_теста" Relationship="Self.FK_Результат_теста_Общий_результат" FromRole="Общий_результат" ToRole="Результат_теста" />
   </EntityType>
   <EntityType Name="Ответы">
     <Key>
@@ -46,7 +37,7 @@
     </Key>
     <Property Name="id_ответа" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="id_Вопроса" Type="Int32" Nullable="false" />
-    <Property Name="Текст_ответа" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="Текст_ответа" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
     <Property Name="Флаг_правильного_ответа" Type="Boolean" Nullable="false" />
     <NavigationProperty Name="Вопросы" Relationship="Self.FK_Ответы_Вопросы1" FromRole="Ответы" ToRole="Вопросы" />
   </EntityType>
@@ -55,7 +46,7 @@
       <PropertyRef Name="Id_подразделения" />
     </Key>
     <Property Name="Id_подразделения" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="Название_подразделения" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="Название_подразделения" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
     <NavigationProperty Name="Пользователи" Relationship="Self.FK_Пользователи_Подразделение" FromRole="Подразделение" ToRole="Пользователи" />
     <NavigationProperty Name="Должность" Relationship="Self.ДолжностьПодразделение" FromRole="Подразделение" ToRole="Должность" />
   </EntityType>
@@ -64,33 +55,24 @@
       <PropertyRef Name="id_user" />
     </Key>
     <Property Name="id_user" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="Фамилия" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
-    <Property Name="Имя" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
-    <Property Name="Отчество" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
-    <Property Name="Логин" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
-    <Property Name="Пароль" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="Фамилия" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="Имя" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="Отчество" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="Логин" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+    <Property Name="Пароль" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
     <Property Name="id_подразделения" Type="Int32" Nullable="false" />
+    <Property Name="id_должности" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Должность" Relationship="Self.FK_Пользователи_Должность" FromRole="Пользователи" ToRole="Должность" />
     <NavigationProperty Name="Подразделение" Relationship="Self.FK_Пользователи_Подразделение" FromRole="Пользователи" ToRole="Подразделение" />
     <NavigationProperty Name="Результат_теста" Relationship="Self.FK_Результат_теста_Пользователи" FromRole="Пользователи" ToRole="Результат_теста" />
   </EntityType>
   <EntityType Name="Разделы">
     <Key>
-      <PropertyRef Name="id_раздела" />
+      <PropertyRef Name="id_Раздела" />
     </Key>
-    <Property Name="id_раздела" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="Название_раздела" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
-    <NavigationProperty Name="Темы" Relationship="Self.FK_Темы_Разделы1" FromRole="Разделы" ToRole="Темы" />
-  </EntityType>
-  <EntityType Name="Результат_вопроса">
-    <Key>
-      <PropertyRef Name="id_результата" />
-    </Key>
-    <Property Name="id_результата" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="id_Вопроса" Type="Int32" Nullable="false" />
-    <Property Name="Номер_ответа" Type="Int32" Nullable="false" />
-    <Property Name="Номер_вопроса" Type="Int32" Nullable="false" />
-    <Property Name="Правильность_ответа" Type="Boolean" Nullable="false" />
-    <NavigationProperty Name="Вопросы" Relationship="Self.FK_Результат_вопроса_Вопросы1" FromRole="Результат_вопроса" ToRole="Вопросы" />
+    <Property Name="id_Раздела" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Название_раздела" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
+    <NavigationProperty Name="Тесты" Relationship="Self.FK_Тесты_Разделы" FromRole="Разделы" ToRole="Тесты" />
   </EntityType>
   <EntityType Name="Результат_теста">
     <Key>
@@ -100,33 +82,24 @@
     <Property Name="Дата_сдачи_теории" Type="DateTime" Precision="0" />
     <Property Name="Оценка_за_теорию" Type="Int32" />
     <Property Name="id_Теста" Type="Int32" Nullable="false" />
-    <Property Name="id_Общего_результата" Type="Int32" Nullable="false" />
     <Property Name="id_User" Type="Int32" Nullable="false" />
-    <NavigationProperty Name="Общий_результат" Relationship="Self.FK_Результат_теста_Общий_результат" FromRole="Результат_теста" ToRole="Общий_результат" />
+    <Property Name="Дата_сдачи_практики" Type="DateTime" Precision="0" />
+    <Property Name="Отметка_о_практике" Type="Boolean" />
+    <Property Name="Общий_результат" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
     <NavigationProperty Name="Пользователи" Relationship="Self.FK_Результат_теста_Пользователи" FromRole="Результат_теста" ToRole="Пользователи" />
     <NavigationProperty Name="Тесты" Relationship="Self.FK_Результат_теста_Тесты1" FromRole="Результат_теста" ToRole="Тесты" />
-  </EntityType>
-  <EntityType Name="Темы">
-    <Key>
-      <PropertyRef Name="id_темы" />
-    </Key>
-    <Property Name="id_темы" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="id_Раздела" Type="Int32" Nullable="false" />
-    <Property Name="Название_темы" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
-    <NavigationProperty Name="Разделы" Relationship="Self.FK_Темы_Разделы1" FromRole="Темы" ToRole="Разделы" />
-    <NavigationProperty Name="Тесты" Relationship="Self.FK_Тесты_Темы" FromRole="Темы" ToRole="Тесты" />
   </EntityType>
   <EntityType Name="Тесты">
     <Key>
       <PropertyRef Name="id_теста" />
     </Key>
     <Property Name="id_теста" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="Название_теста" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="Название_темы_теста" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
     <Property Name="Количество_вопросов" Type="Int32" Nullable="false" />
-    <Property Name="id_Темы" Type="Int32" Nullable="false" />
+    <Property Name="Id_Раздела" Type="Int32" Nullable="false" />
     <NavigationProperty Name="Вопросы" Relationship="Self.FK_Вопросы_Тесты1" FromRole="Тесты" ToRole="Вопросы" />
+    <NavigationProperty Name="Разделы" Relationship="Self.FK_Тесты_Разделы" FromRole="Тесты" ToRole="Разделы" />
     <NavigationProperty Name="Результат_теста" Relationship="Self.FK_Результат_теста_Тесты1" FromRole="Тесты" ToRole="Результат_теста" />
-    <NavigationProperty Name="Темы" Relationship="Self.FK_Тесты_Темы" FromRole="Тесты" ToRole="Темы" />
   </EntityType>
   <Association Name="FK_Вопросы_Тесты1">
     <End Role="Тесты" Type="Self.Тесты" Multiplicity="1" />
@@ -152,27 +125,15 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_Результат_вопроса_Вопросы1">
-    <End Role="Вопросы" Type="Self.Вопросы" Multiplicity="1" />
-    <End Role="Результат_вопроса" Type="Self.Результат_вопроса" Multiplicity="*" />
+  <Association Name="FK_Пользователи_Должность">
+    <End Role="Должность" Type="Self.Должность" Multiplicity="1" />
+    <End Role="Пользователи" Type="Self.Пользователи" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="Вопросы">
-        <PropertyRef Name="id_вопроса" />
+      <Principal Role="Должность">
+        <PropertyRef Name="Id_должности" />
       </Principal>
-      <Dependent Role="Результат_вопроса">
-        <PropertyRef Name="id_Вопроса" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_Результат_теста_Общий_результат">
-    <End Role="Общий_результат" Type="Self.Общий_результат" Multiplicity="1" />
-    <End Role="Результат_теста" Type="Self.Результат_теста" Multiplicity="0..1" />
-    <ReferentialConstraint>
-      <Principal Role="Общий_результат">
-        <PropertyRef Name="id_общего_результата" />
-      </Principal>
-      <Dependent Role="Результат_теста">
-        <PropertyRef Name="id_результата_теста" />
+      <Dependent Role="Пользователи">
+        <PropertyRef Name="id_должности" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -200,15 +161,15 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_Темы_Разделы1">
+  <Association Name="FK_Тесты_Разделы">
     <End Role="Разделы" Type="Self.Разделы" Multiplicity="1" />
-    <End Role="Темы" Type="Self.Темы" Multiplicity="*" />
+    <End Role="Тесты" Type="Self.Тесты" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Разделы">
-        <PropertyRef Name="id_раздела" />
-      </Principal>
-      <Dependent Role="Темы">
         <PropertyRef Name="id_Раздела" />
+      </Principal>
+      <Dependent Role="Тесты">
+        <PropertyRef Name="Id_Раздела" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -224,34 +185,19 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_Тесты_Темы">
-    <End Role="Темы" Type="Self.Темы" Multiplicity="1" />
-    <End Role="Тесты" Type="Self.Тесты" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Темы">
-        <PropertyRef Name="id_темы" />
-      </Principal>
-      <Dependent Role="Тесты">
-        <PropertyRef Name="id_Темы" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="ДолжностьПодразделение">
     <End Role="Должность" Type="Self.Должность" Multiplicity="*" />
     <End Role="Подразделение" Type="Self.Подразделение" Multiplicity="*" />
   </Association>
   <EntityContainer Name="TestEntities" annotation:LazyLoadingEnabled="true">
-    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
     <EntitySet Name="Вопросы" EntityType="Self.Вопросы" />
     <EntitySet Name="Должность" EntityType="Self.Должность" />
-    <EntitySet Name="Общий_результат" EntityType="Self.Общий_результат" />
     <EntitySet Name="Ответы" EntityType="Self.Ответы" />
     <EntitySet Name="Подразделение" EntityType="Self.Подразделение" />
     <EntitySet Name="Пользователи" EntityType="Self.Пользователи" />
     <EntitySet Name="Разделы" EntityType="Self.Разделы" />
-    <EntitySet Name="Результат_вопроса" EntityType="Self.Результат_вопроса" />
     <EntitySet Name="Результат_теста" EntityType="Self.Результат_теста" />
-    <EntitySet Name="Темы" EntityType="Self.Темы" />
     <EntitySet Name="Тесты" EntityType="Self.Тесты" />
     <AssociationSet Name="FK_Вопросы_Тесты1" Association="Self.FK_Вопросы_Тесты1">
       <End Role="Тесты" EntitySet="Тесты" />
@@ -261,13 +207,9 @@
       <End Role="Вопросы" EntitySet="Вопросы" />
       <End Role="Ответы" EntitySet="Ответы" />
     </AssociationSet>
-    <AssociationSet Name="FK_Результат_вопроса_Вопросы1" Association="Self.FK_Результат_вопроса_Вопросы1">
-      <End Role="Вопросы" EntitySet="Вопросы" />
-      <End Role="Результат_вопроса" EntitySet="Результат_вопроса" />
-    </AssociationSet>
-    <AssociationSet Name="FK_Результат_теста_Общий_результат" Association="Self.FK_Результат_теста_Общий_результат">
-      <End Role="Общий_результат" EntitySet="Общий_результат" />
-      <End Role="Результат_теста" EntitySet="Результат_теста" />
+    <AssociationSet Name="FK_Пользователи_Должность" Association="Self.FK_Пользователи_Должность">
+      <End Role="Должность" EntitySet="Должность" />
+      <End Role="Пользователи" EntitySet="Пользователи" />
     </AssociationSet>
     <AssociationSet Name="FK_Пользователи_Подразделение" Association="Self.FK_Пользователи_Подразделение">
       <End Role="Подразделение" EntitySet="Подразделение" />
@@ -277,17 +219,13 @@
       <End Role="Пользователи" EntitySet="Пользователи" />
       <End Role="Результат_теста" EntitySet="Результат_теста" />
     </AssociationSet>
-    <AssociationSet Name="FK_Темы_Разделы1" Association="Self.FK_Темы_Разделы1">
+    <AssociationSet Name="FK_Тесты_Разделы" Association="Self.FK_Тесты_Разделы">
       <End Role="Разделы" EntitySet="Разделы" />
-      <End Role="Темы" EntitySet="Темы" />
+      <End Role="Тесты" EntitySet="Тесты" />
     </AssociationSet>
     <AssociationSet Name="FK_Результат_теста_Тесты1" Association="Self.FK_Результат_теста_Тесты1">
       <End Role="Тесты" EntitySet="Тесты" />
       <End Role="Результат_теста" EntitySet="Результат_теста" />
-    </AssociationSet>
-    <AssociationSet Name="FK_Тесты_Темы" Association="Self.FK_Тесты_Темы">
-      <End Role="Темы" EntitySet="Темы" />
-      <End Role="Тесты" EntitySet="Тесты" />
     </AssociationSet>
     <AssociationSet Name="ДолжностьПодразделение" Association="Self.ДолжностьПодразделение">
       <End Role="Должность" EntitySet="Должность" />

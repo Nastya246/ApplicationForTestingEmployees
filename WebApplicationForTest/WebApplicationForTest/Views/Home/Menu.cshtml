@@ -45,10 +45,10 @@
         </table>
 
     }
-    else
-    //((ViewBag.Login == "user") && (ViewBag.Password == "user12345"))
+    else if (((ViewBag.Login == "") && (ViewBag.Password == "")) || ((ViewBag.Login == "user") && (ViewBag.Password == "user")))
     {
-        <form method="post" action="~/Разделы/Index">
+
+        <form method="post" action="AddUser">
             <table>
                 <tr>
                     <td><p>Фамилия:</p></td>
@@ -67,7 +67,6 @@
                 <tr>
 
 
-
                     <td>
 
                         <p>Выберите подразделение</p>
@@ -84,15 +83,60 @@
                 <tr>
                     <td>
                         <p><big>Дата:@DateTime.Now.ToString("MM/dd/yyyy HH:mm") </big></p><br />
+                        <input type="hidden" value="@DateTime.Now.ToString("MM/dd/yyyy HH:mm")" name="Date" />
                     </td>
 
                 </tr>
-                <tr><td><input type="submit" value="Тестирование" /> </td><td></td></tr>
+                <tr><td><input type="submit" value="Далее" /> </td><td></td></tr>
+            </table>
+
+        </form>
+
+    }
+    else
+
+    {
+        if (ViewBag.LogPas == "Success")
+        {
+            <h3> Вы успешно вошли в систему!</h3>
+            <form method="post" action="~/Разделы/Index">
+                <input type="hidden" value="@ViewBag.Login" name="Login" />
+                <input type="hidden" value="@ViewBag.Password" name="Password" />
+                <input type="submit" value="Выбор раздела для тестирования" />
+
+            </form>
+        }
+        else
+        {
+            <h3> Неверно введены данные! Вернитесь на страницу входа и ппробуйте еще раз</h3>
+            <form method="post" action="~/Home/Index">
+               
+                <input type="submit" value="В начало" />
+
+            </form>
+        }
+
+
+    }
+
+
+
+    <!-- else
+    {
+        <form method="post" action="Index">
+            <table>
+                <tr>
+                    <td><p>Ошибка ввода данных!</p></td>
+                </tr>
+                <tr>   <td>   <p> <input type="hidden" value="0" name="Error" /></p></td></tr>
+                <tr><td><input type="submit" value="Ввести снова" /> </td><td></td></tr>
+
             </table>
         </form>
-        
-        @section scripts{
-            <script type="text/javascript">
+            }
+    -->
+    @section scripts{
+        <script type="text/javascript">
     $(function () {
 
         $('#unit').change(function()
@@ -110,23 +154,6 @@
             });
         });
     })
-            </script>
-
-
-}
-
-    }       <!-- else
-         {
-             <form method="post" action="Index">
-                 <table>
-                     <tr>
-                         <td><p>Ошибка ввода данных!</p></td>
-                     </tr>
-                     <tr>   <td>   <p> <input type="hidden" value="0" name="Error" /></p></td></tr>
-                     <tr><td><input type="submit" value="Ввести снова" /> </td><td></td></tr>
-
-                 </table>
-             </form>
-                 }
-                 -->
-    
+        </script>
+    }
+</div>

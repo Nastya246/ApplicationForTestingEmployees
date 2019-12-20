@@ -18,18 +18,16 @@ namespace WebApplicationForTest.Models
         public Вопросы()
         {
             this.Ответы = new HashSet<Ответы>();
-            this.Результат_вопроса = new HashSet<Результат_вопроса>();
         }
     
         public int id_вопроса { get; set; }
         public int id_Теста { get; set; }
         public string Текст_вопроса { get; set; }
         public string Тип_ответа { get; set; }
+        public Nullable<int> Номер_подвопроса { get; set; }
     
         public virtual Тесты Тесты { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Ответы> Ответы { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Результат_вопроса> Результат_вопроса { get; set; }
     }
 }

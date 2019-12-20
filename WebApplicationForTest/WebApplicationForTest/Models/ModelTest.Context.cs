@@ -27,17 +27,14 @@ namespace WebApplicationForTest.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
+        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<Вопросы> Вопросы { get; set; }
         public virtual DbSet<Должность> Должность { get; set; }
-        public virtual DbSet<Общий_результат> Общий_результат { get; set; }
         public virtual DbSet<Ответы> Ответы { get; set; }
         public virtual DbSet<Подразделение> Подразделение { get; set; }
         public virtual DbSet<Пользователи> Пользователи { get; set; }
         public virtual DbSet<Разделы> Разделы { get; set; }
-        public virtual DbSet<Результат_вопроса> Результат_вопроса { get; set; }
         public virtual DbSet<Результат_теста> Результат_теста { get; set; }
-        public virtual DbSet<Темы> Темы { get; set; }
         public virtual DbSet<Тесты> Тесты { get; set; }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)

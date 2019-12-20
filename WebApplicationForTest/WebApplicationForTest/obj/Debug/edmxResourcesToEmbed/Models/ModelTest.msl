@@ -2,7 +2,7 @@
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="Хранилище TestModelContainer" CdmEntityContainer="TestEntities">
     <EntitySetMapping Name="sysdiagrams">
-      <EntityTypeMapping TypeName="TestModel.sysdiagrams">
+      <EntityTypeMapping TypeName="TestModel.sysdiagram">
         <MappingFragment StoreEntitySet="sysdiagrams">
           <ScalarProperty Name="name" ColumnName="name" />
           <ScalarProperty Name="principal_id" ColumnName="principal_id" />
@@ -19,6 +19,7 @@
           <ScalarProperty Name="id_Теста" ColumnName="id_Теста" />
           <ScalarProperty Name="Текст_вопроса" ColumnName="Текст вопроса" />
           <ScalarProperty Name="Тип_ответа" ColumnName="Тип ответа" />
+          <ScalarProperty Name="Номер_подвопроса" ColumnName="Номер подвопроса" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -27,16 +28,6 @@
         <MappingFragment StoreEntitySet="Должность">
           <ScalarProperty Name="Название_должности" ColumnName="Название должности" />
           <ScalarProperty Name="Id_должности" ColumnName="Id_должности" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="Общий_результат">
-      <EntityTypeMapping TypeName="TestModel.Общий_результат">
-        <MappingFragment StoreEntitySet="Общий результат">
-          <ScalarProperty Name="id_общего_результата" ColumnName="id_общего результата" />
-          <ScalarProperty Name="Дата_сдачи_практики" ColumnName="Дата сдачи практики" />
-          <ScalarProperty Name="Отметка_о_практике" ColumnName="Отметка о практике" />
-          <ScalarProperty Name="Общий_результат1" ColumnName="Общий результат" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -68,25 +59,15 @@
           <ScalarProperty Name="Логин" ColumnName="Логин" />
           <ScalarProperty Name="Пароль" ColumnName="Пароль" />
           <ScalarProperty Name="id_подразделения" ColumnName="id_подразделения" />
+          <ScalarProperty Name="id_должности" ColumnName="id_должности" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="Разделы">
       <EntityTypeMapping TypeName="TestModel.Разделы">
         <MappingFragment StoreEntitySet="Разделы">
-          <ScalarProperty Name="id_раздела" ColumnName="id_раздела" />
+          <ScalarProperty Name="id_Раздела" ColumnName="id_Раздела" />
           <ScalarProperty Name="Название_раздела" ColumnName="Название раздела" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="Результат_вопроса">
-      <EntityTypeMapping TypeName="TestModel.Результат_вопроса">
-        <MappingFragment StoreEntitySet="Результат вопроса">
-          <ScalarProperty Name="id_результата" ColumnName="id_результата" />
-          <ScalarProperty Name="id_Вопроса" ColumnName="id_Вопроса" />
-          <ScalarProperty Name="Номер_ответа" ColumnName="Номер ответа" />
-          <ScalarProperty Name="Номер_вопроса" ColumnName="Номер вопроса" />
-          <ScalarProperty Name="Правильность_ответа" ColumnName="Правильность ответа" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -97,17 +78,10 @@
           <ScalarProperty Name="Дата_сдачи_теории" ColumnName="Дата сдачи теории" />
           <ScalarProperty Name="Оценка_за_теорию" ColumnName="Оценка за теорию" />
           <ScalarProperty Name="id_Теста" ColumnName="id_Теста" />
-          <ScalarProperty Name="id_Общего_результата" ColumnName="id_Общего результата" />
           <ScalarProperty Name="id_User" ColumnName="id_User" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="Темы">
-      <EntityTypeMapping TypeName="TestModel.Темы">
-        <MappingFragment StoreEntitySet="Темы">
-          <ScalarProperty Name="id_темы" ColumnName="id_темы" />
-          <ScalarProperty Name="id_Раздела" ColumnName="id_Раздела" />
-          <ScalarProperty Name="Название_темы" ColumnName="Название темы" />
+          <ScalarProperty Name="Дата_сдачи_практики" ColumnName="Дата сдачи практики" />
+          <ScalarProperty Name="Отметка_о_практике" ColumnName="Отметка о практике" />
+          <ScalarProperty Name="Общий_результат" ColumnName="Общий результат" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -115,18 +89,18 @@
       <EntityTypeMapping TypeName="TestModel.Тесты">
         <MappingFragment StoreEntitySet="Тесты">
           <ScalarProperty Name="id_теста" ColumnName="id_теста" />
-          <ScalarProperty Name="Название_теста" ColumnName="Название теста" />
+          <ScalarProperty Name="Название_темы_теста" ColumnName="Название темы теста" />
           <ScalarProperty Name="Количество_вопросов" ColumnName="Количество вопросов" />
-          <ScalarProperty Name="id_Темы" ColumnName="id_Темы" />
+          <ScalarProperty Name="Id_Раздела" ColumnName="Id_Раздела" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <AssociationSetMapping Name="ДолжностьПодразделение" TypeName="TestModel.ДолжностьПодразделение" StoreEntitySet="ДолжностьПодразделение">
       <EndProperty Name="Должность">
-        <ScalarProperty Name="Id_должности" ColumnName="Номер должности" />
+        <ScalarProperty Name="Id_должности" ColumnName="id_должности" />
       </EndProperty>
       <EndProperty Name="Подразделение">
-        <ScalarProperty Name="Id_подразделения" ColumnName="Номер подразделения" />
+        <ScalarProperty Name="Id_подразделения" ColumnName="id_подразделения" />
       </EndProperty>
     </AssociationSetMapping>
     <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="Хранилище TestModel.sp_alterdiagram" />
