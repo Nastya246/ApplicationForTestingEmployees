@@ -18,35 +18,27 @@ namespace WebApplicationForTest.Controllers
         // GET: Тесты
         public async Task<ActionResult> Index()
         {
-            var тесты = db.Тесты.Include(т => т.Темы);
+            var тесты = db.Тесты.Include(т => т.Разделы);
             return View(await тесты.ToListAsync());
         }
 
         [HttpPost] // доступные вопросы по тесту
-        public async Task<ActionResult> Index( Темы itemO)
+        public async Task<ActionResult> Index( string Раздел, int? id_user)
         {
             int temp=0;
-             int  idTopic = itemO.id_темы;
-            foreach(var e in db.Темы) //получаем имя темы по ее id
-            {
-                if (e.id_темы==idTopic)
-                {
-                 
-                    ViewBag.НазваниеТемы = e.Название_темы; //передаем имя темы в представление
-                   temp  = e.id_Раздела;
-                }
-            }
+             int  id_Section = Convert.ToInt32(Раздел);
+            
             foreach (var e in db.Разделы) //получаем имя раздела по его id
             {
-                if (e.id_раздела == temp)
+                if (e.id_Раздела==id_Section)
                 {
-
+                 
                     ViewBag.НазваниеРаздела = e.Название_раздела; //передаем имя раздела в представление
-
+                   
                 }
             }
-            
-                var тесты = (db.Тесты.Include(в => в.Темы).Include(в => в.Вопросы).Where(в=> в.id_Темы==idTopic)); //  список тестов по соответствующей темы
+           
+                var тесты = (db.Тесты.Include(в => в.Разделы).Include(в => в.Вопросы).Where(в=> в.Id_Раздела==id_Section)); //  список тестов по соответствующей темы
            
             return View(await тесты.ToListAsync());
         }
@@ -73,7 +65,7 @@ namespace WebApplicationForTest.Controllers
         // GET: Тесты/Create
         public ActionResult Create()
         {
-            ViewBag.id_Темы = new SelectList(db.Темы, "id_темы", "Название_темы");
+            ViewBag.id_Теста = new SelectList(db.Тесты, "id_теста", "Название_темы_теста");
             return View();
         }
 
@@ -82,7 +74,7 @@ namespace WebApplicationForTest.Controllers
         // сведения см. в статье https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "id_теста,Название_теста,Количество_вопросов,id_Темы")] Тесты тесты)
+        public async Task<ActionResult> Create([Bind(Include = "id_теста,Название_темы_теста,Количество_вопросов,Id_Раздела")] Тесты тесты)
         {
             if (ModelState.IsValid)
             {
@@ -91,7 +83,7 @@ namespace WebApplicationForTest.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.id_Темы = new SelectList(db.Темы, "id_темы", "Название_темы", тесты.id_Темы);
+            ViewBag.id_Темы = new SelectList(db.Разделы, "id_Раздела", "Название_раздела", тесты.Id_Раздела);
             return View(тесты);
         }
 
@@ -107,7 +99,7 @@ namespace WebApplicationForTest.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.id_Темы = new SelectList(db.Темы, "id_темы", "Название_темы", тесты.id_Темы);
+            ViewBag.id_Темы = new SelectList(db.Разделы, "id_Раздела", "Название_раздела", тесты.Id_Раздела);
             return View(тесты);
         }
 
@@ -116,7 +108,7 @@ namespace WebApplicationForTest.Controllers
         // сведения см. в статье https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "id_теста,Название_теста,Количество_вопросов,id_Темы")] Тесты тесты)
+        public async Task<ActionResult> Edit([Bind(Include = "id_теста,Название_темы_теста,Количество_вопросов,Id_Раздела")] Тесты тесты)
         {
             if (ModelState.IsValid)
             {
@@ -124,7 +116,7 @@ namespace WebApplicationForTest.Controllers
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            ViewBag.id_Темы = new SelectList(db.Темы, "id_темы", "Название_темы", тесты.id_Темы);
+            ViewBag.id_Темы = new SelectList(db.Разделы, "id_Раздела", "Название_раздела", тесты.Id_Раздела);
             return View(тесты);
         }
 

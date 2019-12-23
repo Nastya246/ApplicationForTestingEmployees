@@ -124,8 +124,13 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ВопросыController.cs" />
     <Compile Include="Controllers\ДолжностьController.cs" />
+    <Compile Include="Controllers\ОтветыController.cs" />
     <Compile Include="Controllers\ПодразделениеController.cs" />
+    <Compile Include="Controllers\РазделыController.cs" />
+    <Compile Include="Controllers\Результат_тестаController.cs" />
+    <Compile Include="Controllers\ТестыController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -397,6 +402,26 @@
     <Content Include="Views\Должность\Details.cshtml" />
     <Content Include="Views\Должность\Edit.cshtml" />
     <Content Include="Views\Должность\Index.cshtml" />
+    <Content Include="Views\Разделы\Create.cshtml" />
+    <Content Include="Views\Разделы\Delete.cshtml" />
+    <Content Include="Views\Разделы\Details.cshtml" />
+    <Content Include="Views\Разделы\Edit.cshtml" />
+    <Content Include="Views\Разделы\Index.cshtml" />
+    <Content Include="Views\Тесты\Create.cshtml" />
+    <Content Include="Views\Тесты\Delete.cshtml" />
+    <Content Include="Views\Тесты\Details.cshtml" />
+    <Content Include="Views\Тесты\Edit.cshtml" />
+    <Content Include="Views\Тесты\Index.cshtml" />
+    <Content Include="Views\Вопросы\Create.cshtml" />
+    <Content Include="Views\Вопросы\Delete.cshtml" />
+    <Content Include="Views\Вопросы\Details.cshtml" />
+    <Content Include="Views\Вопросы\Edit.cshtml" />
+    <Content Include="Views\Вопросы\Index.cshtml" />
+    <Content Include="Views\Результат_теста\Create.cshtml" />
+    <Content Include="Views\Результат_теста\Delete.cshtml" />
+    <Content Include="Views\Результат_теста\Details.cshtml" />
+    <Content Include="Views\Результат_теста\Edit.cshtml" />
+    <Content Include="Views\Результат_теста\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\index.d.ts" />

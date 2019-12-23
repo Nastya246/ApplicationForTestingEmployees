@@ -24,19 +24,20 @@ namespace WebApplicationForTest.Controllers
         [HttpPost] // доступные вопросы по выбранному тесту
         public async Task<ActionResult> Index(Тесты item)
         {
-            string nameTest = item.Название_теста;
+
+            string nameTest = item.Название_темы_теста;
             ViewBag.НазваниеТеста = nameTest; //передаем название теста в представление
             int userТестId = 0;
             foreach (var t in db.Тесты) //определяем id выбранного теста
             {
-                if (t.Название_теста == nameTest)
+                if (t.Название_темы_теста == nameTest)
                 {
                     userТестId = t.id_теста;
                 }
             }
-            var вопросы = db.Вопросы.Include(в => в.Тесты).Include(в => в.Ответы).Include(в=>в.Результат_вопроса);
+            var вопросы = db.Вопросы.Include(в => в.Тесты).Include(в => в.Ответы);
             вопросы = (from v in db.Вопросы where v.id_Теста == userТестId select v).Include(v=>v.Ответы); //выбираем вопросы для кокретного теста по id теста
-           
+            
             return View(await вопросы.ToListAsync());
         }
         // GET: Вопросы/Details/5
@@ -57,7 +58,7 @@ namespace WebApplicationForTest.Controllers
         // GET: Вопросы/Create
         public ActionResult Create()
         {
-            ViewBag.id_Теста = new SelectList(db.Тесты, "id_теста", "Название_теста");
+            ViewBag.id_Теста = new SelectList(db.Тесты, "id_Теста", "Название_темы_теста");
             return View();
         }
 
@@ -66,7 +67,7 @@ namespace WebApplicationForTest.Controllers
         // сведения см. в статье https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "id_вопроса,id_Теста,Текст_вопроса,Тип_ответа")] Вопросы вопросы)
+        public async Task<ActionResult> Create([Bind(Include = "id_вопроса,id_Теста,Текст_вопроса,Тип_ответа,Номер_подвопроса")] Вопросы вопросы)
         {
             if (ModelState.IsValid)
             {
@@ -75,7 +76,7 @@ namespace WebApplicationForTest.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.id_Теста = new SelectList(db.Тесты, "id_теста", "Название_теста", вопросы.id_Теста);
+            ViewBag.id_Теста = new SelectList(db.Тесты, "id_теста", "Название_темы_теста", вопросы.id_Теста);
             return View(вопросы);
         }
 
@@ -91,7 +92,7 @@ namespace WebApplicationForTest.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.id_Теста = new SelectList(db.Тесты, "id_теста", "Название_теста", вопросы.id_Теста);
+            ViewBag.id_Теста = new SelectList(db.Тесты, "id_теста", "Название_темы_теста", вопросы.id_Теста);
             return View(вопросы);
         }
 
@@ -100,7 +101,7 @@ namespace WebApplicationForTest.Controllers
         // сведения см. в статье https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "id_вопроса,id_Теста,Текст_вопроса,Тип_ответа")] Вопросы вопросы)
+        public async Task<ActionResult> Edit([Bind(Include = "id_вопроса,id_Теста,Текст_вопроса,Тип_ответа,Номер_подвопроса")] Вопросы вопросы)
         {
             if (ModelState.IsValid)
             {
@@ -108,7 +109,7 @@ namespace WebApplicationForTest.Controllers
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            ViewBag.id_Теста = new SelectList(db.Тесты, "id_теста", "Название_теста", вопросы.id_Теста);
+            ViewBag.id_Теста = new SelectList(db.Тесты, "id_теста", "Название_темы_теста", вопросы.id_Теста);
             return View(вопросы);
         }
 

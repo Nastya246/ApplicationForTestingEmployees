@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Доступные тесты из раздела "@ViewBag.НазваниеРаздела" по теме "@ViewBag.НазваниеТемы"</h2> <br /><br />
+<h2>Доступные темы для тестирования из раздела "@ViewBag.НазваниеРаздела"</h2> <br /><br />
 
 
 <form method="post" action="~/Вопросы/Index">
@@ -27,7 +27,7 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Название_теста)<br />
+                    @Html.DisplayFor(modelItem => item.Название_темы_теста)<br />
                     <br />
                 </td>
                 <td>
@@ -36,7 +36,7 @@
                     <br />
                 </td>
                 <td>
-                    @Html.RadioButtonFor(modelItem => item.Название_теста, item.Название_теста)<br /><br />
+                    @Html.RadioButtonFor(modelItem => item.Название_темы_теста, item.Название_темы_теста)<br /><br />
                 </td>
 
             </tr>

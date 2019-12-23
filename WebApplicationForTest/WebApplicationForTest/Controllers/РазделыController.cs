@@ -19,14 +19,24 @@ namespace WebApplicationForTest.Controllers
         public async Task<ActionResult> Index()
         {
 
-            var  разделы = db.Разделы.Include(т => т.Темы);
+            var  разделы = db.Разделы.Include(т => т.Тесты);
             return View(await разделы.ToListAsync());
         }
         [HttpPost]
-        public async Task<ActionResult> Index(string LastName, string FirstName,string Otchectvo, string Id_подразделения, string Id_должности)
+        public async Task<ActionResult> Index(int? id_user, string Login, string Password )
         {
-            
-            var разделы = db.Разделы.Include(т => т.Темы);
+            if (id_user == null)
+            {
+                foreach (var temp in db.Пользователи)
+                {
+                    if ((temp.Логин.Replace(" ", "") == Login)&&(temp.Пароль.Replace(" ", "") == Password))
+                            {
+                        id_user = temp.id_user;
+                    }
+                }
+            }
+            ViewBag.Id_user = id_user;
+            var разделы = db.Разделы.Include(т => т.Тесты);
             return View(await разделы.ToListAsync());
         }
         // GET: Разделы/Details/5
