@@ -5,33 +5,51 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Тест "@ViewBag.НазваниеТеста"</h2> <br /><br />
+<h2><big>Тест "@ViewBag.НазваниеТеста"</big></h2> <br /><br />
 
 
 <form method="post" action="~/Результат_теста/Index">
     <table class="table">
         <tr>
 
-            <th>Выберите верный ответ<br /><br /></th>
+            <th><big>Выберите верный ответ</big><br /><br /></th>
 
 
 
         </tr>
-
+        
         @foreach (var item in Model)
+
         {
             if (item.Тип_ответа.Replace(" ", "") != "Соотношение")
             {
-            <tr>
-                <td>
-                    <br /><br /> @Html.DisplayFor(m => item.Текст_вопроса)<br /><br />
-                </td>
+                <tr>
+                    <td>
+                        <br /><br /><big> @Html.DisplayFor(m => item.Текст_вопроса)</big><br /><br />
+</td>
 
-            </tr>
+                </tr>
             }
             else
             {
+                <tr>
 
+
+                    <td>
+                        <br /><br /><big><p> Расставьте соответветствия </p></big>
+</td>
+
+                </tr>
+                <tr>
+
+
+                    <td>
+
+                        <br /> @Html.DisplayFor(m => item.Текст_вопроса)<br />
+
+                    </td>
+
+                </tr>
             }
 
             foreach (var itemO in item.Ответы)
@@ -42,7 +60,7 @@
                     <tr>
                         <td>
                             @Html.DisplayFor(m => itemO.Текст_ответа)
-                        </td>
+</td>
                         <td>
 
                             @Html.RadioButton((item.id_вопроса).ToString(), itemO.Текст_ответа)
@@ -53,20 +71,15 @@
                 {
 
                     <tr>
-                        <td><p>Введите ответ без пробелов и знаков: </p> </td>
+                        <td><p>Введите ответ без посторонних знаков: </p> </td>
                         <td><input type="text" name=@item.id_вопроса /></td>
                     </tr>
                 }
-                else
+                else if (item.Тип_ответа.Replace(" ", "") == "Соотношение")
                 {
                     <tr>
-                        <td>
-                            <!-- Html.DisplayFor(m => itemO.Текст_ответа) -->
-                        </td>
-    <td>
-
-        <!-- Html.DropDownList("Текст_ответа", item.Ответы.Where(c => c.Вопросы.Номер_подвопроса == 1) as SelectList, "--Выберите ответ--") -->
-                        </td>
+                        <td><p>Введите ответ в формате: "1а 2б 3в 4г" </p> </td>
+                        <td><input type="text" name=@item.id_вопроса /></td>
                     </tr>
                 }
 

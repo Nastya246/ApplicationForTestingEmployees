@@ -18,7 +18,15 @@ namespace WebApplicationForTest.Controllers
         // GET: Вопросы
         public async Task<ActionResult> Index()
         {
-            var вопросы = db.Вопросы.Include(в => в.Тесты).Include(в=>в.Тесты);
+            var  вопросы = db.Вопросы.Include(в => в.Тесты).Include(в=>в.Тесты);
+
+            int q = 1;
+            foreach (var temp in вопросы)
+            {
+                temp.Текст_вопроса = q.ToString() + " " + temp.Текст_вопроса;
+               
+                q++;
+            }
             return View(await вопросы.ToListAsync());
         }
         [HttpPost] // доступные вопросы по выбранному тесту
@@ -38,6 +46,14 @@ namespace WebApplicationForTest.Controllers
             var вопросы = db.Вопросы.Include(в => в.Тесты).Include(в => в.Ответы);
             вопросы = (from v in db.Вопросы where v.id_Теста == userТестId select v).Include(v=>v.Ответы); //выбираем вопросы для кокретного теста по id теста
             
+            int q = 1;
+           foreach (var temp in вопросы)
+            {
+                temp.Текст_вопроса = q.ToString()+" "+ temp.Текст_вопроса ;
+                
+                q++;
+            }
+           
             return View(await вопросы.ToListAsync());
         }
         // GET: Вопросы/Details/5

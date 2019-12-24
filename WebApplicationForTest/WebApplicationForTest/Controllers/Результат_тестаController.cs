@@ -43,9 +43,9 @@ namespace WebApplicationForTest.Controllers
             {
                 foreach (var id_o in db.Ответы)
                 {
-                    if (id_q.Key == id_o.id_Вопроса)
+                    if (id_q.Key == id_o.id_Вопроса)  //ищем по Id вопроса соответствующий в таблице ответов
                     {
-                        if (id_q.Value == id_o.Текст_ответа)
+                        if (id_q.Value.Replace(" ", "") == id_o.Текст_ответа.Replace(" ", "")) // ищем текст ответа
                         {
                             if (id_o.Флаг_правильного_ответа == true)
                             {
@@ -58,6 +58,18 @@ namespace WebApplicationForTest.Controllers
                             }
 
                             nQ++;
+                        }
+                        else
+                        {
+                            foreach (var searchTypeQ in db.Вопросы)
+                            {
+                                if((searchTypeQ.id_вопроса==id_q.Key)&&(searchTypeQ.Тип_ответа.Replace(" ", "")!="Выбор"))
+                                {
+                                    ResultQuestion.Add(nQ.ToString() + " " + "Неверно");
+                                    nQ++;
+                                }
+                            }
+                            
                         }
                     }
                 }
