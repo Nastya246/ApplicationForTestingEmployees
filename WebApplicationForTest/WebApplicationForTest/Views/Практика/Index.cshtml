@@ -1,0 +1,19 @@
+﻿@model IEnumerable<WebApplicationForTest.Models.Пользователи>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div>
+    @using (Ajax.BeginForm("UserSearch", new AjaxOptions { UpdateTargetId = "results" }))
+    {
+        <p>Поиск по фамилии пользователя</p> <br />
+        <br /><input type="text" name="name" />
+        <input type="submit" value="Поиск" />
+    }
+    <div id="results"></div>
+</div>
+@Scripts.Render("~/scripts/jquery-1.12.1.min.js")
+@Scripts.Render("~/scripts/jquery.unobtrusive-ajax.min.js")

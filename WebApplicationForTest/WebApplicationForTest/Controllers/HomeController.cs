@@ -36,6 +36,7 @@ namespace WebApplicationForTest.Controllersd
             ViewBag.LoginPassword = loginPass;
             */
             int selectedIndex = 0;
+            
             SelectList подразделения = new SelectList(db.Подразделение, "Id_подразделения", "Название_подразделения", selectedIndex); //для передачи в представление списка подразделений
             ViewBag.Подразделения = подразделения;
 

@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Details</h2>
+<h2>Детали</h2>
 
 <div>
     <h4>Пользователи</h4>
@@ -52,6 +52,14 @@
         </dd>
 
         <dt>
+            @Html.DisplayNameFor(model => model.Должность.Название_должности)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Должность.Название_должности)
+        </dd>
+
+        <dt>
             @Html.DisplayNameFor(model => model.Подразделение.Название_подразделения)
         </dt>
 
@@ -63,5 +71,11 @@
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.id_user }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Вернуться к списку", "Index")
 </p>
+<form method="post" action="~/Home/Menu">
+    <input type="hidden" value="admin" name="Login" />
+    <input type="hidden" value="admin12345" name="Password" />
+    <input type="submit" value="В меню" />
+
+</form>

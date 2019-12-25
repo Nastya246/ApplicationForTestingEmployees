@@ -25,3 +25,9 @@
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id_должности }) |
     @Html.ActionLink("Назад к списку", "Index")
 </p>
+<form method="post" action="~/Home/Menu">
+    <input type="hidden" value="admin" name="Login" />
+    <input type="hidden" value="admin12345" name="Password" />
+    <input type="submit" value="В меню" />
+
+</form>

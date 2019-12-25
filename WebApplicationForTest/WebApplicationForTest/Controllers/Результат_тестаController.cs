@@ -28,54 +28,159 @@ namespace WebApplicationForTest.Controllers
 
             var k = form.Keys;
             List<string> ResultQuestion = new List<string>(k.Count); //для хранения результатов верно/неверно
-
-
+            Dictionary<string, string> resultA = new Dictionary<string, string>(k.Count); //для хранения первичных результатов
+            var temp  = form.ToValueProvider(); //получаем все данные
+           string kD = "";
+            string valD = "";
+            int id_Test = 0;
+            foreach (var val in k)
+            {
+               
+                kD = val.ToString().Replace(" ","");
+                if (resultA.ContainsKey(kD)) //если есть запись в словаре под таким ключом, то удаляем, по идеи ее быть не должно, но мало ли
+                {
+                    resultA.Remove(kD);
+                }
+                if (kD == "id_test") //если получили id_теста, сохраняем в отдельной переменной
+                {
+                    id_Test = Convert.ToInt32(temp.GetValue(kD).AttemptedValue);
+                }
+                else
+                {
+                    valD = temp.GetValue(kD).AttemptedValue.Replace(" ", ""); // если получили ответы пользователя, то сохраняем в словарь
+                    string[] mystring = valD.Split(','); //обработка результатов из checkbox
+                    List<string> ls = new List<string>(mystring.Count());
+                    if (mystring.Count()>1)
+                    {
+                       for (int i=0; i< mystring.Count(); i++)
+                            {
+                           
+                            ls.Add(mystring[i]);               
+                            if (mystring[i] == "true")
+                            {
+                                    i++;
+                            }
+                        }
+                        valD = "";
+                        foreach(var l in ls)
+                        {
+                            valD = valD + l+ " ";
+                        }
+                    }
+                    
+                    resultA.Add(kD, valD);
+                }
+            }
+            var AllQuestion = (from question in db.Вопросы where question.id_Теста == id_Test select question).ToList(); //получаем все вопросы из теста
             int nQ = 1; // для перечисления вопросов
             int Answ = 0; //число правильных ответов
-            Dictionary<int, string> resultAnswer = new Dictionary<int, string>(k.Count); //для значений, которые отметил пользователь
-            foreach (var r in k)
+            int QuestC = AllQuestion.Count();       //число вопросов тесте
+            Dictionary<string, string> resultAnswerUser = new Dictionary<string, string>(QuestC); //для хранения конечных результатов пользователя
+            foreach (var q1 in AllQuestion)
             {
-                var t = form.GetValue(r.ToString());
-                resultAnswer.Add(Convert.ToInt32(r), t.AttemptedValue); //заполняем словарь значениями, которые соответствуют вопросу и ответу
-                                                                        // result += t.AttemptedValue +" ";
-            }
-            foreach (var id_q in resultAnswer) //проверяем правильно ли ответил пользователь
-            {
-                foreach (var id_o in db.Ответы)
+                if (!(resultA.ContainsKey(q1.id_вопроса.ToString()))) //если нет записи в словаре под таким ключом, то пользователь не ответил на этот вопрос, фиксируем это
                 {
-                    if (id_q.Key == id_o.id_Вопроса)  //ищем по Id вопроса соответствующий в таблице ответов
+                    resultA.Add(q1.id_вопроса.ToString(), "");
+                }
+                    resultAnswerUser[q1.id_вопроса.ToString()] = resultA[q1.id_вопроса.ToString()];
+            }
+
+            int key = 0;
+            
+            foreach (var id_q in resultAnswerUser) //проверяем правильно ли ответил пользователь
+            {
+            key = Convert.ToInt32(id_q.Key);
+                var tempSelect= (from answ in db.Ответы where answ.id_Вопроса == key select answ).ToList(); //выбор всех ответов текущего вопроса
+                foreach (var answR in tempSelect)
                     {
-                        if (id_q.Value.Replace(" ", "") == id_o.Текст_ответа.Replace(" ", "")) // ищем текст ответа
+
+                    if (id_q.Value != "") //если ответ заполнен/выбран
+                    {
+                        Вопросы вопросы = await db.Вопросы.FindAsync(Convert.ToInt32(id_q.Key));
+                        if (вопросы.Тип_ответа.Replace(" ", "") != "Несколько") //если тип вопроса выбор или соотношение
                         {
-                            if (id_o.Флаг_правильного_ответа == true)
+                            var TextAnsw = (from textAnsw in tempSelect where textAnsw.Текст_ответа.Replace(" ", "") == id_q.Value select textAnsw).ToList(); //получаем текст ответа
+                            if (TextAnsw.Count() != 0) //если нашли текст ответа, то смотрим на его флаг
                             {
-                                ResultQuestion.Add(nQ.ToString() + " " + "Верно");
-                                Answ++;
+                                foreach (var aT in TextAnsw)
+                                {
+                                    if (aT.Флаг_правильного_ответа)
+                                    {
+                                        ResultQuestion.Add(nQ.ToString() + " " + "Верно");
+                                        Answ++;
+                                        nQ++;
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        ResultQuestion.Add(nQ.ToString() + " " + "Неверно");
+                                        nQ++;
+                                        break;
+                                    }
+                                }
                             }
                             else
                             {
                                 ResultQuestion.Add(nQ.ToString() + " " + "Неверно");
+                                nQ++;
+                                break;
                             }
-
-                            nQ++;
                         }
-                        else
-                        {
-                            foreach (var searchTypeQ in db.Вопросы)
+                        else //если вопрос имеет несколько правильных ответов
+                        {  
+                            int CountAns = 0;  
+                            int countChec = 0;
+                            int idA = Convert.ToInt32(id_q.Key);
+                            var TextAnsw = (from textAnsw in db.Ответы where textAnsw.id_Вопроса == idA select textAnsw).ToList();//получаем все варианты для данного вопроса
+                            int countAnswerCheckboxList = TextAnsw.Count();
+                            string[] mystringCheck = id_q.Value.Split(' ');
+                            List<bool> checkboxl = new List<bool>(mystringCheck.Count());
+                            foreach (var str in mystringCheck)
                             {
-                                if((searchTypeQ.id_вопроса==id_q.Key)&&(searchTypeQ.Тип_ответа.Replace(" ", "")!="Выбор"))
+                                if (str == "true")
                                 {
-                                    ResultQuestion.Add(nQ.ToString() + " " + "Неверно");
-                                    nQ++;
+                                    checkboxl.Add(true);
+                                }
+                                if (str == "false")
+                                {
+                                    checkboxl.Add(false);
                                 }
                             }
-                            
+                            foreach (var check in TextAnsw )
+                            {
+                               if (check.Флаг_правильного_ответа==checkboxl[countChec])
+                                {
+                                    CountAns++;
+                                }
+                                countChec++;
+                            }
+                            if (CountAns >= countAnswerCheckboxList)
+                            {
+                                ResultQuestion.Add(nQ.ToString() + " " + "Верно");
+                                Answ++;
+                                nQ++;
+                            }
+                            else
+                            {
+                                ResultQuestion.Add(nQ.ToString() + " " + "Неверно");
+                                nQ++;
+                                break;
+                            }
+                            break;
                         }
                     }
-                }
+                    else
+                    {
 
+                        ResultQuestion.Add(nQ.ToString() + " " + "Неверно");
+                        nQ++;
+                        break;
+                    }
+                    break;
+                }
             }
-            double resulProcentTheory = ((double)Answ / (double)(k.Count)) * 100.0; //результат теста в процентах
+            
+            double resulProcentTheory = ((double)Answ / (double)(QuestC)) * 100.0; //результат теста в процентах
             ViewBag.ResultProcent = resulProcentTheory; //передаем результат в % в представление
             ViewBag.ResultQuestion = ResultQuestion; // передаем в представление список , где указано , что верно, а что нет
 

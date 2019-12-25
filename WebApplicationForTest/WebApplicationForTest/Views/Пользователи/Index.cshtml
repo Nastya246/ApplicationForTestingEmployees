@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<h2>Список пользователей</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -26,6 +26,9 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Пароль)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Должность.Название_должности)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Подразделение.Название_подразделения)
@@ -51,6 +54,9 @@
             @Html.DisplayFor(modelItem => item.Пароль)
         </td>
         <td>
+            @Html.DisplayFor(modelItem => item.Должность.Название_должности)
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.Подразделение.Название_подразделения)
         </td>
         <td>
@@ -62,3 +68,9 @@
 }
 
 </table>
+<form method="post" action="~/Home/Menu">
+    <input type="hidden" value="admin" name="Login" />
+    <input type="hidden" value="admin12345" name="Password" />
+    <input type="submit" value="В меню" />
+
+</form>

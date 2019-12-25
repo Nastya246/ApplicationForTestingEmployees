@@ -1,0 +1,14 @@
+﻿@model IEnumerable<WebApplicationForTest.Models.Пользователи>
+
+<div id="searchresults">
+    <h3>Найденные пользователи : @Model.First().Фамилия</h3>
+    <ul>
+        @foreach (var item in Model)
+        {
+        <li>
+            @item.Фамилия @item.Имя @item.Отчество @item.Подразделение.Название_подразделения @item.Должность.Название_должности
+            @Html.DropDownList("Practice", ViewBag.Отметка as SelectList, "--Выбор отметки--")
+        </li>
+        }
+    </ul>
+</div>

@@ -4,29 +4,28 @@
     background-color: #f7f7fa;
     padding-left: 40px;
 }
+
 a {
     text-decoration: none;
     display: inline-block;
     padding: 5px 10px;
     letter-spacing: 1px;
     margin: 0 20px;
-    font-size: 24px;
+    font-size: 18px;
     transition: .3s ease-in-out;
-    color: #34495e;
-    line-height: 1.2;
-    position: relative;
-    padding: 0 14px;
-    text-transform: uppercase;
-    color: #FFD201;
-    letter-spacing: 1px;
-    border-bottom: 1px solid transparent;
-    border-top: 1px solid transparent;
 }
-
 nav {
     display: block;
 }
 
+a {
+    color: #4800ff;
+    border: 2px solid transparent;
+}
+
+    a:hover {
+        border: 2px solid #4800ff;
+    }
 .menu {
     padding-left: 10px;
 }
@@ -39,9 +38,7 @@ nav {
         display: inline;
     }
 
-    .menu a:hover {
-        color: red;
-    }
+  
 
 table {
     vertical-align: top;

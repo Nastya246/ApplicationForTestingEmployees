@@ -11,14 +11,14 @@
     <big>  <big> @Html.ActionLink("Добавить подразделение", "Create")  </big> </big><br /><br />
 </p>
 <table class="table">
- 
+
 
     @foreach (var item in Model)
     {
         <tr>
             <td>
                 <big>   <big> @Html.DisplayFor(modelItem => item.Название_подразделения)</big></big><br /><br />
-</td>
+            </td>
         </tr>
         foreach (var itemD in item.Должность)
         {
@@ -27,7 +27,7 @@
                     @Html.DisplayFor(modelItem => itemD.Название_должности)
                 </td>
             </tr>
-           
+
         }
         <tr>
             <td>
@@ -39,4 +39,11 @@
         </tr>
     }
 
+    
 </table>
+<form method="post" action="~/Home/Menu">
+    <input type="hidden" value="admin" name="Login" />
+    <input type="hidden" value="admin12345" name="Password" />
+    <input type="submit" value="В меню" />
+
+</form>

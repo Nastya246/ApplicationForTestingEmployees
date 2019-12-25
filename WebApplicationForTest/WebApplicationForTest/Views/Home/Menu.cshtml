@@ -17,7 +17,6 @@
             <table>
                 <tr><td><p><a href="/Home/ConfigTest/">Настройка теста</a> </p> </td> </tr>
                 <tr><td><p><a href="/Home/AddTheory/"> Добавить теоретические вопросы</a> </p></td> </tr>
-                <tr><td><p><a href="/Home/AddPractice/">Добавить практические задания</a> </p></td> </tr>
                 <tr><td><p><a href="/Home/RedactTask/">Внести изменения в базу данных заданий</a> </p></td> </tr>
 
             </table>
@@ -38,9 +37,11 @@
     {
 
         <table>
+            <tr> <td> <p><a href="~/Пользователи/Index">Пользователи</a> </p></td> </tr>
             <tr> <td> <p><a href="~/Подразделение/Index">Подразделения</a> </p></td> </tr>
             <tr> <td> <p><a href="~/Должность/Index">Должности</a> </p></td> </tr>
 
+            <tr> <td> <p><br /><small><a href="~/Home/Index">Сменить пользователя</a></small></p></td> </tr>
 
         </table>
 
@@ -93,6 +94,19 @@
         </form>
 
     }
+
+    else if ((ViewBag.Login == "practice") && (ViewBag.Password == "practice12345"))
+    {
+
+        <table>
+            <tr> <td> <p><a href="~/Практика/Index">Журнал по практике</a><br /> </p></td> </tr>
+            
+
+            <tr> <td> <p><br /><small><a href="~/Home/Index">Сменить пользователя</a></small></p></td> </tr>
+
+        </table>
+
+    }
     else
 
     {
@@ -110,7 +124,8 @@
         {
             <h3> Неверно введены данные! Вернитесь на страницу входа и ппробуйте еще раз</h3>
             <form method="post" action="~/Home/Index">
-               
+
+
                 <input type="submit" value="В начало" />
 
             </form>

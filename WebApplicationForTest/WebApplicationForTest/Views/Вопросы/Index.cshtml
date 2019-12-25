@@ -9,6 +9,7 @@
 
 
 <form method="post" action="~/Результат_теста/Index">
+    <input type="hidden" value=@ViewBag.IdТеста name="id_test" />
     <table class="table">
         <tr>
 
@@ -17,7 +18,7 @@
 
 
         </tr>
-        
+
         @foreach (var item in Model)
 
         {
@@ -26,7 +27,7 @@
                 <tr>
                     <td>
                         <br /><br /><big> @Html.DisplayFor(m => item.Текст_вопроса)</big><br /><br />
-</td>
+                    </td>
 
                 </tr>
             }
@@ -37,7 +38,7 @@
 
                     <td>
                         <br /><br /><big><p> Расставьте соответветствия </p></big>
-</td>
+                    </td>
 
                 </tr>
                 <tr>
@@ -60,7 +61,7 @@
                     <tr>
                         <td>
                             @Html.DisplayFor(m => itemO.Текст_ответа)
-</td>
+                        </td>
                         <td>
 
                             @Html.RadioButton((item.id_вопроса).ToString(), itemO.Текст_ответа)
@@ -80,6 +81,18 @@
                     <tr>
                         <td><p>Введите ответ в формате: "1а 2б 3в 4г" </p> </td>
                         <td><input type="text" name=@item.id_вопроса /></td>
+                    </tr>
+                }
+                else if (item.Тип_ответа.Replace(" ", "") == "Несколько")
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(m => itemO.Текст_ответа)
+                        </td>
+                        <td>
+                            @Html.CheckBox(item.id_вопроса.ToString(), false)
+
+                        </td>
                     </tr>
                 }
 

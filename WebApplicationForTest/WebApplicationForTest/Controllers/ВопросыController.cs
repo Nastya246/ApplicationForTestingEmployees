@@ -43,6 +43,7 @@ namespace WebApplicationForTest.Controllers
                     userТестId = t.id_теста;
                 }
             }
+            ViewBag.IdТеста = userТестId;
             var вопросы = db.Вопросы.Include(в => в.Тесты).Include(в => в.Ответы);
             вопросы = (from v in db.Вопросы where v.id_Теста == userТестId select v).Include(v=>v.Ответы); //выбираем вопросы для кокретного теста по id теста
             

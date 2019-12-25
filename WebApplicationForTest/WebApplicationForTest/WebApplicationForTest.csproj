@@ -128,6 +128,8 @@
     <Compile Include="Controllers\ДолжностьController.cs" />
     <Compile Include="Controllers\ОтветыController.cs" />
     <Compile Include="Controllers\ПодразделениеController.cs" />
+    <Compile Include="Controllers\ПользователиController.cs" />
+    <Compile Include="Controllers\ПрактикаController.cs" />
     <Compile Include="Controllers\РазделыController.cs" />
     <Compile Include="Controllers\Результат_тестаController.cs" />
     <Compile Include="Controllers\ТестыController.cs" />
@@ -422,6 +424,13 @@
     <Content Include="Views\Результат_теста\Details.cshtml" />
     <Content Include="Views\Результат_теста\Edit.cshtml" />
     <Content Include="Views\Результат_теста\Index.cshtml" />
+    <Content Include="Views\Пользователи\Create.cshtml" />
+    <Content Include="Views\Пользователи\Delete.cshtml" />
+    <Content Include="Views\Пользователи\Details.cshtml" />
+    <Content Include="Views\Пользователи\Edit.cshtml" />
+    <Content Include="Views\Пользователи\Index.cshtml" />
+    <Content Include="Views\Практика\Index.cshtml" />
+    <Content Include="Views\Практика\UserSearch.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\index.d.ts" />

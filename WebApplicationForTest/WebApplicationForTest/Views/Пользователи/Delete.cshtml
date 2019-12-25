@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Delete</h2>
+<h2>Удалить пользователя</h2>
 
 <h3>Are you sure you want to delete this?</h3>
 <div>
@@ -53,6 +53,14 @@
         </dd>
 
         <dt>
+            @Html.DisplayNameFor(model => model.Должность.Название_должности)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Должность.Название_должности)
+        </dd>
+
+        <dt>
             @Html.DisplayNameFor(model => model.Подразделение.Название_подразделения)
         </dt>
 
@@ -62,12 +70,19 @@
 
     </dl>
 
-    @using (Html.BeginForm()) {
+    @using (Html.BeginForm())
+    {
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
             <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+            @Html.ActionLink("Вернуться к списку", "Index")
         </div>
     }
 </div>
+<form method="post" action="~/Home/Menu">
+    <input type="hidden" value="admin" name="Login" />
+    <input type="hidden" value="admin12345" name="Password" />
+    <input type="submit" value="В меню" />
+
+</form>
