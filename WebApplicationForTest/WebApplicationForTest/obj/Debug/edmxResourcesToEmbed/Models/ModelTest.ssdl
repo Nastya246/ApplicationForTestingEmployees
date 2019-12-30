@@ -18,7 +18,6 @@
     <Property Name="id_Теста" Type="int" Nullable="false" />
     <Property Name="Текст вопроса" Type="nchar" MaxLength="100" />
     <Property Name="Тип ответа" Type="nchar" MaxLength="50" />
-    <Property Name="Номер подвопроса" Type="int" />
   </EntityType>
   <EntityType Name="Должность">
     <Key>
@@ -43,6 +42,8 @@
     <Property Name="id_Вопроса" Type="int" Nullable="false" />
     <Property Name="Текст ответа" Type="nchar" MaxLength="100" Nullable="false" />
     <Property Name="Флаг правильного ответа" Type="bit" Nullable="false" />
+    <Property Name="Флаг подвопроса" Type="bit" />
+    <Property Name="Правильный ответ" Type="nchar" MaxLength="100" />
   </EntityType>
   <EntityType Name="Подразделение">
     <Key>

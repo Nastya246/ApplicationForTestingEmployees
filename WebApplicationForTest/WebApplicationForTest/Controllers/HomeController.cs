@@ -24,9 +24,10 @@ namespace WebApplicationForTest.Controllersd
             return View(); //возврат на дом. стр. если ошибка данных
         }
         
-        [HttpPost]
-        public async Task<ActionResult> Menu(string Login, string Password)
-        {
+       [HttpPost]
+       public async Task<ActionResult> Menu(string Login, string Password)
+       {
+            ///////////////////////////////////
          //   Dictionary<string, string> loginPass = new Dictionary<string, string>(db.Пользователи.Count()); //отправляем все логины и пароли в представление
 
          /*   foreach (var i in db.Пользователи)
@@ -35,6 +36,7 @@ namespace WebApplicationForTest.Controllersd
             }
             ViewBag.LoginPassword = loginPass;
             */
+            //////////////////////////////
             int selectedIndex = 0;
             
             SelectList подразделения = new SelectList(db.Подразделение, "Id_подразделения", "Название_подразделения", selectedIndex); //для передачи в представление списка подразделений

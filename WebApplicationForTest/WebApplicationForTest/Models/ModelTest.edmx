@@ -23,7 +23,6 @@
           <Property Name="id_Теста" Type="int" Nullable="false" />
           <Property Name="Текст вопроса" Type="nchar" MaxLength="100" />
           <Property Name="Тип ответа" Type="nchar" MaxLength="50" />
-          <Property Name="Номер подвопроса" Type="int" />
         </EntityType>
         <EntityType Name="Должность">
           <Key>
@@ -48,6 +47,8 @@
           <Property Name="id_Вопроса" Type="int" Nullable="false" />
           <Property Name="Текст ответа" Type="nchar" MaxLength="100" Nullable="false" />
           <Property Name="Флаг правильного ответа" Type="bit" Nullable="false" />
+          <Property Name="Флаг подвопроса" Type="bit" />
+          <Property Name="Правильный ответ" Type="nchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="Подразделение">
           <Key>
@@ -308,7 +309,6 @@
           <Property Name="id_Теста" Type="Int32" Nullable="false" />
           <Property Name="Текст_вопроса" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
           <Property Name="Тип_ответа" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
-          <Property Name="Номер_подвопроса" Type="Int32" />
           <NavigationProperty Name="Тесты" Relationship="Self.FK_Вопросы_Тесты1" FromRole="Вопросы" ToRole="Тесты" />
           <NavigationProperty Name="Ответы" Relationship="Self.FK_Ответы_Вопросы1" FromRole="Вопросы" ToRole="Ответы" />
         </EntityType>
@@ -329,6 +329,8 @@
           <Property Name="id_Вопроса" Type="Int32" Nullable="false" />
           <Property Name="Текст_ответа" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="Флаг_правильного_ответа" Type="Boolean" Nullable="false" />
+          <Property Name="Флаг_подвопроса" Type="Boolean" />
+          <Property Name="Правильный_ответ" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
           <NavigationProperty Name="Вопросы" Relationship="Self.FK_Ответы_Вопросы1" FromRole="Ответы" ToRole="Вопросы" />
         </EntityType>
         <EntityType Name="Подразделение">
@@ -587,7 +589,6 @@
                 <ScalarProperty Name="id_Теста" ColumnName="id_Теста" />
                 <ScalarProperty Name="Текст_вопроса" ColumnName="Текст вопроса" />
                 <ScalarProperty Name="Тип_ответа" ColumnName="Тип ответа" />
-                <ScalarProperty Name="Номер_подвопроса" ColumnName="Номер подвопроса" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -606,6 +607,8 @@
                 <ScalarProperty Name="id_Вопроса" ColumnName="id_Вопроса" />
                 <ScalarProperty Name="Текст_ответа" ColumnName="Текст ответа" />
                 <ScalarProperty Name="Флаг_правильного_ответа" ColumnName="Флаг правильного ответа" />
+                <ScalarProperty Name="Флаг_подвопроса" ColumnName="Флаг подвопроса" />
+                <ScalarProperty Name="Правильный_ответ" ColumnName="Правильный ответ" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

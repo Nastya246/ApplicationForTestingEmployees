@@ -18,7 +18,6 @@
     <Property Name="id_Теста" Type="Int32" Nullable="false" />
     <Property Name="Текст_вопроса" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
     <Property Name="Тип_ответа" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
-    <Property Name="Номер_подвопроса" Type="Int32" />
     <NavigationProperty Name="Тесты" Relationship="Self.FK_Вопросы_Тесты1" FromRole="Вопросы" ToRole="Тесты" />
     <NavigationProperty Name="Ответы" Relationship="Self.FK_Ответы_Вопросы1" FromRole="Вопросы" ToRole="Ответы" />
   </EntityType>
@@ -39,6 +38,8 @@
     <Property Name="id_Вопроса" Type="Int32" Nullable="false" />
     <Property Name="Текст_ответа" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
     <Property Name="Флаг_правильного_ответа" Type="Boolean" Nullable="false" />
+    <Property Name="Флаг_подвопроса" Type="Boolean" />
+    <Property Name="Правильный_ответ" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
     <NavigationProperty Name="Вопросы" Relationship="Self.FK_Ответы_Вопросы1" FromRole="Ответы" ToRole="Вопросы" />
   </EntityType>
   <EntityType Name="Подразделение">

@@ -33,24 +33,38 @@
             }
             else
             {
-                <tr>
 
-
-                    <td>
-                        <br /><br /><big><p> Расставьте соответветствия </p></big>
-                    </td>
-
-                </tr>
                 <tr>
 
 
                     <td>
 
-                        <br /> @Html.DisplayFor(m => item.Текст_вопроса)<br />
-
+                        <br /><br /><big> @Html.DisplayFor(m => item.Текст_вопроса)</big><br /><br />
                     </td>
 
                 </tr>
+                <tr>
+                    <td>
+                        @foreach (var itemS in item.Ответы)
+                        {
+
+                            if (itemS.Флаг_подвопроса == false)
+                            {
+                                <em>
+                                    @Html.DisplayFor(m => itemS.Текст_ответа)
+                                </em>
+                            }
+
+                            if (itemS.Флаг_подвопроса == true)
+                            {
+                                <b>
+                                    @Html.DisplayFor(m => itemS.Текст_ответа)
+                                </b>
+                            }
+                        }
+                    </td>
+                </tr>
+
             }
 
             foreach (var itemO in item.Ответы)
@@ -79,12 +93,19 @@
                 else if (item.Тип_ответа.Replace(" ", "") == "Соотношение")
                 {
                     <tr>
-                        <td><p>Введите ответ в формате: "1а 2б 3в 4г" </p> </td>
-                        <td><input type="text" name=@item.id_вопроса /></td>
+                        <td><input type="hidden" value=@item.id_вопроса name="id_Q" /></td>
                     </tr>
-                }
-                else if (item.Тип_ответа.Replace(" ", "") == "Несколько")
-                {
+                    <tr>
+                        @if (itemO.Флаг_подвопроса == true)
+                        {
+
+                            <td> @Html.DisplayFor(m => itemO.Текст_ответа) </td>
+                            <td><input type="text" name=@itemO.id_ответа /></td>
+                        }
+                    </tr>
+                    }
+                    else if (item.Тип_ответа.Replace(" ", "") == "Несколько")
+                    {
                     <tr>
                         <td>
                             @Html.DisplayFor(m => itemO.Текст_ответа)
@@ -94,14 +115,14 @@
 
                         </td>
                     </tr>
-                }
+                    }
 
-            }
+                    }
 
 
-        }
+                    }
 
-        <tr><td><br /><br /><input type="submit" value="Отправить" /> </td><td></td></tr>
+                    <tr><td><br /><br /><input type="submit" value="Отправить" /> </td><td></td></tr>
 
-    </table>
+                </table>
 </form>

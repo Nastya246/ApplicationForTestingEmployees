@@ -19,7 +19,6 @@
           <ScalarProperty Name="id_Теста" ColumnName="id_Теста" />
           <ScalarProperty Name="Текст_вопроса" ColumnName="Текст вопроса" />
           <ScalarProperty Name="Тип_ответа" ColumnName="Тип ответа" />
-          <ScalarProperty Name="Номер_подвопроса" ColumnName="Номер подвопроса" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -38,6 +37,8 @@
           <ScalarProperty Name="id_Вопроса" ColumnName="id_Вопроса" />
           <ScalarProperty Name="Текст_ответа" ColumnName="Текст ответа" />
           <ScalarProperty Name="Флаг_правильного_ответа" ColumnName="Флаг правильного ответа" />
+          <ScalarProperty Name="Флаг_подвопроса" ColumnName="Флаг подвопроса" />
+          <ScalarProperty Name="Правильный_ответ" ColumnName="Правильный ответ" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

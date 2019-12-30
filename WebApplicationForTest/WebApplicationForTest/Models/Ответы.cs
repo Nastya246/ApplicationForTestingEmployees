@@ -18,6 +18,8 @@ namespace WebApplicationForTest.Models
         public int id_Вопроса { get; set; }
         public string Текст_ответа { get; set; }
         public bool Флаг_правильного_ответа { get; set; }
+        public Nullable<bool> Флаг_подвопроса { get; set; }
+        public string Правильный_ответ { get; set; }
     
         public virtual Вопросы Вопросы { get; set; }
     }

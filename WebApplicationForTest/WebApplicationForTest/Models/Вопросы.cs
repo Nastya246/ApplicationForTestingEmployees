@@ -24,7 +24,6 @@ namespace WebApplicationForTest.Models
         public int id_Теста { get; set; }
         public string Текст_вопроса { get; set; }
         public string Тип_ответа { get; set; }
-        public Nullable<int> Номер_подвопроса { get; set; }
     
         public virtual Тесты Тесты { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
