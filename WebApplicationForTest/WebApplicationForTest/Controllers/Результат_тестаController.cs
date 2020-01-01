@@ -99,7 +99,7 @@ namespace WebApplicationForTest.Controllers
             
             Dictionary<string, string> resultAnswerUser = new Dictionary<string, string>(QuestC); //для хранения конечных результатов пользователя
             string tempAnsw = "";
-            foreach (var qList in AllQuestion)
+            foreach (var qList in AllQuestion) //получаем вопросы и верные к ним ответы
             {
                 textQ = qList.Текст_вопроса.Replace("  ", "");
 
@@ -124,7 +124,7 @@ namespace WebApplicationForTest.Controllers
                     {
                         if (aList.Флаг_правильного_ответа == true)
                         {
-                            textA = textA + aList.Текст_ответа.Replace("  ", "");
+                            textA = textA + aList.Текст_ответа.Replace("  ", "")+" ";
 
 
                         }
@@ -150,12 +150,12 @@ namespace WebApplicationForTest.Controllers
                     }
                     foreach (var listA in TempListA)
                     {
-                        foreach (var listA2 in TempListA2)
+                        foreach (var listA2 in TempListA2) //смотрим, что под буквой
                         {
                             string[] stringTempList = listA2.Split(' ');
                             var resulttemp = stringTempList.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
                             stringTempList = resulttemp;
-                            if ((listA.Правильный_ответ.Replace(" ", "") == (stringTempList[1]).Replace(" ", "")))
+                            if ((listA.Правильный_ответ.Replace(" ", "") == (stringTempList[1]).Replace(" ", ""))) // если вариант под буквой совпал с правильным вариантом ответа подвопроса, то записываем эту букву
                             {
                                 textA = textA + " " + listA.Текст_ответа[0] + "-" + stringTempList[0] + " ";
                             }
@@ -201,7 +201,7 @@ namespace WebApplicationForTest.Controllers
             }
 
             int key = 0;
-            
+            int iTemp = 0;
             foreach (var id_q in resultAnswerUser) //проверяем правильно ли ответил пользователь
             {
             key = Convert.ToInt32(id_q.Key);
@@ -221,14 +221,20 @@ namespace WebApplicationForTest.Controllers
                                 {
                                     if (aT.Флаг_правильного_ответа)
                                     {
-                                        ResultQuestion.Add(nQ.ToString() + " " + "Верно");
+                                        // ResultQuestion.Add(nQ.ToString() + " " + "Верно");
+                                        QuestionAnswer[iTemp] = nQ.ToString() + " "+ QuestionAnswer[iTemp] + "\nВаш ответ: " + id_q.Value + " - " + "ВЕРНО";
+                                        QuestionAnswer[iTemp].Replace("\n", "<br />");
                                         Answ++;
-                                        nQ++;
+                                        nQ++;            
+                                        iTemp++;
                                         break;
                                     }
                                     else
                                     {
-                                        ResultQuestion.Add(nQ.ToString() + " " + "Неверно");
+                                        QuestionAnswer[iTemp] = nQ.ToString() + " " + QuestionAnswer[iTemp] + "\nВаш ответ: " + id_q.Value + " - " + "НЕВЕРНО";
+                                        QuestionAnswer[iTemp].Replace("\n", "<br />");
+                                        iTemp++;
+                                        //  ResultQuestion.Add(nQ.ToString() + " " + "Неверно");
                                         nQ++;
                                         break;
                                     }
@@ -236,7 +242,10 @@ namespace WebApplicationForTest.Controllers
                             }
                             else
                             {
-                                ResultQuestion.Add(nQ.ToString() + " " + "Неверно");
+                                
+                                    QuestionAnswer[iTemp] = nQ.ToString() + " " + QuestionAnswer[iTemp] + "\nВаш ответ: " + id_q.Value + " - " + "НЕВЕРНО";
+                                iTemp++;
+                                // ResultQuestion.Add(nQ.ToString() + " " + "Неверно");
                                 nQ++;
                                 break;
                             }
@@ -250,6 +259,7 @@ namespace WebApplicationForTest.Controllers
                             int countAnswerCheckboxList = TextAnsw.Count();
                             string[] mystringCheck = id_q.Value.Split(' ');
                             List<bool> checkboxl = new List<bool>(mystringCheck.Count());
+                            string VariatUser = "";
                             foreach (var str in mystringCheck)
                             {
                                 if (str == "true")
@@ -265,19 +275,28 @@ namespace WebApplicationForTest.Controllers
                             {
                                if (check.Флаг_правильного_ответа==checkboxl[countChec])
                                 {
+                                  
                                     CountAns++;
+                                }
+                               if (checkboxl[countChec])
+                                {
+                                    VariatUser = VariatUser + check.Текст_ответа.Replace("  ", "") + " ";
                                 }
                                 countChec++;
                             }
                             if (CountAns >= countAnswerCheckboxList)
                             {
-                                ResultQuestion.Add(nQ.ToString() + " " + "Верно");
+                              //  ResultQuestion.Add(nQ.ToString() + " " + "Верно");
+                                QuestionAnswer[iTemp] = nQ.ToString() + " " + QuestionAnswer[iTemp] + "\nВаш ответ: " + VariatUser + " - " + "ВЕРНО";
+                                iTemp++;
                                 Answ++;
                                 nQ++;
                             }
                             else
                             {
-                                ResultQuestion.Add(nQ.ToString() + " " + "Неверно");
+                              //  ResultQuestion.Add(nQ.ToString() + " " + "Неверно");
+                                QuestionAnswer[iTemp] = nQ.ToString() + " " + QuestionAnswer[iTemp] + "\nВаш ответ: " + VariatUser + " - " + "НЕВЕРНО";
+                                iTemp++;
                                 nQ++;
                                 break;
                             }
@@ -286,24 +305,28 @@ namespace WebApplicationForTest.Controllers
 
                         else if (вопросы.Тип_ответа.Replace(" ", "") == "Соотношение")
                         {
-                           
+                            string VariatUserS = "";
                             string[] mystringTemp = id_q.Value.Split(',');
                             var result = mystringTemp.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray(); //убираем нулевые и пустые элементы
                             int flagCorrect = 0;
                             string[] tempStrForSoothosh =new string[2]; //для хранения id_ответа и буквы, которую ввел пользователь
                             string AnswUser = "";
+                            string strResult = "";
+                            int strC = 1;
+                          //  strResult = string.Join(",", result);
                             foreach (var str in result)
                             {
                                 tempStrForSoothosh = str.Split(' ');
                                 if (tempStrForSoothosh[1] != "")
                                 {
                                     var tempStr = tempStrForSoothosh[1].ToCharArray();
-
+                                    strResult = strResult+ strC.ToString() + "-" + tempStrForSoothosh[1] + " ";
                                     foreach (var valueSootnosh in tempSelect) //ищем значение под выбранной буквой
                                     {
 
                                         if ((valueSootnosh.Флаг_подвопроса == false) && (valueSootnosh.Текст_ответа[0] == tempStr[0]))
                                         {
+                                           
                                             if ((tempStrForSoothosh[0] != "") && ((tempStrForSoothosh[1] != "")))
                                             {
                                                 AnswUser = valueSootnosh.Текст_ответа.Replace(tempStrForSoothosh[1] + " ", ""); //записываем вариант под буквой 
@@ -316,17 +339,27 @@ namespace WebApplicationForTest.Controllers
                                         }
                                     }
                                 }
+                                else
+                                {
+                                    strResult = strResult + strC.ToString() + "-" + "  ";
+                                }
+                                strC++;
                             }
 
                             if (flagCorrect==result.Count())
                             {
-                                ResultQuestion.Add(nQ.ToString() + " " + "Верно");
+                                
+                               // ResultQuestion.Add(nQ.ToString() + " " + "Верно");
+                                QuestionAnswer[iTemp] = nQ.ToString() + " " + QuestionAnswer[iTemp] + "\nВаш ответ: " + strResult + " - " + "ВЕРНО";
+                                iTemp++;
                                 Answ++;
                                 nQ++;
                             }
                             else
                             {
-                                ResultQuestion.Add(nQ.ToString() + " " + "Неверно");
+                                // ResultQuestion.Add(nQ.ToString() + " " + "Неверно");
+                                QuestionAnswer[iTemp] = nQ.ToString() + " " + QuestionAnswer[iTemp] + "\nВаш ответ: " + strResult + " - " + "НЕВЕРНО";
+                                iTemp++;
                                 nQ++;
                                 break;
                             }
@@ -336,7 +369,9 @@ namespace WebApplicationForTest.Controllers
                     else
                     {
 
-                        ResultQuestion.Add(nQ.ToString() + " " + "Неверно");
+                        //  ResultQuestion.Add(nQ.ToString() + " " + "Неверно");
+                        QuestionAnswer[iTemp] = nQ.ToString() + " " + QuestionAnswer[iTemp] + "\nВаш ответ: " + " " + " - " + "НЕВЕРНО";
+                        iTemp++;
                         nQ++;
                         break;
                     }

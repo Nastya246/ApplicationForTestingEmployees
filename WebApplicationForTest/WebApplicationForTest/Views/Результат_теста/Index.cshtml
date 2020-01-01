@@ -6,35 +6,32 @@
 }
 
 <h2>Ваши результаты:</h2> <br />
-                          <table class="table">
+<table class="table">
 
-                              <tr>
-                                  <td>
-                                      <br /><br /><p><big>Оценка:</big> @ViewBag.ResultProcent %</p><br /><br />
-                                  </td>
-                              </tr>
+    <tr>
+        <td>
+            <br /><br /><p><big>Оценка:</big> @ViewBag.ResultProcent %</p><br /><br />
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <form method="post" action="~/Разделы/Index">
+                <br /><input type="submit" value="Выбрать другой тест" />
+        
+        </form>
+        </td>
+    </tr>
+@foreach (string result1 in ViewBag.QuestionAnswer)
+{
 
-                              @foreach (string result1 in ViewBag.QuestionAnswer)
-                              {
+    <tr>
+        <td>
+            <br /><br /><p>@result1</p><br /><br />
+        </td>
+    </tr>
 
-                                  <tr>
-                                      <td>
-                                          <br /><br /><p>@result1</p><br /><br />
-                                      </td>
-                                  </tr>
+}
 
-                              }
-
-                              @foreach (string result in ViewBag.ResultQuestion)
-                              {
-
-                                  <tr>
-                                      <td>
-                                          <br /><br /><p>@result</p><br /><br />
-                                      </td>
-                                  </tr>
-
-                              }
 
 
                           </table>
