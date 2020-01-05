@@ -7,6 +7,7 @@ using WebApplicationForTest;
 using System.Data.Entity;
 using WebApplicationForTest.Models;
 using System.Threading.Tasks;
+///сделать контроль регистра
 namespace WebApplicationForTest.Controllersd
 {
     public class HomeController : Controller

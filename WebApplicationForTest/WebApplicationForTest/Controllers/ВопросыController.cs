@@ -47,12 +47,25 @@ namespace WebApplicationForTest.Controllers
             ViewBag.IdТеста = userТестId;
             var вопросы = db.Вопросы.Include(в => в.Тесты).Include(в => в.Ответы);
             вопросы = (from v in db.Вопросы where v.id_Теста == userТестId select v).Include(v=>v.Ответы); //выбираем вопросы для кокретного теста по id теста
+            
            
             int q = 1;
-           foreach (var temp in вопросы)
+            int count = 0;
+
+            foreach (var temp in вопросы)
             {
+               
                 temp.Текст_вопроса = q.ToString()+" "+ temp.Текст_вопроса ;
-                
+                if (temp.Тип_ответа.Replace(" ", "") == "Разрыв")
+                {
+                    int selectedIndex = 1;
+                    SelectList ans = new SelectList(from a in db.Ответы where a.id_Вопроса==temp.id_вопроса && a.Флаг_правильного_ответа==false select a, "id_ответа", "Текст_ответа", selectedIndex);
+                    ViewData[count.ToString()] = ans;
+                   
+                    count++;
+                   //  temp.Текст_вопроса = temp.Текст_вопроса.Replace("...", "@Html.DropDownList(\"Answ\", ViewBag.Ans as SelectList, new {id=\"ans\" }) ");
+                 
+                }
                 q++;
                
             }

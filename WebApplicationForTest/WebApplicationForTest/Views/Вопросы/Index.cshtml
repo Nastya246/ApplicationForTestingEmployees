@@ -4,7 +4,7 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+@{ int T = 0;}
 <h2><big>Тест "@ViewBag.НазваниеТеста"</big></h2> <br /><br />
 
 
@@ -16,13 +16,13 @@
             <th><big>Выберите верный ответ</big><br /><br /></th>
 
 
-
+           
         </tr>
 
         @foreach (var item in Model)
 
         {
-            if (item.Тип_ответа.Replace(" ", "") != "Соотношение")
+            if ((item.Тип_ответа.Replace(" ", "") != "Соотношение") && (item.Тип_ответа.Replace(" ", "") != "Разрыв"))
             {
                 <tr>
                     <td>
@@ -31,7 +31,7 @@
 
                 </tr>
             }
-            else
+            else if (item.Тип_ответа.Replace(" ", "") != "Разрыв")
             {
 
                 <tr>
@@ -66,7 +66,26 @@
                 </tr>
 
             }
+            else
+            {
 
+                <tr>
+                    <td>
+                        <br /><br />
+                        @foreach (var part in item.Текст_вопроса.Replace("  ", "").Split(new string[] { "..." }, StringSplitOptions.RemoveEmptyEntries))
+                        {
+                            <big>
+                                @part
+                            </big>
+                            if (part != item.Текст_вопроса.Replace("  ", "").Split(new string[] { "..." }, StringSplitOptions.RemoveEmptyEntries).Last().ToString())
+                            {
+                                @Html.DropDownList(item.id_вопроса.ToString(), ViewData[T.ToString()] as SelectList, "--Выбор ответа--", new { id = "ans" })
+                            }
+                        }
+                    </td>
+                </tr>
+                T++;
+            }
             foreach (var itemO in item.Ответы)
             {
                 if (item.Тип_ответа.Replace(" ", "") == "Выбор")
@@ -103,9 +122,9 @@
                             <td><input type="text" name=@itemO.id_ответа /></td>
                         }
                     </tr>
-                    }
-                    else if (item.Тип_ответа.Replace(" ", "") == "Несколько")
-                    {
+                }
+                else if (item.Тип_ответа.Replace(" ", "") == "Несколько")
+                {
                     <tr>
                         <td>
                             @Html.DisplayFor(m => itemO.Текст_ответа)
@@ -115,14 +134,14 @@
 
                         </td>
                     </tr>
-                    }
+                }
 
-                    }
+            }
 
 
-                    }
+        }
 
-                    <tr><td><br /><br /><input type="submit" value="Отправить" /> </td><td></td></tr>
+        <tr><td><br /><br /><input type="submit" value="Отправить" /> </td><td></td></tr>
 
-                </table>
+    </table>
 </form>
