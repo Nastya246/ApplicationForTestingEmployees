@@ -23,11 +23,14 @@ namespace WebApplicationForTest.Controllers
         }
 
         [HttpPost] // доступные вопросы по тесту
-        public async Task<ActionResult> Index( string Раздел, int? id_user)
+        public async Task<ActionResult> Index( string Раздел, int? id_user, string redactor)
         {
             int temp=0;
              int  id_Section = Convert.ToInt32(Раздел);
-            
+            if (redactor == "redactor")
+            {
+                ViewBag.Id_user = "redactor";
+            }
             foreach (var e in db.Разделы) //получаем имя раздела по его id
             {
                 if (e.id_Раздела==id_Section)

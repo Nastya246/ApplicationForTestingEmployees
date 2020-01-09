@@ -124,12 +124,12 @@ namespace WebApplicationForTest.Controllers
                     {
                         if (aList.Флаг_правильного_ответа == true)
                         {
-                            textA = textA + aList.Текст_ответа.Replace("  ", "")+" ";
+                            textA = textA + aList.Текст_ответа.Replace("  ", "") + " ";
 
 
                         }
                     }
-                    QuestionAnswer.Add("Вопрос: " + textQ + " Правильный ответ: " + textA+" ");
+                    QuestionAnswer.Add("Вопрос: " + textQ + " Правильный ответ: " + textA + " ");
                 }
                 else if (qList.Тип_ответа.Replace(" ", "") == "Соотношение")
                 {
@@ -163,6 +163,11 @@ namespace WebApplicationForTest.Controllers
                     }
 
                     QuestionAnswer.Add("Вопрос: " + textQ + " Правильный ответ: " + textA);
+                }
+                else if (qList.Тип_ответа.Replace(" ", "") == "Разрыв")
+                {
+                    var tempSelectR = (from answ in db.Ответы where answ.id_Вопроса == qList.id_вопроса && answ.Флаг_правильного_ответа==true select answ).ToList();
+                    QuestionAnswer.Add("Вопрос: " + textQ + " Правильный ответ: " + tempSelectR[0].Текст_ответа.Replace("  ",""));
                 }
             }
             foreach (var q1 in AllQuestion)
@@ -204,7 +209,7 @@ namespace WebApplicationForTest.Controllers
             int iTemp = 0;
             foreach (var id_q in resultAnswerUser) //проверяем правильно ли ответил пользователь
             {
-            key = Convert.ToInt32(id_q.Key);
+                key = Convert.ToInt32(id_q.Key);
                 var tempSelect= (from answ in db.Ответы where answ.id_Вопроса == key select answ).ToList(); //выбор всех ответов текущего вопроса
                 foreach (var answR in tempSelect)
                     {
@@ -354,6 +359,7 @@ namespace WebApplicationForTest.Controllers
                                 iTemp++;
                                 Answ++;
                                 nQ++;
+
                             }
                             else
                             {
@@ -364,6 +370,50 @@ namespace WebApplicationForTest.Controllers
                                 break;
                             }
                             break;
+                        }
+                        else if (вопросы.Тип_ответа.Replace(" ", "") == "Разрыв")
+                        {
+                            string VariatUserR = "";
+                            string[] mystringTempR= id_q.Value.Split(' '); // ответы пользователя в виде id ответов
+                            var resultR = mystringTempR.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray(); //убираем нулевые и пустые элементы
+
+                            var AnswRstring = (from textAnsw in tempSelect where textAnsw.id_Вопроса == Convert.ToInt32(id_q.Key) && textAnsw.Флаг_правильного_ответа == true select textAnsw).ToList();//правильные ответы в виде текста
+                            string[] stringAnswTempR = AnswRstring[0].Текст_ответа.Split(',');
+                            var AnswR = stringAnswTempR.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
+                            int flagA = 0;
+                            string strR = "";
+                            List<string> templsR = new List<string>(AnswR.Count());
+                            var TextQ = QuestionAnswer[iTemp].Replace("  ", "").Split(new string[] { "..." }, StringSplitOptions.RemoveEmptyEntries);
+                            if (AnswR.Count() == resultR.Count()) // если пользователь вставил ответы во все разрывы
+                            {
+                                for (int i = 0; i < AnswR.Count(); i++)
+                                {
+                                    var answ = db.Ответы.Find(Convert.ToInt32(mystringTempR[i])); //получаем по id ответа его текст
+
+                                    strR = strR  + " " + answ.Текст_ответа.Replace("  ","") + ", ";
+                                    if (answ.Текст_ответа.Replace(" ", "") == AnswR[i].Replace(" ", ""))
+                                    {
+                                        flagA++;
+                                    }
+
+                                }
+                            }
+                        
+                            if (flagA>= AnswR.Count())
+                            {
+                                QuestionAnswer[iTemp] = nQ.ToString() + " " + QuestionAnswer[iTemp]+" " + "\nВаш ответ: " + strR + " - " + "ВЕРНО";
+                                iTemp++;
+                                Answ++;
+                                nQ++;
+                                break;
+                            }
+                            else
+                            {
+                                QuestionAnswer[iTemp] = nQ.ToString() + " " + QuestionAnswer[iTemp] + " " + "\nВаш ответ: " + strR + " - " + "НЕВЕРНО";
+                                iTemp++;
+                                nQ++;
+                                break;
+                            }
                         }
                     }
                     else

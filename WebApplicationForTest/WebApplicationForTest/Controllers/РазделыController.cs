@@ -18,7 +18,7 @@ namespace WebApplicationForTest.Controllers
         // GET: Разделы
         public async Task<ActionResult> Index()
         {
-
+            ViewBag.r = "redactor";
             var  разделы = db.Разделы.Include(т => т.Тесты);
             return View(await разделы.ToListAsync());
         }
@@ -35,7 +35,14 @@ namespace WebApplicationForTest.Controllers
                     }
                 }
             }
-            ViewBag.Id_user = id_user;
+            if (Login == "redactor")
+            {
+                ViewBag.Id_user = Login;
+            }
+            else
+            {
+                ViewBag.Id_user = id_user;
+            }
             var разделы = db.Разделы.Include(т => т.Тесты);
             return View(await разделы.ToListAsync());
         }

@@ -63,7 +63,7 @@ namespace WebApplicationForTest.Controllersd
             ViewBag.Password = Password;
             int flagLog = 0;
             int flagPas = 0;
-            foreach (var temp in db.Пользователи) //если ввели логи и пароль, то корректно ли
+           foreach (var temp in db.Пользователи) //если ввели логи и пароль, то корректно ли
             {
                 if (temp.Логин.Replace(" ", "") == Login)
                 {
@@ -78,7 +78,15 @@ namespace WebApplicationForTest.Controllersd
                     {
                 ViewBag.LogPas = "Success";
             }
-
+            if ((Login == "redactor") && (Password == "redactor12345"))
+            {
+                List<string> ls=new List<string> (db.Разделы.Count());
+                foreach (var r in db.Разделы)
+                {
+                    ls.Add(r.Название_раздела.Replace("  ", ""));
+                }
+                ViewBag.ListSection = ls;
+            }
             return View(); //открываем меню, соответ. пользователю
            
          
