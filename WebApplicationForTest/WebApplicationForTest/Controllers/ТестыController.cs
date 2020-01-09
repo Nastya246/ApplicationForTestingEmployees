@@ -22,12 +22,12 @@ namespace WebApplicationForTest.Controllers
             return View(await тесты.ToListAsync());
         }
 
-        [HttpPost] // доступные вопросы по тесту
+        [HttpPost] // доступные Темы в разделе
         public async Task<ActionResult> Index( string Раздел, int? id_user, string redactor)
         {
             int temp=0;
              int  id_Section = Convert.ToInt32(Раздел);
-            if (redactor == "redactor")
+            if (redactor == "redactor") //если зашли с учетки редактора, то нужно меню для него
             {
                 ViewBag.Id_user = "redactor";
             }
@@ -46,10 +46,7 @@ namespace WebApplicationForTest.Controllers
             return View(await тесты.ToListAsync());
         }
         
-            
            
-            
-        
         // GET: Тесты/Details/5
         public async Task<ActionResult> Details(int? id)
         {
@@ -68,6 +65,9 @@ namespace WebApplicationForTest.Controllers
         // GET: Тесты/Create
         public ActionResult Create()
         {
+            var section = (from t in db.Разделы select t).ToList();
+            SelectList разделы = new SelectList(section, "id_Раздела", "Название_раздела");
+            ViewBag.Разделы = разделы;
             ViewBag.id_Теста = new SelectList(db.Тесты, "id_теста", "Название_темы_теста");
             return View();
         }
@@ -81,6 +81,9 @@ namespace WebApplicationForTest.Controllers
         {
             if (ModelState.IsValid)
             {
+                var section = (from t in db.Разделы where t.id_Раздела == тесты.Id_Раздела select t).ToList();
+                SelectList разделы = new SelectList(section, "id_Раздела", "Название_раздела");
+                ViewBag.Разделы = разделы;
                 db.Тесты.Add(тесты);
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
@@ -102,6 +105,10 @@ namespace WebApplicationForTest.Controllers
             {
                 return HttpNotFound();
             }
+           var section = (from t in db.Разделы where t.id_Раздела == тесты.Id_Раздела select t).ToList();
+            SelectList разделы = new SelectList(section, "id_Раздела", "Название_раздела");
+            ViewBag.Разделы = разделы;
+          
             ViewBag.id_Темы = new SelectList(db.Разделы, "id_Раздела", "Название_раздела", тесты.Id_Раздела);
             return View(тесты);
         }

@@ -76,8 +76,12 @@ namespace WebApplicationForTest.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Разделы.Add(разделы);
-                await db.SaveChangesAsync();
+                var temp=from v in db.Разделы where v.Название_раздела.Replace(" ","").ToLower() == разделы.Название_раздела.Replace(" ","").ToLower() select v;
+                if (temp.Count() == 0) //проверяем, есть ли раздел с таки же именем, если нет, то добавляем
+                {
+                    db.Разделы.Add(разделы);
+                    await db.SaveChangesAsync();
+                }
                 return RedirectToAction("Index");
             }
 

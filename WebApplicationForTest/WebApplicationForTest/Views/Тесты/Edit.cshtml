@@ -8,10 +8,11 @@
 <h2>Edit</h2>
 
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Index", "Тесты", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
-    
+    <input type="hidden" value="redactor" name=redactor />
+
     <div class="form-horizontal">
         <h4>Тесты</h4>
         <hr />
@@ -37,7 +38,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Id_Раздела, "Id_Раздела", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("Id_Раздела", null, htmlAttributes: new { @class = "form-control" })
+                @Html.DropDownList("Id_Раздела", ViewBag.Разделы as SelectList, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Id_Раздела, "", new { @class = "text-danger" })
             </div>
         </div>

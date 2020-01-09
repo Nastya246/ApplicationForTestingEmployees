@@ -31,9 +31,12 @@ namespace WebApplicationForTest.Controllers
             return View(await вопросы.ToListAsync());
         }
         [HttpPost] // доступные вопросы по выбранному тесту
-        public async Task<ActionResult> Index(Тесты item)
+        public async Task<ActionResult> Index(Тесты item, string redactor)
         {
-
+            if (redactor!="redactor")
+            {
+                ViewBag.User = "redactor";
+            }
             string nameTest = item.Название_темы_теста;
             ViewBag.НазваниеТеста = nameTest; //передаем название теста в представление
             int userТестId = 0;

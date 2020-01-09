@@ -22,6 +22,12 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.id_раздела }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Переименовать", "Edit", new { id = Model.id_Раздела }) |
+    @Html.ActionLink("К списку разделов", "Index")
 </p>
+<form method="post" action="~/Home/Menu">
+    <input type="hidden" value="redactor" name="Login" />
+    <input type="hidden" value="redactor12345" name="Password" />
+    <input type="submit" value="В меню" />
+
+</form>

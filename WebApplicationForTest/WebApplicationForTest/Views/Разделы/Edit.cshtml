@@ -28,16 +28,21 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Сохранить" class="btn btn-default" />
             </div>
         </div>
     </div>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("К списку разделов", "Index")
 </div>
+<form method="post" action="~/Home/Menu">
+    <input type="hidden" value="redactor" name="Login" />
+    <input type="hidden" value="redactor12345" name="Password" />
+    <input type="submit" value="В меню" />
 
+</form>
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }

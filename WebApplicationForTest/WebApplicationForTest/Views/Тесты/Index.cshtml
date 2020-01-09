@@ -4,8 +4,15 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<h2>Доступные темы для тестирования из раздела "@ViewBag.НазваниеРаздела"</h2> <br /><br />
+@if (ViewBag.Id_user == "redactor")
+{
+    <h2>Темы для тестирования из раздела "@ViewBag.НазваниеРаздела"</h2> <br /><br />
+    <tr> <td>  @Html.ActionLink("Добавить новую тему", "Create") </td></tr>
+}
+else
+{
+    <h2>Доступные темы для тестирования из раздела "@ViewBag.НазваниеРаздела"</h2> <br /><br />
+}
 
 
 <form method="post" action="~/Вопросы/Index">
@@ -27,36 +34,58 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Название_темы_теста)<br />
-                    <br />
+                    @Html.DisplayFor(modelItem => item.Название_темы_теста)
+
                 </td>
                 <td>
 
-                    @Html.DisplayFor(modelItem => item.Количество_вопросов)<br />
-                    <br />
-                </td>
-                <td>
-                    @Html.RadioButtonFor(modelItem => item.Название_темы_теста, item.Название_темы_теста)<br /><br />
+                    @Html.DisplayFor(modelItem => item.Количество_вопросов)
                 </td>
 
+                <td>
+                    @Html.RadioButtonFor(modelItem => item.Название_темы_теста, item.Название_темы_теста)<br />
+                </td>
             </tr>
-        }
-       
-        <tr><td>
+            <tr>
+                <td>
+                    @if (ViewBag.Id_user == "redactor")
+                    {
 
-    @if (ViewBag.Id_user == "redactor")
-    {
-        <br />
-        <br /><input type="submit" value="Внести изменения" />
-    }
-    else
-    {
-        <br />
-        <br /><input type="submit" value="Начать" /> }
-    </td>
-        
-     <td>
-    </td></tr>
+
+                    <small>
+                        @Html.ActionLink("Переименовать", "Edit", new { id = item.id_теста }) |
+                    </small>
+                    <small>
+                        @Html.ActionLink("Детали", "Details", new { id = item.id_теста }) |
+                    </small> 
+                <small>
+                    @Html.ActionLink("Удалить", "Delete", new { id = item.id_теста })
+                </small>
+                <br />
+            }
+                    
+                </td>
+            </tr>
+
+        }
+
+        <tr>
+            <td>
+
+                @if (ViewBag.Id_user == "redactor")
+                {
+                    <input type="hidden" value=@ViewBag.Id_user name="redactor" />
+                    <br />
+                    <br /><input type="submit" value="Внести изменения" />
+                }
+                else
+                {
+                    <br />
+                    <br /><input type="submit" value="Начать" />}
+            </td>
+
+            <td></td>
+        </tr>
 
     </table>
 </form>
