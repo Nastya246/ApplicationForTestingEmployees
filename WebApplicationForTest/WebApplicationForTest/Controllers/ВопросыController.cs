@@ -16,29 +16,67 @@ namespace WebApplicationForTest.Controllers
         private TestEntities db = new TestEntities();
 
         // GET: Вопросы
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(string redactor="", string topic="")
         {
-            var  вопросы = db.Вопросы.Include(в => в.Тесты).Include(в=>в.Тесты).Include(в=>в.Ответы);
-           
-            int q = 1;
-            foreach (var temp in вопросы)
+            if (redactor != "")
             {
-                temp.Текст_вопроса = q.ToString() + " " + temp.Текст_вопроса;
-               
-                q++;
-              
+                ViewBag.User = "redactor";
             }
-            return View(await вопросы.ToListAsync());
+           
+            int id_Topic = 0;
+            if (topic != "")
+            {
+                id_Topic = Convert.ToInt32(topic);
+                Тесты тема = db.Тесты.Find(id_Topic);
+                ViewBag.НазваниеТеста = тема.Название_темы_теста.Replace("  ","");
+                ViewBag.IdТеста = id_Topic;
+                var вопросы = db.Вопросы.Include(в => в.Тесты).Include(в => в.Ответы);
+                вопросы = (from v in db.Вопросы where v.id_Теста == id_Topic select v).Include(v => v.Ответы);
+                int q = 1;
+                int count = 0;
+
+                foreach (var temp in вопросы)
+                {
+
+                    temp.Текст_вопроса = q.ToString() + " " + temp.Текст_вопроса;
+                    if (temp.Тип_ответа.Replace(" ", "") == "Разрыв")
+                    {
+                        int selectedIndex = 1;
+                        SelectList ans = new SelectList(from a in db.Ответы where a.id_Вопроса == temp.id_вопроса && a.Флаг_правильного_ответа == false select a, "id_ответа", "Текст_ответа", selectedIndex); //выпадающий список для вопросов с разрывами
+                        ViewData[count.ToString()] = ans;
+
+                        count++;
+                        //  temp.Текст_вопроса = temp.Текст_вопроса.Replace("...", "@Html.DropDownList(\"Answ\", ViewBag.Ans as SelectList, new {id=\"ans\" }) ");
+
+                    }
+                    q++;
+
+                }
+
+                return View(await вопросы.ToListAsync());
+
+            }
+            else
+            {
+                int q = 1;
+                var вопросы = db.Вопросы.Include(в => в.Тесты).Include(в => в.Ответы);
+                foreach (var temp in вопросы)
+                {
+                    temp.Текст_вопроса = q.ToString() + " " + temp.Текст_вопроса;
+
+                    q++;
+
+                }
+                return View(await вопросы.ToListAsync());
+            }
         }
         [HttpPost] // доступные вопросы по выбранному тесту
         public async Task<ActionResult> Index(Тесты item, string redactor)
         {
-            if (redactor!="redactor")
-            {
-                ViewBag.User = "redactor";
-            }
+
             string nameTest = item.Название_темы_теста;
             ViewBag.НазваниеТеста = nameTest; //передаем название теста в представление
+           
             int userТестId = 0;
             foreach (var t in db.Тесты) //определяем id выбранного теста
             {
@@ -49,31 +87,37 @@ namespace WebApplicationForTest.Controllers
             }
             ViewBag.IdТеста = userТестId;
             var вопросы = db.Вопросы.Include(в => в.Тесты).Include(в => в.Ответы);
-            вопросы = (from v in db.Вопросы where v.id_Теста == userТестId select v).Include(v=>v.Ответы); //выбираем вопросы для кокретного теста по id теста
-            
-           
-            int q = 1;
-            int count = 0;
+            вопросы = (from v in db.Вопросы where v.id_Теста == userТестId select v).Include(v => v.Ответы); //выбираем вопросы для кокретного теста по id теста
 
-            foreach (var temp in вопросы)
+            if (redactor == "redactor")
             {
-               
-                temp.Текст_вопроса = q.ToString()+" "+ temp.Текст_вопроса ;
-                if (temp.Тип_ответа.Replace(" ", "") == "Разрыв")
-                {
-                    int selectedIndex = 1;
-                    SelectList ans = new SelectList(from a in db.Ответы where a.id_Вопроса==temp.id_вопроса && a.Флаг_правильного_ответа==false select a, "id_ответа", "Текст_ответа", selectedIndex);
-                    ViewData[count.ToString()] = ans;
-                   
-                    count++;
-                   //  temp.Текст_вопроса = temp.Текст_вопроса.Replace("...", "@Html.DropDownList(\"Answ\", ViewBag.Ans as SelectList, new {id=\"ans\" }) ");
-                 
-                }
-                q++;
-               
+                ViewBag.User = "redactor";
+
             }
            
-            return View(await вопросы.ToListAsync());
+            int q = 1;
+                int count = 0;
+
+                foreach (var temp in вопросы)
+                {
+
+                    temp.Текст_вопроса = q.ToString() + " " + temp.Текст_вопроса;
+                    if (temp.Тип_ответа.Replace(" ", "") == "Разрыв")
+                    {
+                        int selectedIndex = 1;
+                        SelectList ans = new SelectList(from a in db.Ответы where a.id_Вопроса == temp.id_вопроса && a.Флаг_правильного_ответа == false select a, "id_ответа", "Текст_ответа", selectedIndex); //выпадающий список для вопросов с разрывами
+                        ViewData[count.ToString()] = ans;
+
+                        count++;
+                        //  temp.Текст_вопроса = temp.Текст_вопроса.Replace("...", "@Html.DropDownList(\"Answ\", ViewBag.Ans as SelectList, new {id=\"ans\" }) ");
+
+                    }
+                    q++;
+
+                }
+
+                return View(await вопросы.ToListAsync());
+            
         }
         // GET: Вопросы/Details/5
         public async Task<ActionResult> Details(int? id)
@@ -91,9 +135,20 @@ namespace WebApplicationForTest.Controllers
         }
 
         // GET: Вопросы/Create
-        public ActionResult Create()
+        public ActionResult Create(int? id)
         {
-            ViewBag.id_Теста = new SelectList(db.Тесты, "id_Теста", "Название_темы_теста");
+           Тесты тест = db.Тесты.Find(id);
+            ViewBag.Тест = тест.id_теста;
+            ViewBag.id_Теста = new SelectList(db.Тесты, "id_теста", "Название_темы_теста");
+            int selectedIndex = 1;
+            List<string> typeQ = new List<string>();
+            typeQ.Add("Выбор");
+            typeQ.Add("Ввод");
+            typeQ.Add("Несколько");
+            typeQ.Add("Разрыв");
+            typeQ.Add("Соотношение");
+            SelectList typeAnsw = new SelectList(typeQ, selectedIndex); //выпадающий список для вопросов с разрывами
+            ViewBag.ТипВопроса = typeAnsw;
             return View();
         }
 
@@ -102,15 +157,83 @@ namespace WebApplicationForTest.Controllers
         // сведения см. в статье https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "id_вопроса,id_Теста,Текст_вопроса,Тип_ответа,Номер_подвопроса")] Вопросы вопросы)
+        public async Task<ActionResult> Create([Bind(Include = "id_вопроса,id_Теста,Текст_вопроса,Тип_ответа,Номер_подвопроса")] Вопросы вопросы, int id_Теста, string variant, string correct, string def)
         {
+            вопросы.id_Теста = id_Теста;
             if (ModelState.IsValid)
             {
+                Ответы ответы = new Ответы();               
                 db.Вопросы.Add(вопросы);
                 await db.SaveChangesAsync();
-                return RedirectToAction("Index");
-            }
 
+                if (вопросы.Тип_ответа.Replace(" ", "") == "Выбор")
+                {
+                    string[] stringTempList = variant.Split(',');
+                    var resulttemp = stringTempList.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
+                    stringTempList = resulttemp;
+                    foreach (var t in stringTempList)
+                    {
+                        ответы.id_Вопроса = вопросы.id_вопроса;
+                        ответы.Текст_ответа = t;
+                        if (t.Replace(" ", "").ToLower() == correct.Replace(" ", "").ToLower())
+                        {
+                            ответы.Флаг_правильного_ответа = true;
+                        }
+                        else
+                        {
+                            ответы.Флаг_правильного_ответа = false;
+                        }
+                        db.Ответы.Add(ответы);
+                        await db.SaveChangesAsync();
+                    }
+                }
+                else if (вопросы.Тип_ответа.Replace(" ", "") == "Несколько")
+                {
+                    string[] stringTempListVar = variant.Split(',');
+                    var resulttemp = stringTempListVar.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
+                    stringTempListVar = resulttemp;
+
+                    string[] stringTempListCor = correct.Split(',');
+                    resulttemp = stringTempListCor.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
+                    stringTempListCor = resulttemp;
+                    int flag = 0;
+                    foreach (var t in stringTempListVar)
+                    {
+                        flag = 0;
+                        ответы.id_Вопроса = вопросы.id_вопроса;
+                        ответы.Текст_ответа = t;
+                        foreach (var t2 in stringTempListCor)
+                        {
+                            if (t.Replace(" ", "").ToLower() == t2.Replace(" ", "").ToLower())
+                            {
+                                flag = 1;
+                                break;
+                            }
+
+                        }
+                        if (flag == 1)
+                        {
+                            ответы.Флаг_правильного_ответа = true;
+                        }
+                        else
+                        {
+                            ответы.Флаг_правильного_ответа = false;
+                        }
+                        db.Ответы.Add(ответы);
+                        await db.SaveChangesAsync();
+                    }
+                }
+                else if (вопросы.Тип_ответа.Replace(" ", "") == "Ввод")
+                {
+                    ответы.id_Вопроса = вопросы.id_вопроса;
+                    ответы.Текст_ответа = correct;
+                    ответы.Флаг_правильного_ответа = true;
+                    db.Ответы.Add(ответы);
+                    await db.SaveChangesAsync();
+                }
+                    return RedirectToAction("Index", new { topic = вопросы.id_Теста.ToString(), redactor = "redactor" });
+            }
+            
             ViewBag.id_Теста = new SelectList(db.Тесты, "id_теста", "Название_темы_теста", вопросы.id_Теста);
             return View(вопросы);
         }

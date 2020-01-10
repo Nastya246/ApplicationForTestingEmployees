@@ -7,7 +7,7 @@
 @if (ViewBag.Id_user == "redactor")
 {
     <h2>Темы для тестирования из раздела "@ViewBag.НазваниеРаздела"</h2> <br /><br />
-    <tr> <td>  @Html.ActionLink("Добавить новую тему", "Create") </td></tr>
+      @Html.ActionLink("Добавить новую тему", "Create",new { id = @ViewBag.IdРаздела }) 
 }
 else
 {
@@ -57,13 +57,13 @@ else
                     </small>
                     <small>
                         @Html.ActionLink("Детали", "Details", new { id = item.id_теста }) |
-                    </small> 
+                    </small>
                 <small>
                     @Html.ActionLink("Удалить", "Delete", new { id = item.id_теста })
                 </small>
                 <br />
             }
-                    
+
                 </td>
             </tr>
 

@@ -39,5 +39,5 @@
 </div>
 <p>
     @Html.ActionLink("Редактировать", "Edit", new { id = Model.id_теста }) |
-    @Html.ActionLink("Назад", "Index")
+    @Html.ActionLink("К списку тем", "Index", new { razdel = Model.Id_Раздела, redactor = "redactor" })
 </p>

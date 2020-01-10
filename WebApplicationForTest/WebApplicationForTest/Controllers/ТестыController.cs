@@ -16,17 +16,48 @@ namespace WebApplicationForTest.Controllers
         private TestEntities db = new TestEntities();
 
         // GET: Тесты
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(string razdel="", string redactor="")
         {
-            var тесты = db.Тесты.Include(т => т.Разделы);
-            return View(await тесты.ToListAsync());
+            int id_Section = 0;
+            if (redactor == "redactor") //если зашли с учетки редактора, то нужно меню для него
+            {
+                ViewBag.Id_user = "redactor";
+            }
+            if (razdel != "")
+            {
+
+                id_Section = Convert.ToInt32(razdel);
+                var тесты = (db.Тесты.Include(в => в.Разделы).Include(в => в.Вопросы).Where(в => в.Id_Раздела == id_Section));
+                ViewBag.IdРаздела = id_Section; //для передачи в представление id раздела
+                Разделы раздел = await db.Разделы.FindAsync(id_Section); //находим раздел в бд по id
+                ViewBag.НазваниеРаздела = раздел.Название_раздела.Replace("  ", ""); //получаем название раздела
+                return View(await тесты.ToListAsync());
+            }
+            else
+            {
+               
+                var тесты = db.Тесты.Include(т => т.Разделы);
+                ViewBag.IdРаздела = 1;
+                return View(await тесты.ToListAsync());
+            }
+  
         }
 
         [HttpPost] // доступные Темы в разделе
-        public async Task<ActionResult> Index( string Раздел, int? id_user, string redactor)
+        public async Task<ActionResult> Index( string razdel, int? id_user, string redactor, Тесты тесты)
         {
-            int temp=0;
-             int  id_Section = Convert.ToInt32(Раздел);
+            int id_Section = 0;
+
+            if (razdel != null)
+            {
+
+                id_Section = Convert.ToInt32(razdel);
+            }
+            else
+            {
+                id_Section = тесты.Id_Раздела;
+            }
+            ViewBag.IdРаздела = id_Section;
             if (redactor == "redactor") //если зашли с учетки редактора, то нужно меню для него
             {
                 ViewBag.Id_user = "redactor";
@@ -41,9 +72,9 @@ namespace WebApplicationForTest.Controllers
                 }
             }
            
-                var тесты = (db.Тесты.Include(в => в.Разделы).Include(в => в.Вопросы).Where(в=> в.Id_Раздела==id_Section)); //  список тестов по соответствующей темы
+                var тесты1 = (db.Тесты.Include(в => в.Разделы).Include(в => в.Вопросы).Where(в=> в.Id_Раздела==id_Section)); //  список тестов по соответствующей темы
            
-            return View(await тесты.ToListAsync());
+            return View(await тесты1.ToListAsync());
         }
         
            
@@ -63,11 +94,13 @@ namespace WebApplicationForTest.Controllers
         }
 
         // GET: Тесты/Create
-        public ActionResult Create()
+        public ActionResult Create(int? id)
         {
-            var section = (from t in db.Разделы select t).ToList();
-            SelectList разделы = new SelectList(section, "id_Раздела", "Название_раздела");
-            ViewBag.Разделы = разделы;
+           // var section = (from t in db.Разделы select t).ToList();
+          //  SelectList разделы = new SelectList(section, "id_Раздела", "Название_раздела");
+          
+          Разделы раздел =  db.Разделы.Find(id);
+            ViewBag.Раздел = раздел.id_Раздела;
             ViewBag.id_Теста = new SelectList(db.Тесты, "id_теста", "Название_темы_теста");
             return View();
         }
@@ -77,16 +110,15 @@ namespace WebApplicationForTest.Controllers
         // сведения см. в статье https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "id_теста,Название_темы_теста,Количество_вопросов,Id_Раздела")] Тесты тесты)
+        public async Task<ActionResult> Create([Bind(Include = "id_теста,Название_темы_теста,Количество_вопросов,Id_Раздела")] Тесты тесты, int Id_Раздела)
         {
+            тесты.Id_Раздела = Id_Раздела;
             if (ModelState.IsValid)
             {
-                var section = (from t in db.Разделы where t.id_Раздела == тесты.Id_Раздела select t).ToList();
-                SelectList разделы = new SelectList(section, "id_Раздела", "Название_раздела");
-                ViewBag.Разделы = разделы;
+              
                 db.Тесты.Add(тесты);
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
+                db.SaveChanges();
+                return RedirectToAction("Index", new { razdel=тесты.Id_Раздела.ToString(), redactor ="redactor"});
             }
 
             ViewBag.id_Темы = new SelectList(db.Разделы, "id_Раздела", "Название_раздела", тесты.Id_Раздела);
@@ -106,7 +138,7 @@ namespace WebApplicationForTest.Controllers
                 return HttpNotFound();
             }
            var section = (from t in db.Разделы where t.id_Раздела == тесты.Id_Раздела select t).ToList();
-            SelectList разделы = new SelectList(section, "id_Раздела", "Название_раздела");
+            SelectList разделы = new SelectList(section, "id_Раздела", "Название_раздела"); //пока что не нужно (для выпадающего списка разделов) 
             ViewBag.Разделы = разделы;
           
             ViewBag.id_Темы = new SelectList(db.Разделы, "id_Раздела", "Название_раздела", тесты.Id_Раздела);
@@ -124,7 +156,7 @@ namespace WebApplicationForTest.Controllers
             {
                 db.Entry(тесты).State = EntityState.Modified;
                 await db.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { razdel = тесты.Id_Раздела.ToString(), redactor = "redactor" });
             }
             ViewBag.id_Темы = new SelectList(db.Разделы, "id_Раздела", "Название_раздела", тесты.Id_Раздела);
             return View(тесты);
@@ -153,7 +185,7 @@ namespace WebApplicationForTest.Controllers
             Тесты тесты = await db.Тесты.FindAsync(id);
             db.Тесты.Remove(тесты);
             await db.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { razdel = тесты.Id_Раздела.ToString(), redactor = "redactor" });
         }
 
         protected override void Dispose(bool disposing)

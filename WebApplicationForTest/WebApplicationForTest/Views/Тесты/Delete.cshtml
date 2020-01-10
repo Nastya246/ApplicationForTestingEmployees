@@ -38,13 +38,14 @@
 
     </dl>
 
-    @using (Html.BeginForm("Index", "Тесты", FormMethod.Post))
+    @using (Html.BeginForm())
     {
         @Html.AntiForgeryToken()
-        <input type="hidden" value="redactor" name= redactor />
+        <input type="hidden" value="redactor" name=redactor />
+        @Html.HiddenFor(model => model.Id_Раздела)
         <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("К списку тем", "Index")
+            <input type="submit" value="Удалить" class="btn btn-default" /> |
+            @Html.ActionLink("К списку тем", "Index", new { razdel = Model.Id_Раздела, redactor = "redactor" })
         </div>
     }
 </div>

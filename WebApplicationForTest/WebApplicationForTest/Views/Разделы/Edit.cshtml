@@ -34,13 +34,16 @@
     </div>
 }
 
-<div>
-    @Html.ActionLink("К списку разделов", "Index")
-</div>
+
 <form method="post" action="~/Home/Menu">
     <input type="hidden" value="redactor" name="Login" />
     <input type="hidden" value="redactor12345" name="Password" />
     <input type="submit" value="В меню" />
+
+</form>
+<form method="post" action="~/Тесты/Index">
+    <input type="hidden" value="redactor" name="redactor" />
+    <input type="submit" value="Назад" />
 
 </form>
 @section Scripts {
