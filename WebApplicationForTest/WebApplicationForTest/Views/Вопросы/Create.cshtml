@@ -1,7 +1,7 @@
 ﻿@model WebApplicationForTest.Models.Вопросы
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Добавить вопрос";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -16,10 +16,10 @@
             <li>  "Ввод" - вопрос с ответом в свободной форме, варианты ответов для этого типа не указываются. <br /></li>
             <li>  "Несколько" - вопрос с несколькими вариантами ответов, из которых несколько вариантов правильны.<br /> </li>
             <li>
-                "Разрыв" - вопрос с пропущенными словами в тексте. При вводе текста на месте пропуска слова введите "...". В правильных ответах укажите правильные варианты по их порядку в тексте. <br />
+                "Разрыв" - вопрос с пропущенными словами в тексте. При вводе текста в поле "Текст Вопроса" на месте пропуска слова введите "...". В правильных ответах укажите правильные варианты по их порядку в тексте через запятую, остальные поля не заполняются <br />
             </li>
 <li>
-                 "Соотношение" - вопрос, где требуется соотнести понятия.<br />
+                 "Соотношение" - вопрос, где требуется соотнести понятия. В поле "Правильный ответ" укажите ответы в верном порядке через запятую. Например, вопрос "Соотнесите страны и города", в поле "Варианты понятий" введите "Россия, Франция, Китай", тогда поле "Правильный ответ" - "Москва, Париж, Пекин", остальные поля не заполняются<br />
             </li>
         </ul>
     </big>
@@ -39,8 +39,16 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Тип_ответа, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("Тип_ответа", ViewBag.ТипВопроса as SelectList, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Тип_ответа, "", new { @class = "text-danger" })
+             
+                <select id="Тип_ответа" name="Тип_ответа">
+                    <option value="Выбор">Выбор</option>
+                    <option value="Ввод">Ввод</option>
+                    <option value="Несколько">Несколько</option>
+                    <option value="Разрыв">Разрыв</option>
+                    <option value="Соотношение">Соотношение</option>
+
+                </select>
+              
             </div>
         </div>
 
@@ -56,20 +64,20 @@
         <div class="form-group">
             @Html.Label("Варианты понятий (через запятую, только для типа \"Соотношение\"):")
             <div class="col-md-10">
-                <input type="text" name=def />
+                <input type="text" name=def size="40"/>
             </div>
         </div>
         <div class="form-group">
             @Html.Label("Варианты ответов (через запятую):")
             <div class="col-md-10">
-                <input type="text" name=variant />
+                <input type="text" name=variant size="40" />
             </div>
         </div>
 
         <div class="form-group">
             @Html.Label("Правильный ответ/ответы (через запятую):")
             <div class="col-md-10">
-                <input type="text" name=correct />
+                <input type="text" name=correct size="40" />
             </div>
         </div>
 
