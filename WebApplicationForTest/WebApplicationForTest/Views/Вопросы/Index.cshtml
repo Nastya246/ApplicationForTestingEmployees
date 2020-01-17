@@ -112,15 +112,13 @@
                     }
                     else if (item.Тип_ответа.Replace(" ", "") == "Соотношение")
                     {
-                        <tr>
-                            <td><input type="hidden" value=@item.id_вопроса name="id_Q" /></td>
-                        </tr>
+                       
                         <tr>
                             @if (itemO.Флаг_подвопроса == true)
                             {
 
                                 <td> @Html.DisplayFor(m => itemO.Текст_ответа) </td>
-                                <td><input type="text" name=@itemO.id_ответа /></td>
+                                <td><input type="text" name=@(itemO.id_ответа + "-"+ item.id_вопроса) /></td>
                             }
                         </tr>
                     }

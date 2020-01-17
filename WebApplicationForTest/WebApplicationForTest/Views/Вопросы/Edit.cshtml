@@ -12,104 +12,104 @@
 {
     @Html.AntiForgeryToken()
     
-<div class="form-horizontal">
-    
-    <hr />
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    @Html.HiddenFor(model => model.id_вопроса)
+    <div class="form-horizontal">
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.id_Теста, "id_Теста", htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DropDownList("id_Теста", (SelectList)ViewBag.id_Теста, htmlAttributes: new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.id_Теста, "", new { @class = "text-danger" })
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.id_вопроса)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.id_Теста, "id_Теста", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("id_Теста", (SelectList)ViewBag.id_Теста, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.id_Теста, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Текст_вопроса, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Текст_вопроса, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Текст_вопроса, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Тип_ответа, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+
+                <select id="Тип_ответа" name="Тип_ответа">
+                    @if (ViewBag.ТипОтвета == "Выбор")
+                    {
+                        <option selected value="Выбор">Выбор</option>
+                    }
+                    else
+                    {
+                        <option value="Выбор">Выбор</option>
+                    }
+                    @if (ViewBag.ТипОтвета == "Ввод")
+                    {
+                        <option selected value="Ввод">Ввод</option>
+                    }
+                    else
+                    {
+                        <option value="Ввод">Ввод</option>
+                    }
+                    @if (ViewBag.ТипОтвета == "Несколько")
+                    {
+                        <option selected value="Несколько">Несколько</option>
+                    }
+                    else
+                    {
+                        <option value="Несколько">Несколько</option>
+                    }
+
+                    @if (ViewBag.ТипОтвета == "Разрыв")
+                    {
+                        <option selected value="Разрыв">Разрыв</option>
+                    }
+                    else
+                    {
+                        <option value="Разрыв">Разрыв</option>
+                    }
+                    @if (ViewBag.ТипОтвета == "Соотношение")
+                    {
+                        <option selected value="Соотношение">Соотношение</option>
+                    }
+                    else
+                    {
+                        <option value="Соотношение">Соотношение</option>
+                    }
+                </select>
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Варианты понятий (через запятую, только для типа \"Соотношение\"):")
+            <div class="col-md-10">
+                <input type="text" name=def width="300" value="@ViewBag.Понятия" />
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.Label("Варианты ответов (через запятую):")
+            <div class="col-md-10">
+                <input type="text" name=variant width="300" value="@ViewBag.Варианты" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Правильный ответ/ответы (через запятую):")
+            <div class="col-md-10">
+                <input type="text" name=correct width="300" value="@ViewBag.ВерныйОтвет" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Сохранить" class="btn btn-default" />
+            </div>
         </div>
     </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.Текст_вопроса, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Текст_вопроса, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Текст_вопроса, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.Тип_ответа, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-
-            <select id="Тип_ответа" name="Тип_ответа">
-                @if (ViewBag.ТипОтвета == "Выбор")
-                {
-                    <option selected value="Выбор">Выбор</option>
-                }
-                else
-                {
-                    <option value="Выбор">Выбор</option>
-                }
-                @if (ViewBag.ТипОтвета == "Ввод")
-                {
-                    <option selected value="Ввод">Ввод</option>
-                }
-                else
-                {
-                    <option value="Ввод">Ввод</option>
-                }
-                @if (ViewBag.ТипОтвета == "Несколько")
-                {
-                    <option selected value="Несколько">Несколько</option>
-                }
-                else
-                {
-                    <option value="Несколько">Несколько</option>
-                }
-
-                @if (ViewBag.ТипОтвета == "Разрыв")
-                {
-                    <option selected value="Разрыв">Разрыв</option>
-                }
-                else
-                {
-                    <option value="Разрыв">Разрыв</option>
-                }
-                @if (ViewBag.ТипОтвета == "Соотношение")
-                {
-                    <option selected value="Соотношение">Соотношение</option>
-                }
-                else
-                {
-                    <option value="Соотношение">Соотношение</option>
-                }
-            </select>
-
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.Label("Варианты понятий (через запятую, только для типа \"Соотношение\"):")
-        <div class="col-md-10">
-            <input type="text" name=def width="300" value="@ViewBag.Понятия" />
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.Label("Варианты ответов (через запятую):")
-        <div class="col-md-10">
-            <input type="text" name=variant width="300"  value="@ViewBag.Варианты" />
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.Label("Правильный ответ/ответы (через запятую):")
-        <div class="col-md-10">
-            <input type="text" name=correct width="300"  value="@ViewBag.ВерныйОтвет" />
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Сохранить" class="btn btn-default" />
-        </div>
-    </div>
-</div>
 }
 
 <div>

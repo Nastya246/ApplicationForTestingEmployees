@@ -49,7 +49,7 @@ namespace WebApplicationForTest.Controllers
                 {
                     id_Test = Convert.ToInt32(temp.GetValue(kD).AttemptedValue);
                 }
-                else if (kD == "id_Q") //если получили id_вопроса типа "соотношение", сохраняем в отдельной переменной
+              /*  else if (kD == "id_Q") //если получили id_вопроса типа "соотношение", сохраняем в отдельной переменной
                     {
                     tempStrQ= temp.GetValue(kD).AttemptedValue.Replace(" ", "");
                     string[] mystringTemp = tempStrQ.Split(',');
@@ -57,9 +57,18 @@ namespace WebApplicationForTest.Controllers
                     flagS = (from que in db.Ответы where que.id_Вопроса == tempIdQ select que).Count();
                     flagS = flagS / 2; // количество подвопросов в соотношении
                 }
+                */
                 else
                 {
                     valD = temp.GetValue(kD).AttemptedValue.Replace(" ", ""); // если получили ответы пользователя, то сохраняем в словарь
+                    string[] mystringSootn = kD.Split('-');
+
+                    if (mystringSootn.Count()==2) // пришел ответ типа соотношение
+                    {
+                        kD = "О " + mystringSootn[0]; // помечаем ответы из соотношения буквой "О" перед ключом 
+                      
+                    }
+
                     string[] mystring = valD.Split(','); //обработка результатов из checkbox
                     List<string> ls = new List<string>(mystring.Count());
                     if (mystring.Count()>1) //значит пришел результат со множетсвенным выбором, обрабатываем его
@@ -79,11 +88,11 @@ namespace WebApplicationForTest.Controllers
                             valD = valD + l+ " ";
                         }
                     }
-                    if (flagS>0)
+                 /*   if (flagS>0)
                     {
                         kD = "О "+kD; // помечаем ответы из соотношения буквой "О" перед ключом 
                         flagS--;
-                    }
+                    } */
                     kD = kD.Replace("/", "");
                     resultA.Add(kD, valD);
                     
@@ -180,8 +189,10 @@ namespace WebApplicationForTest.Controllers
                 }
                 else if (q1.Тип_ответа.Replace(" ", "") == "Соотношение") //ищем вопрос на соотношение в словаре
                 {
+                    tempAnsw = "";
                     foreach (var sootnosh in resultA)
                     {
+                      
                         if ((sootnosh.Key)[0] == 'О')
                         {
                             int id_Ans = Convert.ToInt32(sootnosh.Key.Replace("О ", ""));
