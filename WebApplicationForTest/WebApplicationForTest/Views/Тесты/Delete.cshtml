@@ -6,7 +6,9 @@
 }
 
 <h2>Удаление темы</h2>
+<p>@Html.ActionLink("К списку тем", "Index", new { razdel = Model.Id_Раздела, redactor = "redactor" })
 
+@Html.ActionLink("К списку разделов", "Index", "Разделы", new { redactor = "redactor" }, null)</p>
 <h3>Вы действительно хотите удалить эту тему?</h3>
 <div>
 
@@ -44,8 +46,23 @@
         <input type="hidden" value="redactor" name=redactor />
         @Html.HiddenFor(model => model.Id_Раздела)
         <div class="form-actions no-color">
-            <input type="submit" value="Удалить" class="btn btn-default" /> |
-            @Html.ActionLink("К списку тем", "Index", new { razdel = Model.Id_Раздела, redactor = "redactor" })
+            <input type="submit" value="Удалить" class="btn btn-default" /> 
+           
+
+            <form method="post" action="~/Home/Menu">
+                <table class="table">
+                    <tr>
+                        <td>
+                            <input type="hidden" value="redactor" name="Login" />
+                            <input type="hidden" value="redactor12345" name="Password" />
+                            <input type="submit" value="В меню" />
+
+
+                        </td>
+                    </tr>
+
+                </table>
+            </form>
         </div>
     }
 </div>

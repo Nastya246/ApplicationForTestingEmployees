@@ -7,7 +7,9 @@
 
 <h2>Добавить тему</h2>
 
+<p>@Html.ActionLink("К списку тем", "Index", new { razdel = @ViewBag.Раздел, redactor = "redactor" })
 
+@Html.ActionLink("К списку разделов", "Index", "Разделы", new { redactor = "redactor" },null)</p>
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
@@ -48,7 +50,21 @@
     </div>
 }
 
-@Html.ActionLink("К списку тем", "Index", new { razdel = @ViewBag.Раздел, redactor = "redactor" })
+
+<form method="post" action="~/Home/Menu">
+    <table class="table">
+        <tr>
+            <td>
+                <input type="hidden" value="redactor" name="Login" />
+                <input type="hidden" value="redactor12345" name="Password" />
+                <input type="submit" value="В меню" />
+
+
+            </td>
+        </tr>
+
+    </table>
+</form>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

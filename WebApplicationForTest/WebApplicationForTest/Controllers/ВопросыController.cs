@@ -266,6 +266,7 @@ namespace WebApplicationForTest.Controllers
             {
                 id_Topic = Convert.ToInt32(topic);
                 Тесты тема = db.Тесты.Find(id_Topic);
+                ViewBag.Раздел = тема.Id_Раздела;
                 ViewBag.НазваниеТеста = тема.Название_темы_теста.Replace("  ", "");
                 ViewBag.IdТеста = id_Topic;
                 var вопросы = db.Вопросы.Include(в => в.Тесты).Include(в => в.Ответы);
@@ -309,9 +310,13 @@ namespace WebApplicationForTest.Controllers
             }
         }
         [HttpPost] // доступные вопросы по выбранному тесту
-        public async Task<ActionResult> Index(Тесты item, string redactor)
+        public async Task<ActionResult> Index(Тесты item, string redactor, string id_user)
         {
-
+            if (id_user != "")
+            {
+               int id_user1 = Convert.ToInt32(id_user);
+                ViewBag.Id_user = id_user1;
+            }
             string nameTest = item.Название_темы_теста;
             ViewBag.НазваниеТеста = nameTest; //передаем название теста в представление
 
@@ -323,6 +328,8 @@ namespace WebApplicationForTest.Controllers
                     userТестId = t.id_теста;
                 }
             }
+            Тесты тема = db.Тесты.Find(userТестId);
+            ViewBag.Раздел = тема.Id_Раздела;
             ViewBag.IdТеста = userТестId;
             var вопросы = db.Вопросы.Include(в => в.Тесты).Include(в => в.Ответы);
             вопросы = (from v in db.Вопросы where v.id_Теста == userТестId select v).Include(v => v.Ответы); //выбираем вопросы для кокретного теста по id теста
@@ -365,10 +372,13 @@ namespace WebApplicationForTest.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Вопросы вопросы = await db.Вопросы.FindAsync(id);
+
             if (вопросы == null)
             {
                 return HttpNotFound();
             }
+
+            ViewBag.Раздел = вопросы.Тесты.Id_Раздела;
             return View(вопросы);
         }
     
@@ -378,7 +388,8 @@ namespace WebApplicationForTest.Controllers
             Тесты тест = db.Тесты.Find(id); //находим тему, в которой этот вопрос
             ViewBag.Тест = тест.id_теста;
             ViewBag.id_Теста = new SelectList(db.Тесты, "id_теста", "Название_темы_теста");
-
+            ViewBag.Раздел = тест.Id_Раздела;
+            
             return View();
         }
 
@@ -435,6 +446,7 @@ namespace WebApplicationForTest.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.Раздел = вопросы.Тесты.Id_Раздела;
             int selected = вопросы.id_Теста;
             ViewBag.id_Теста = new SelectList(db.Тесты.Where(a=>a.id_теста==вопросы.id_Теста), "id_теста", "Название_темы_теста", selected);
             ViewBag.ТипОтвета = вопросы.Тип_ответа.Replace(" ", "");
@@ -552,10 +564,12 @@ namespace WebApplicationForTest.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Вопросы вопросы = await db.Вопросы.FindAsync(id);
+
             if (вопросы == null)
             {
                 return HttpNotFound();
             }
+            ViewBag.Раздел = вопросы.Тесты.Id_Раздела;
             return View(вопросы);
         }
 
@@ -565,9 +579,15 @@ namespace WebApplicationForTest.Controllers
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
             Вопросы вопросы = await db.Вопросы.FindAsync(id);
-            db.Вопросы.Remove(вопросы);
+            string id_Topic = вопросы.id_Теста.ToString();
+            var answDelete = await (from answ in db.Ответы where answ.id_Вопроса == вопросы.id_вопроса select answ).ToListAsync(); //ответы к вопросам
+            foreach (var aD in answDelete )
+            {
+                db.Ответы.Remove(aD); //удаляем ответы к вопросам
+            }
+            db.Вопросы.Remove(вопросы); //удаляем вопрос
             await db.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { topic = id_Topic, redactor = "redactor" });
         }
 
         protected override void Dispose(bool disposing)

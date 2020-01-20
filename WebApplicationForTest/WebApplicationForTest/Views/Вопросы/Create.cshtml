@@ -6,7 +6,10 @@
 }
 
 <h2>Добавить вопрос в тест</h2>
+<p>@Html.ActionLink("К списку вопросов", "Index", new { topic = @ViewBag.Тест, redactor = "redactor" })
 
+@Html.ActionLink("К списку тем", "Index", "Тесты", new { razdel = @ViewBag.Раздел, redactor = "redactor" },null)
+@Html.ActionLink("К списку разделов", "Index", "Разделы", new { redactor = "redactor" },null)</p>
 <p>
     <big>
         <ul>
@@ -18,8 +21,8 @@
             <li>
                 "Разрыв" - вопрос с пропущенными словами в тексте. При вводе текста в поле "Текст Вопроса" на месте пропуска слова введите "...". В правильных ответах укажите правильные варианты по их порядку в тексте через запятую, остальные поля не заполняются <br />
             </li>
-<li>
-                 "Соотношение" - вопрос, где требуется соотнести понятия. В поле "Правильный ответ" укажите ответы в верном порядке через запятую. Например, вопрос "Соотнесите страны и города", в поле "Варианты понятий" введите "Россия, Франция, Китай", тогда поле "Правильный ответ" - "Москва, Париж, Пекин", остальные поля не заполняются<br />
+            <li>
+                "Соотношение" - вопрос, где требуется соотнести понятия. В поле "Правильный ответ" укажите ответы в верном порядке через запятую. Например, вопрос "Соотнесите страны и города", в поле "Варианты понятий" введите "Россия, Франция, Китай", тогда поле "Правильный ответ" - "Москва, Париж, Пекин", остальные поля не заполняются<br />
             </li>
         </ul>
     </big>
@@ -39,7 +42,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Тип_ответа, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-             
+
                 <select id="Тип_ответа" name="Тип_ответа">
                     <option value="Выбор">Выбор</option>
                     <option value="Ввод">Ввод</option>
@@ -48,11 +51,11 @@
                     <option value="Соотношение">Соотношение</option>
 
                 </select>
-              
+
             </div>
         </div>
 
-      
+
         <div class="form-group">
             @Html.LabelFor(model => model.Текст_вопроса, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -63,7 +66,7 @@
         <div class="form-group">
             @Html.Label("Варианты понятий (через запятую, только для типа \"Соотношение\"):")
             <div class="col-md-10">
-                <input type="text" name=def size="40"/>
+                <input type="text" name=def size="40" />
             </div>
         </div>
         <div class="form-group">
@@ -90,7 +93,15 @@
     </div>
 }
 
+<div>
+   
+    <form method="post" action="~/Home/Menu">
+        <input type="hidden" value="redactor" name="Login" />
+        <input type="hidden" value="redactor12345" name="Password" />
+        <input type="submit" value="В меню" />
 
+    </form>
+</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

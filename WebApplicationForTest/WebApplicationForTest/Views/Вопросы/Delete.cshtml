@@ -5,9 +5,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Delete</h2>
+<h2>Удаление</h2>
+<p>@Html.ActionLink("К списку вопросов", "Index", new { topic = Model.id_Теста, redactor = "redactor" })
 
-<h3>Are you sure you want to delete this?</h3>
+@Html.ActionLink("К списку тем", "Index", "Тесты",  new { razdel = @ViewBag.Раздел, redactor = "redactor" },null)
+@Html.ActionLink("К списку разделов", "Index", "Разделы",  new { redactor = "redactor" }, null)</p>
+<h3>Вы действительно хотите удалить этот вопрос и ответы к нему?</h3>
 <div>
     <h4>Вопросы</h4>
     <hr />
@@ -29,21 +32,32 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Тесты.Название_теста)
+            @Html.DisplayNameFor(model => model.Тесты.Название_темы_теста)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Тесты.Название_теста)
+            @Html.DisplayFor(model => model.Тесты.Название_темы_теста)
         </dd>
 
     </dl>
 
-    @using (Html.BeginForm()) {
+    @using (Html.BeginForm())
+    {
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+            <input type="submit" value="Удалить" class="btn btn-default" /> 
+
         </div>
+
     }
+    <div>
+       
+        <form method="post" action="~/Home/Menu">
+            <input type="hidden" value="redactor" name="Login" />
+            <input type="hidden" value="redactor12345" name="Password" />
+            <input type="submit" value="В меню" />
+
+        </form>
+    </div>
 </div>

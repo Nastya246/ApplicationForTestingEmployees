@@ -6,7 +6,10 @@
 }
 
 <h2>Просмотр деталей</h2>
+<p>@Html.ActionLink("Редактировать", "Edit", new { id = Model.id_теста })
+@Html.ActionLink("К списку тем", "Index", new { razdel = Model.Id_Раздела, redactor = "redactor" })</p>
 
+<p>@Html.ActionLink("К списку разделов", "Index", "Разделы", new { redactor = "redactor" },null)</p>
 <div>
     <h4>Темы</h4>
     <hr />
@@ -37,7 +40,19 @@
 
     </dl>
 </div>
-<p>
-    @Html.ActionLink("Редактировать", "Edit", new { id = Model.id_теста }) |
-    @Html.ActionLink("К списку тем", "Index", new { razdel = Model.Id_Раздела, redactor = "redactor" })
-</p>
+
+
+<form method="post" action="~/Home/Menu">
+    <table class="table">
+        <tr>
+            <td>
+                <input type="hidden" value="redactor" name="Login" />
+                <input type="hidden" value="redactor12345" name="Password" />
+                <input type="submit" value="В меню" />
+
+
+            </td>
+        </tr>
+
+    </table>
+</form>

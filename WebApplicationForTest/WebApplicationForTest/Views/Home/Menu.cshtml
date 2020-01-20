@@ -14,18 +14,20 @@
 
     @if ((ViewBag.Login == "redactor") && (ViewBag.Password == "redactor12345"))
     {
+        <input type="hidden" value="redactor" name="redactor" />
         <h3>Вы вошли как редактор</h3><br />
         <form method="post" action="ActionRedactor">
             <table>
                 <tr> <td> <p><a style="font-size:20px;" href="~/Разделы/Create">Новый раздел</a> </p></td></tr>
                 <tr> <td> <p><a style="font-size:20px;" href="~/Разделы/Index">Редактирование разделов</a> </p></td></tr>
-
+                <tr> <td> <p><br /><small><a href="~/Home/Index">Сменить пользователя</a></small></p></td> </tr>
 
             </table>
         </form>
     }
     else if ((ViewBag.Login == "otchet") && (ViewBag.Password == "otchet12345"))
     {
+        <input type="hidden" value="otchet" name="otchet" />
         <h4>Вы вошли в режим отчетности</h4><br />
         <form method="post" action="ActionOtchet">
             <table>
@@ -38,6 +40,7 @@
     }
     else if ((ViewBag.Login == "admin") && (ViewBag.Password == "admin12345"))
     {
+        <input type="hidden" value="admin" name="admin" />
         <h5>Вы вошли как администратор</h5><br />
         <table>
             <tr> <td> <p><a style="font-size:20px;" href="~/Пользователи/Index">Пользователи</a> </p></td> </tr>
@@ -100,7 +103,7 @@
 
     else if ((ViewBag.Login == "practice") && (ViewBag.Password == "practice12345"))
     {
-
+        <input type="hidden" value="practice" name="practice" />
         <table>
             <tr> <td> <p><a style="font-size:20px;" href="~/Практика/Index">Журнал по практике</a><br /> </p></td> </tr>
 
@@ -120,6 +123,7 @@
                 <input type="hidden" value="@ViewBag.Login" name="Login" />
                 <input type="hidden" value="@ViewBag.Password" name="Password" />
                 <input type="submit" value="Выбор раздела для тестирования" />
+                <input type="hidden" value=@ViewBag.Id_user name="id_user" />
 
             </form>
         }

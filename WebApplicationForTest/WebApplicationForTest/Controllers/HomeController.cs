@@ -61,22 +61,14 @@ namespace WebApplicationForTest.Controllersd
            
             ViewBag.Login = Login;
             ViewBag.Password = Password;
-            int flagLog = 0;
-            int flagPas = 0;
-           foreach (var temp in db.Пользователи) //если ввели логи и пароль, то корректно ли
-            {
-                if (temp.Логин.Replace(" ", "") == Login)
-                {
-                    flagLog = 1;
-                    if (temp.Пароль.Replace(" ", "") == Password)
-                    {
-                        flagPas = 1;
-                    }
-                    }
-            }
-            if ((flagLog==1)&&(flagPas==1))
+            
+            //если ввели логин и пароль, то корректно ли
+            var userLogin = (from user in db.Пользователи where user.Пароль.Replace(" ", "") == Password && user.Логин.Replace(" ", "") == Login select user);
+           
+            if (userLogin.Count()!=0)
                     {
                 ViewBag.LogPas = "Success";
+                ViewBag.Id_user = userLogin.First().id_user;
             }
             if ((Login == "redactor") && (Password == "redactor12345"))
             {

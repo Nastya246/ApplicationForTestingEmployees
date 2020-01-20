@@ -5,8 +5,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Edit</h2>
+<h2>Редактирование</h2>
+<p>@Html.ActionLink("К списку тем", "Index", new { razdel = Model.Id_Раздела, redactor = "redactor" })
 
+@Html.ActionLink("К списку разделов", "Index", "Разделы", new { redactor = "redactor" },null)</p>
 
 @using (Html.BeginForm())
 {
@@ -52,9 +54,25 @@
     </div>
 }
 
-    <div>
-        @Html.ActionLink("К списку тем", "Index", new { razdel = Model.Id_Раздела, redactor="redactor" })
-    </div>
+<div>
+
+
+    <form method="post" action="~/Home/Menu">
+        <table class="table">
+            <tr>
+                <td>
+                    <input type="hidden" value="redactor" name="Login" />
+                    <input type="hidden" value="redactor12345" name="Password" />
+                    <input type="submit" value="В меню" />
+
+
+                </td>
+            </tr>
+
+        </table>
+    </form>
+</div>
+
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

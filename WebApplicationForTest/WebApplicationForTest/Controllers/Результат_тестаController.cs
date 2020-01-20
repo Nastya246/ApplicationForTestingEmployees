@@ -37,6 +37,7 @@ namespace WebApplicationForTest.Controllers
             int flagS = 0; // для количества вопросов в соотношений
             int tempIdQ = 0; //для получения id вопроса типа "соотношение"
             string tempStrQ = "";
+            int id_User = 0;
             foreach (var val in k)
             {
                
@@ -49,15 +50,20 @@ namespace WebApplicationForTest.Controllers
                 {
                     id_Test = Convert.ToInt32(temp.GetValue(kD).AttemptedValue);
                 }
-              /*  else if (kD == "id_Q") //если получили id_вопроса типа "соотношение", сохраняем в отдельной переменной
-                    {
-                    tempStrQ= temp.GetValue(kD).AttemptedValue.Replace(" ", "");
-                    string[] mystringTemp = tempStrQ.Split(',');
-                      tempIdQ = Convert.ToInt32(mystringTemp[0]);
-                    flagS = (from que in db.Ответы where que.id_Вопроса == tempIdQ select que).Count();
-                    flagS = flagS / 2; // количество подвопросов в соотношении
+                if (kD == "id_user") //если получили id_пользователя, сохраняем в отдельной переменной
+                {
+                    id_User = Convert.ToInt32(temp.GetValue(kD).AttemptedValue);
+                    ViewBag.Id_user = id_User;
                 }
-                */
+                /*  else if (kD == "id_Q") //если получили id_вопроса типа "соотношение", сохраняем в отдельной переменной
+                      {
+                      tempStrQ= temp.GetValue(kD).AttemptedValue.Replace(" ", "");
+                      string[] mystringTemp = tempStrQ.Split(',');
+                        tempIdQ = Convert.ToInt32(mystringTemp[0]);
+                      flagS = (from que in db.Ответы where que.id_Вопроса == tempIdQ select que).Count();
+                      flagS = flagS / 2; // количество подвопросов в соотношении
+                  }
+                  */
                 else
                 {
                     valD = temp.GetValue(kD).AttemptedValue.Replace(" ", ""); // если получили ответы пользователя, то сохраняем в словарь

@@ -46,6 +46,10 @@ namespace WebApplicationForTest.Controllers
         [HttpPost] // доступные Темы в разделе
         public async Task<ActionResult> Index( string razdel, int? id_user, string redactor, Тесты тесты)
         {
+            if (id_user!=null)
+            {
+                ViewBag.Id_user = id_user.ToString();
+            }
             int id_Section = 0;
 
             if (razdel != null)
@@ -115,9 +119,16 @@ namespace WebApplicationForTest.Controllers
             тесты.Id_Раздела = Id_Раздела;
             if (ModelState.IsValid)
             {
-              
-                db.Тесты.Add(тесты);
-                db.SaveChanges();
+
+               тесты.Название_темы_теста = тесты.Название_темы_теста.TrimEnd(' ');
+                var temp = from v in db.Тесты where v.Название_темы_теста.Replace(" ", "").ToLower() == тесты.Название_темы_теста.Replace(" ", "").ToLower() select v;
+                if (temp.Count() == 0) //проверяем, есть ли тема с таки же именем, если нет, то добавляем
+                {
+
+                    db.Тесты.Add(тесты);
+                    await db.SaveChangesAsync();
+                }
+               
                 return RedirectToAction("Index", new { razdel=тесты.Id_Раздела.ToString(), redactor ="redactor"});
             }
 
@@ -154,8 +165,15 @@ namespace WebApplicationForTest.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(тесты).State = EntityState.Modified;
-                await db.SaveChangesAsync();
+                тесты.Название_темы_теста = тесты.Название_темы_теста.TrimEnd(' ');
+                var temp = from v in db.Тесты where v.Название_темы_теста.Replace(" ", "").ToLower() == тесты.Название_темы_теста.Replace(" ", "").ToLower() select v;
+                if (temp.Count() == 0) //проверяем, есть ли тема с таки же именем, если нет, то добавляем
+                {
+
+                    db.Entry(тесты).State = EntityState.Modified;
+                    await db.SaveChangesAsync();
+                }
+               
                 return RedirectToAction("Index", new { razdel = тесты.Id_Раздела.ToString(), redactor = "redactor" });
             }
             ViewBag.id_Темы = new SelectList(db.Разделы, "id_Раздела", "Название_раздела", тесты.Id_Раздела);
@@ -182,8 +200,26 @@ namespace WebApplicationForTest.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            Тесты тесты = await db.Тесты.FindAsync(id);
-            db.Тесты.Remove(тесты);
+            Тесты тесты = await db.Тесты.FindAsync(id); //получаем id для удаления теста
+            var questDelete = await (from q in db.Вопросы where q.id_Теста == тесты.id_теста select q).ToListAsync();//вопросы в теме
+            List<Ответы> answerDelete = new List<Ответы>();//здесь сохраним ответы к вопросам, которые удалим
+            foreach (var q in questDelete)
+            {
+                var ansD  = await (from a in db.Ответы where a.id_Вопроса == q.id_вопроса select a).ToListAsync(); //получили все ответы для каждого вопроса
+                foreach (var aD in ansD)
+                {
+                    answerDelete.Add(aD); //добавляем ответы в список
+                }
+            }
+            foreach (var a in answerDelete)
+            {
+                db.Ответы.Remove(a); //удаляем ответы
+            }
+            foreach (var q in questDelete)
+            {
+                db.Вопросы.Remove(q); //удаляем вопросы
+            }
+            db.Тесты.Remove(тесты); //удаляем тему
             await db.SaveChangesAsync();
             return RedirectToAction("Index", new { razdel = тесты.Id_Раздела.ToString(), redactor = "redactor" });
         }

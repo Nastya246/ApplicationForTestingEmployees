@@ -7,7 +7,11 @@
 @if (ViewBag.Id_user == "redactor")
 {
     <h2>Темы для тестирования из раздела "@ViewBag.НазваниеРаздела"</h2> <br /><br />
-      @Html.ActionLink("Добавить новую тему", "Create",new { id = @ViewBag.IdРаздела }) 
+   <p> @Html.ActionLink("Добавить новую тему", "Create", new { id = @ViewBag.IdРаздела })
+    @Html.ActionLink("К списку разделов", "Index", "Разделы", new { redactor = "redactor" },null)</p>
+    
+    
+
 }
 else
 {
@@ -52,17 +56,17 @@ else
                     {
 
 
-                    <small>
-                        @Html.ActionLink("Переименовать", "Edit", new { id = item.id_теста }) |
-                    </small>
-                    <small>
-                        @Html.ActionLink("Детали", "Details", new { id = item.id_теста }) |
-                    </small>
-                <small>
-                    @Html.ActionLink("Удалить", "Delete", new { id = item.id_теста })
-                </small>
-                <br />
-            }
+                        <small>
+                            @Html.ActionLink("Переименовать", "Edit", new { id = item.id_теста }) |
+                        </small>
+                        <small>
+                            @Html.ActionLink("Детали", "Details", new { id = item.id_теста }) |
+                        </small>
+                        <small>
+                            @Html.ActionLink("Удалить", "Delete", new { id = item.id_теста })
+                        </small>
+                        <br />
+                    }
 
                 </td>
             </tr>
@@ -80,6 +84,7 @@ else
                 }
                 else
                 {
+                    <input type="hidden" value=@ViewBag.Id_user name="id_user" />
                     <br />
                     <br /><input type="submit" value="Начать" />}
             </td>
@@ -89,3 +94,21 @@ else
 
     </table>
 </form>
+@if (ViewBag.Id_user == "redactor")
+{
+
+    <form method="post" action="~/Home/Menu">
+        <table class="table">
+            <tr>
+                <td>
+                    <input type="hidden" value="redactor" name="Login" />
+                    <input type="hidden" value="redactor12345" name="Password" />
+                    <input type="submit" value="В меню" />
+
+
+                </td>
+            </tr>
+
+        </table>
+    </form>
+}

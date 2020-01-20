@@ -17,8 +17,8 @@
         <td>
             <form method="post" action="~/Разделы/Index">
                 <br /><input type="submit" value="Выбрать другой тест" />
-        
-        </form>
+                <input type="hidden" value=@ViewBag.Id_user name="id_user" />
+            </form>
         </td>
     </tr>
 @foreach (string result1 in ViewBag.QuestionAnswer)

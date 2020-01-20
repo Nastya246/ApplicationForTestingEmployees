@@ -6,7 +6,10 @@
 }
 
 <h2>Добавить раздел</h2>
+<p>
+    @Html.ActionLink("К списку разделов", "Index", new { redactor = "redactor" })
 
+</p>
 
 @using (Html.BeginForm())
 {
@@ -37,7 +40,7 @@
 <form method="post" action="~/Home/Menu">
     <input type="hidden" value="redactor" name="Login" />
     <input type="hidden" value="redactor12345" name="Password" />
-    <input type="submit" value="Назад" />
+    <input type="submit" value="В меню" />
 
 </form>
 @section Scripts {

@@ -6,12 +6,15 @@
 }
 
 <h2>Редактирование вопроса</h2>
+<p>@Html.ActionLink("К списку вопросов", "Index", new { topic = Model.id_Теста, redactor = "redactor" })
 
+@Html.ActionLink("К списку тем", "Index", "Тесты", new { razdel = @ViewBag.Раздел, redactor = "redactor" },null)
+@Html.ActionLink("К списку разделов", "Index", "Разделы", new { redactor = "redactor" }, null)</p>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
 
         <hr />
@@ -113,7 +116,13 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+
+    <form method="post" action="~/Home/Menu">
+        <input type="hidden" value="redactor" name="Login" />
+        <input type="hidden" value="redactor12345" name="Password" />
+        <input type="submit" value="В меню" />
+
+    </form>
 </div>
 
 @section Scripts {

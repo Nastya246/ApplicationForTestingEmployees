@@ -11,6 +11,7 @@
 {
     <form method="post" action="~/Результат_теста/Index">
         <input type="hidden" value=@ViewBag.IdТеста name="id_test" />
+        <input type="hidden" value=@ViewBag.Id_user name="id_user" />
         <table class="table">
             <tr>
 
@@ -112,7 +113,7 @@
                     }
                     else if (item.Тип_ответа.Replace(" ", "") == "Соотношение")
                     {
-                       
+
                         <tr>
                             @if (itemO.Флаг_подвопроса == true)
                             {
@@ -152,6 +153,8 @@ else
         <tr>
             <td>
                 @Html.ActionLink("Добавить вопрос", "Create", new { id = @ViewBag.IdТеста })
+                @Html.ActionLink("К списку тем", "Index", "Тесты", new { razdel = @ViewBag.Раздел, redactor = "redactor" }, null)
+                @Html.ActionLink("К списку разделов", "Index", "Разделы", new { redactor = "redactor" }, null)
             </td>
         </tr>
         @foreach (var item in Model)
@@ -215,11 +218,14 @@ else
 
 
     </table>
-   
-    <form method="post" action="~/Home/Menu">
-        <input type="hidden" value="redactor" name="Login" />
-        <input type="hidden" value="redactor12345" name="Password" />
-        <input type="submit" value="В меню" />
 
-    </form>
+    <div>
+       
+        <form method="post" action="~/Home/Menu">
+            <input type="hidden" value="redactor" name="Login" />
+            <input type="hidden" value="redactor12345" name="Password" />
+            <input type="submit" value="В меню" />
+
+        </form>
+    </div>
 }
