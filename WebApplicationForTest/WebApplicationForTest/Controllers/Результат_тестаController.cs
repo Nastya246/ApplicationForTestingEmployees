@@ -38,6 +38,7 @@ namespace WebApplicationForTest.Controllers
             int tempIdQ = 0; //для получения id вопроса типа "соотношение"
             string tempStrQ = "";
             int id_User = 0;
+            string data = "";
             foreach (var val in k)
             {
                
@@ -54,6 +55,11 @@ namespace WebApplicationForTest.Controllers
                 {
                     id_User = Convert.ToInt32(temp.GetValue(kD).AttemptedValue);
                     ViewBag.Id_user = id_User;
+                }
+                if (kD == "Data") //если получили дату прохождения теста, сохраняем в отдельной переменной
+                {
+                    data = temp.GetValue(kD).AttemptedValue;
+                    ViewBag.Data = data;
                 }
                 /*  else if (kD == "id_Q") //если получили id_вопроса типа "соотношение", сохраняем в отдельной переменной
                       {
@@ -446,11 +452,34 @@ namespace WebApplicationForTest.Controllers
                 }
             }
             
-            double resulProcentTheory = Math.Round((((double)Answ / (double)(QuestC))* 100.0), 3); //результат теста в процентах
-            ViewBag.ResultProcent = resulProcentTheory; //передаем результат в % в представление
+            double resulProcentTheory = Math.Round((((double)Answ / (double)(QuestC))* 100.0), 2); //результат теста в процентах
+            ViewBag.ResultProcent = Convert.ToInt32(resulProcentTheory); //передаем результат в % в представление
             ViewBag.ResultQuestion = ResultQuestion; // передаем в представление список , где указано , что верно, а что нет
             ViewBag.QuestionAnswer = QuestionAnswer;
             nQ = 0;
+           
+            var usTestResult = await (from u in db.Результат_теста where u.id_User == id_User && u.id_Теста == id_Test select u).ToListAsync(); //Проверяем проходил ли пользователь этот тест
+           
+            if (usTestResult.Count > 0) //если проходил, то обновляем инфу
+            {
+                Результат_теста результат_Теста = db.Результат_теста.Find(usTestResult.First().id_результата_теста);
+                результат_Теста.id_User = id_User;
+                результат_Теста.id_Теста = id_Test;
+                результат_Теста.Дата_сдачи_теории = Convert.ToDateTime(data);
+                результат_Теста.Оценка_за_теорию = Convert.ToInt32(resulProcentTheory);
+                db.Entry(результат_Теста).State = EntityState.Modified;
+                await db.SaveChangesAsync();
+            }
+            else //если нет, то добавляем новую запись в бд
+            {
+                Результат_теста результат_Теста = new Результат_теста();
+                результат_Теста.id_User = id_User;
+                результат_Теста.id_Теста = id_Test;
+                результат_Теста.Дата_сдачи_теории = Convert.ToDateTime(data);
+                результат_Теста.Оценка_за_теорию = Convert.ToInt32(resulProcentTheory);
+                db.Результат_теста.Add(результат_Теста);
+                await db.SaveChangesAsync();
+            }
             var результат_вопроса = db.Результат_теста.Include(р => р.Пользователи);
             return View(await результат_вопроса.ToListAsync());
         }

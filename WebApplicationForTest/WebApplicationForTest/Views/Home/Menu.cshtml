@@ -18,8 +18,10 @@
         <h3>Вы вошли как редактор</h3><br />
         <form method="post" action="ActionRedactor">
             <table>
-                <tr> <td> <p><a style="font-size:20px;" href="~/Разделы/Create">Новый раздел</a> </p></td></tr>
-                <tr> <td> <p><a style="font-size:20px;" href="~/Разделы/Index">Редактирование разделов</a> </p></td></tr>
+                
+
+                <tr> <td> <p>@Html.ActionLink("Новый раздел", "Create", "Разделы", new { redactor = "redactor" }, new { @style = "font-size:20px;" }) </p></td></tr>
+                <tr> <td> <p>@Html.ActionLink("Редактировать раздел", "Index", "Разделы", new { redactor = "redactor" }, new { @style = "font-size:20px;" }) </p></td></tr>
                 <tr> <td> <p><br /><small><a href="~/Home/Index">Сменить пользователя</a></small></p></td> </tr>
 
             </table>
@@ -89,8 +91,8 @@
                 </tr>
                 <tr>
                     <td>
-                        <p><big>Дата:@DateTime.Now.ToString("MM/dd/yyyy HH:mm") </big></p><br />
-                        <input type="hidden" value="@DateTime.Now.ToString("MM/dd/yyyy HH:mm")" name="Date" />
+                        <p><big>Дата:@DateTime.Now.ToString("yyyy/MM/dd") </big></p><br />
+                        <input type="hidden" value="@DateTime.Now.ToString("yyyy/MM/dd")" name="Date" />
                     </td>
 
                 </tr>
@@ -105,8 +107,8 @@
     {
         <input type="hidden" value="practice" name="practice" />
         <table>
-            <tr> <td> <p><a style="font-size:20px;" href="~/Практика/Index">Журнал по практике</a><br /> </p></td> </tr>
-
+           
+            <tr> <td> <p>@Html.ActionLink("Журнал по практике", "Index", "Разделы", new { practice = "practice" }, new { @style = "font-size:20px;" }) </p></td></tr>
 
             <tr> <td> <p><br /><small><a href="~/Home/Index">Сменить пользователя</a></small></p></td> </tr>
 
@@ -122,8 +124,10 @@
             <form method="post" action="~/Разделы/Index">
                 <input type="hidden" value="@ViewBag.Login" name="Login" />
                 <input type="hidden" value="@ViewBag.Password" name="Password" />
-                <input type="submit" value="Выбор раздела для тестирования" />
+                <input type="hidden" value=@ViewBag.Data name="Data" />
                 <input type="hidden" value=@ViewBag.Id_user name="id_user" />
+                <input type="submit" value="Выбор раздела для тестирования" />
+                
 
             </form>
         }

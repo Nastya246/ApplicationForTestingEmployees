@@ -6,7 +6,9 @@
 }
 
 <h2>Добавить пользователя</h2>
-
+<div>
+    @Html.ActionLink("Вернуться к списку", "Index")
+</div>
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
@@ -58,7 +60,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.id_подразделения, "id_подразделения", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("id_подразделения", null, htmlAttributes: new { @class = "form-control" })
+                @Html.DropDownList("id_подразделения", ViewBag.id_подразделения as SelectList, "--Выбор подразделения--", htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.id_подразделения, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -66,7 +68,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.id_должности, "id_должности", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("id_должности", null, htmlAttributes: new { @class = "form-control" })
+                @Html.DropDownList("id_должности", ViewBag.id_должности as SelectList, "--Выбор должности--", htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.id_должности, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -79,9 +81,7 @@
     </div>
 }
 
-<div>
-    @Html.ActionLink("Вернуться к списку", "Index")
-</div>
+
 <form method="post" action="~/Home/Menu">
     <input type="hidden" value="admin" name="Login" />
     <input type="hidden" value="admin12345" name="Password" />

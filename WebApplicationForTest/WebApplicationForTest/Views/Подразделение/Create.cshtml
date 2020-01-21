@@ -5,9 +5,11 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2><big><big>Добавить подразделение</big></big><br /><br /><br /></h2>
+<h2>Добавить подразделение<br /><br /><br /></h2>
 
-
+<div>
+    @Html.ActionLink("Вернуться к списку подразделений", "Index")
+</div>
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
@@ -36,9 +38,7 @@
     </div>
 }
 
-    <div>
-      <br /><br /> @Html.ActionLink("Вернуться к списку подразделений", "Index")
-    </div>
+    
     <form method="post" action="~/Home/Menu">
         <input type="hidden" value="admin" name="Login" />
         <input type="hidden" value="admin12345" name="Password" />

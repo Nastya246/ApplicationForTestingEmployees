@@ -22,7 +22,7 @@ namespace WebApplicationForTest.Controllers
                
                 if (вопросы.Тип_ответа.Replace(" ", "") == "Выбор")
                 {
-                    string[] stringTempList = variant.Split(',');
+                    string[] stringTempList = (variant.Replace("  ", "")).Split(',');
                     var resulttemp = stringTempList.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
                     stringTempList = resulttemp;
                     foreach (var t in stringTempList)
@@ -54,11 +54,11 @@ namespace WebApplicationForTest.Controllers
                 }
                 else if (вопросы.Тип_ответа.Replace(" ", "") == "Несколько")
                 {
-                    string[] stringTempListVar = variant.Split(','); //разделяем варианты ответов
+                    string[] stringTempListVar = (variant.Replace("  ", "")).Split(','); //разделяем варианты ответов
                     var resulttemp = stringTempListVar.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
                     stringTempListVar = resulttemp;
 
-                    string[] stringTempListCor = correct.Split(',');
+                    string[] stringTempListCor = (correct.Replace("  ", "")).Split(',');
                     resulttemp = stringTempListCor.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
                     stringTempListCor = resulttemp;
                     int flag = 0;
@@ -121,11 +121,11 @@ namespace WebApplicationForTest.Controllers
                 else if (вопросы.Тип_ответа.Replace(" ", "") == "Соотношение")
                 {
 
-                    string[] stringTempListCor = correct.Split(',');//разделяем корректные варианты ответов
+                    string[] stringTempListCor = (correct.Replace("  ","")).Split(',');//разделяем корректные варианты ответов
                     var resulttemp = stringTempListCor.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
                     stringTempListCor = resulttemp;
 
-                    string[] stringTempListDef = def.Split(',');//разделяем понятия
+                    string[] stringTempListDef = (def.Replace("  ", "")).Split(',');//разделяем понятия
                     resulttemp = stringTempListDef.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
                     stringTempListDef = resulttemp;
                     int countDef = 1;
@@ -206,7 +206,7 @@ namespace WebApplicationForTest.Controllers
                         db.SaveChanges();
                     }
 
-                    string[] stringTempListVar = correct.Split(',');//подготавливаем для составления списка с вариантами ответов
+                    string[] stringTempListVar = (correct.Replace("  ", "")).Split(',');//подготавливаем для составления списка с вариантами ответов
                     var resulttemp = stringTempListVar.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
                     stringTempListVar = resulttemp;
                     Random rand = new Random();
@@ -310,12 +310,13 @@ namespace WebApplicationForTest.Controllers
             }
         }
         [HttpPost] // доступные вопросы по выбранному тесту
-        public async Task<ActionResult> Index(Тесты item, string redactor, string id_user)
+        public async Task<ActionResult> Index(Тесты item, string redactor, string id_user, string Data)
         {
             if (id_user != "")
             {
                int id_user1 = Convert.ToInt32(id_user);
                 ViewBag.Id_user = id_user1;
+                ViewBag.Data =Data;
             }
             string nameTest = item.Название_темы_теста;
             ViewBag.НазваниеТеста = nameTest; //передаем название теста в представление
@@ -407,8 +408,11 @@ namespace WebApplicationForTest.Controllers
             {
                 try {
                     Ответы ответы = new Ответы();
+                    вопросы.Текст_вопроса = вопросы.Текст_вопроса.Replace("  ", "");
+                    вопросы.Текст_вопроса = вопросы.Текст_вопроса.TrimEnd(' ');
                     db.Вопросы.Add(вопросы);
-
+                    Тесты тесты = await db.Тесты.FindAsync(вопросы.id_Теста);
+                    тесты.Количество_вопросов = тесты.Количество_вопросов + 1;
                     await db.SaveChangesAsync();
                     ProcessingTypeAnswer(вопросы, "create",variant, def, correct);
                     
@@ -586,6 +590,8 @@ namespace WebApplicationForTest.Controllers
                 db.Ответы.Remove(aD); //удаляем ответы к вопросам
             }
             db.Вопросы.Remove(вопросы); //удаляем вопрос
+            Тесты тесты= await db.Тесты.FindAsync(вопросы.id_Теста);
+            тесты.Количество_вопросов = тесты.Количество_вопросов - 1;
             await db.SaveChangesAsync();
             return RedirectToAction("Index", new { topic = id_Topic, redactor = "redactor" });
         }

@@ -10,73 +10,102 @@
 {
     <h3>Выберите раздел для дальнейшего редактирования его тем и вопросов</h3>
 }
+@if (ViewBag.r == "practice")
+{
+    <h3>Выбор раздела для проставления практики</h3>
+}
+<form method="post" action="~/Тесты/Index">
 
-    <form method="post" action="~/Тесты/Index">
+    <table class="table">
+        <tr>
+            <td>
+                <input type="hidden" value=@ViewBag.Id_user name="id_user" />
+                <input type="hidden" value=@ViewBag.Data name="Data" />
+                @if (ViewBag.r == "redactor")
+                {
+                    <input type="hidden" value=@ViewBag.r name="redactor" />
+                }
+                @if (ViewBag.r == "practice")
+                {
+                    <input type="hidden" value=@ViewBag.r name="practice" />
+                }
+            </td>
 
-        <table class="table">
+        </tr>
+
+        @foreach (var item in Model)
+        {
             <tr>
                 <td>
-                    <input type="hidden" value=@ViewBag.Id_user name="id_user" />
-                    <input type="hidden" value=@ViewBag.r name="redactor" />
+                    <big> @Html.DisplayFor(m => item.Название_раздела)</big>
+
+                </td>
+                <td>
+                    @Html.RadioButton("razdel", item.id_Раздела)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @if (ViewBag.r == "redactor")
+                    {
+
+                        <small>
+                            @Html.ActionLink("Переименовать", "Edit", new { id = item.id_Раздела }) |
+                        </small>
+                        <small>
+                            @Html.ActionLink("Детали", "Details", new { id = item.id_Раздела }) |
+                        </small>
+                        <small>
+                            @Html.ActionLink("Удалить", "Delete", new { id = item.id_Раздела })
+                        </small>
+
+                        <br />
+
+                    }
                 </td>
 
             </tr>
 
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        <big> @Html.DisplayFor(m => item.Название_раздела)</big>
 
-                    </td>
-                    <td>
-                        @Html.RadioButton("razdel", item.id_Раздела)
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        @if (ViewBag.r == "redactor")
-                        {
+        }
 
-                            <small>
-                                @Html.ActionLink("Переименовать", "Edit", new { id = item.id_Раздела }) |
-                            </small>
-                            <small>
-                                @Html.ActionLink("Детали", "Details", new { id = item.id_Раздела }) |
-                            </small>
-                            <small>
-                                @Html.ActionLink("Удалить", "Delete", new { id = item.id_Раздела })
-                            </small>
+        <tr><td><br /><br /><input type="submit" value="Далее" /> </td><td></td></tr>
 
-                            <br />
+    </table>
+</form>
+@if (ViewBag.r == "redactor")
+{
 
-                        }
-                    </td>
-
-                </tr>
+    <form method="post" action="~/Home/Menu">
+        <table class="table">
+            <tr>
+                <td>
+                    <input type="hidden" value="redactor" name="Login" />
+                    <input type="hidden" value="redactor12345" name="Password" />
+                    <input type="submit" value="В меню" />
 
 
-            }
-
-            <tr><td><br /><br /><input type="submit" value="Далее" /> </td><td></td></tr>
+                </td>
+            </tr>
 
         </table>
     </form>
-    @if (ViewBag.r == "redactor")
-    {
+}
+@if (ViewBag.r == "practice")
+{
 
-        <form method="post" action="~/Home/Menu">
-            <table class="table">
-                <tr>
-                    <td>
-                        <input type="hidden" value="redactor" name="Login" />
-                        <input type="hidden" value="redactor12345" name="Password" />
-                        <input type="submit" value="В меню" />
+    <form method="post" action="~/Home/Menu">
+        <table class="table">
+            <tr>
+                <td>
+                    <input type="hidden" value="practice" name="Login" />
+                    <input type="hidden" value="practice12345" name="Password" />
+                    <input type="submit" value="В меню" />
 
 
-                    </td>
-                </tr>
+                </td>
+            </tr>
 
-            </table>
-        </form>
-    }
+        </table>
+    </form>
+}

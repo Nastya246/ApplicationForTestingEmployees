@@ -16,12 +16,16 @@ namespace WebApplicationForTest.Controllers
         private TestEntities db = new TestEntities();
 
         // GET: Тесты
-        public async Task<ActionResult> Index(string razdel="", string redactor="")
+        public async Task<ActionResult> Index(string razdel="", string redactor="", string practice = "")
         {
             int id_Section = 0;
             if (redactor == "redactor") //если зашли с учетки редактора, то нужно меню для него
             {
                 ViewBag.Id_user = "redactor";
+            }
+            else if (practice == "practice") //если зашли с учетки Практика, то нужно меню для него
+            {
+                ViewBag.Id_user = "practice";
             }
             if (razdel != "")
             {
@@ -31,7 +35,9 @@ namespace WebApplicationForTest.Controllers
                 ViewBag.IdРаздела = id_Section; //для передачи в представление id раздела
                 Разделы раздел = await db.Разделы.FindAsync(id_Section); //находим раздел в бд по id
                 ViewBag.НазваниеРаздела = раздел.Название_раздела.Replace("  ", ""); //получаем название раздела
+                
                 return View(await тесты.ToListAsync());
+                
             }
             else
             {
@@ -44,11 +50,12 @@ namespace WebApplicationForTest.Controllers
         }
 
         [HttpPost] // доступные Темы в разделе
-        public async Task<ActionResult> Index( string razdel, int? id_user, string redactor, Тесты тесты)
+        public async Task<ActionResult> Index( string razdel, int? id_user, string redactor, string practice,string Data, Тесты тесты)
         {
             if (id_user!=null)
             {
                 ViewBag.Id_user = id_user.ToString();
+                ViewBag.Data = Data;
             }
             int id_Section = 0;
 
@@ -66,7 +73,11 @@ namespace WebApplicationForTest.Controllers
             {
                 ViewBag.Id_user = "redactor";
             }
-            foreach (var e in db.Разделы) //получаем имя раздела по его id
+            else if (practice == "practice") //если зашли с учетки Практика, то нужно меню для него
+            {
+                ViewBag.Id_user = "practice";
+            }
+                foreach (var e in db.Разделы) //получаем имя раздела по его id
             {
                 if (e.id_Раздела==id_Section)
                 {
@@ -77,7 +88,7 @@ namespace WebApplicationForTest.Controllers
             }
            
                 var тесты1 = (db.Тесты.Include(в => в.Разделы).Include(в => в.Вопросы).Where(в=> в.Id_Раздела==id_Section)); //  список тестов по соответствующей темы
-           
+               
             return View(await тесты1.ToListAsync());
         }
         

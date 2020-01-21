@@ -5,13 +5,14 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @{ int T = 0;}
-<h2><big>Тест "@ViewBag.НазваниеТеста"</big></h2> <br /><br />
+<h2><big>Тема "@ViewBag.НазваниеТеста"</big></h2> <br /><br />
 
 @if (ViewBag.User != "redactor")
 {
     <form method="post" action="~/Результат_теста/Index">
         <input type="hidden" value=@ViewBag.IdТеста name="id_test" />
         <input type="hidden" value=@ViewBag.Id_user name="id_user" />
+        <input type="hidden" value=@ViewBag.Data name="Data" />
         <table class="table">
             <tr>
 

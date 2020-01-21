@@ -120,6 +120,11 @@ namespace WebApplicationForTest.Controllers
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
             Пользователи пользователи = await db.Пользователи.FindAsync(id);
+            var результат_Теста = await (from r in db.Результат_теста where r.id_User == id select r).ToListAsync();
+            foreach (var resultD in результат_Теста)
+            {
+                db.Результат_теста.Remove(resultD);
+            }
             db.Пользователи.Remove(пользователи);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");

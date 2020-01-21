@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using WebApplicationForTest.Models;
-
+using System.Threading.Tasks;
 namespace WebApplicationForTest.Controllers
 {
     public class ПрактикаController : Controller
@@ -14,6 +14,31 @@ namespace WebApplicationForTest.Controllers
         public ActionResult Index()
         {
             return View();
+        }
+        [HttpPost]
+        public ActionResult Index(int razdel, Тесты item)
+        {
+            string nameTest = item.Название_темы_теста;
+            ViewBag.НазваниеТеста = nameTest; //передаем название теста в представление
+
+            int userТестId = 0;
+            foreach (var t in db.Тесты) //определяем id выбранного теста
+            {
+                if (t.Название_темы_теста == nameTest)
+                {
+                    userТестId = t.id_теста;
+                }
+            }
+            Тесты тема = db.Тесты.Find(userТестId);
+            var users =  (from u in db.Результат_теста where u.id_Теста == тема.id_теста select u); //выбор тех, кто уже сдавал теорию
+            //добавить viewbag
+            List<Пользователи> пользователи = new List<Пользователи>();
+            foreach (var temp in users)
+            {
+                пользователи.Add(db.Пользователи.Find(temp.id_User));
+            }
+            
+            return View(пользователи);
         }
         [HttpPost]
         public ActionResult UserSearch(string name)

@@ -69,6 +69,7 @@ namespace WebApplicationForTest.Controllersd
                     {
                 ViewBag.LogPas = "Success";
                 ViewBag.Id_user = userLogin.First().id_user;
+                ViewBag.Data = @DateTime.Now.ToString("yyyy/MM/dd");
             }
             if ((Login == "redactor") && (Password == "redactor12345"))
             {
@@ -144,6 +145,7 @@ namespace WebApplicationForTest.Controllersd
                 }
                 if (flagEx == 0) //если нет пользователя с такими данными - вносим его в Бд
                 {
+                    ViewBag.Data = Date;
                     Пользователи пользователь = new Пользователи();
                     пользователь.Фамилия = LastName;
                     пользователь.Имя = FirstName;
@@ -164,12 +166,13 @@ namespace WebApplicationForTest.Controllersd
                         }
 
                     }
-                    string passw = login + Date.Substring(0, 2) + Date.Substring(3, 2); //пароль пользователя
+                    string passw = login + Date.Substring(5, 2) + Date.Substring(8, 2); //пароль пользователя
                     пользователь.Логин = login;
                     пользователь.Пароль = passw;
                     db.Пользователи.Add(пользователь); //добавляем пользователя в БД
                     await db.SaveChangesAsync(); // сохраняем изменения
                     ViewBag.Id_user = пользователь.id_user; // передаем данные пользоватля в представление
+                    ViewBag.Data = Date;
                     ViewBag.Login = login;
                     ViewBag.Passw = passw;
                 }

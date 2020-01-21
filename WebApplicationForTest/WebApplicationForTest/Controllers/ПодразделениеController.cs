@@ -52,7 +52,8 @@ namespace WebApplicationForTest.Controllers
         {
             if (ModelState.IsValid)
             {
-                if ((db.Подразделение.FindAsync(подразделение.Название_подразделения)) == null)
+                var unit = await (from u in db.Подразделение where u.Название_подразделения.Replace(" ", "").ToLower() == подразделение.Название_подразделения.Replace(" ", "").ToLower() select u).ToListAsync();
+                if (unit.Count()==0)
                 {
                     db.Подразделение.Add(подразделение);
                     await db.SaveChangesAsync();
@@ -89,7 +90,8 @@ namespace WebApplicationForTest.Controllers
         {
             
                 Подразделение Newподразделение = await db.Подразделение.FindAsync(подразделение.Id_подразделения);
-            if ((db.Подразделение.FindAsync(подразделение.Название_подразделения)) == null) //исправить, иначе 2 одинаковых подразделения
+            var unit = await (from u in db.Подразделение where u.Название_подразделения.Replace(" ", "").ToLower() == подразделение.Название_подразделения.Replace(" ", "").ToLower() select u).ToListAsync();
+            if (unit.Count() == 0)
             {
                 Newподразделение.Название_подразделения = подразделение.Название_подразделения;
             }
@@ -133,6 +135,8 @@ namespace WebApplicationForTest.Controllers
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
             Подразделение подразделение = await db.Подразделение.FindAsync(id);
+            подразделение.Должность.Clear();
+         //   var relations=await (from r in db.)
             db.Подразделение.Remove(подразделение);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");

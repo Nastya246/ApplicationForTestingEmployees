@@ -16,16 +16,22 @@ namespace WebApplicationForTest.Controllers
         private TestEntities db = new TestEntities();
 
         // GET: Разделы
-        public async Task<ActionResult> Index(string redactor = "")
+        public async Task<ActionResult> Index(string redactor = "", string practice = "")
         {
-           
+            if (redactor.Replace(" ", "") == "redactor")
+            {
                 ViewBag.r = "redactor";
+            }
+            else if (practice.Replace(" ","")=="practice")
+            {
+                ViewBag.r = "practice";
+            }
             
             var  разделы = db.Разделы.Include(т => т.Тесты);
             return View(await разделы.ToListAsync());
         }
         [HttpPost]
-        public async Task<ActionResult> Index(int? id_user, string Login, string Password )
+        public async Task<ActionResult> Index(int? id_user, string Login, string Password, string Data)
         {
             if (id_user == null)
             {
@@ -36,15 +42,22 @@ namespace WebApplicationForTest.Controllers
                         id_user = temp.id_user;
                     }
                 }
+                ViewBag.Data = Data;
             }
             if (Login == "redactor")
             {
                 ViewBag.Id_user = Login;
                 ViewBag.r = "redactor";
             }
+            else if (Login== "practice")
+            {
+                ViewBag.Id_user = Login;
+                ViewBag.r = "practice";
+            }
             else
             {
                 ViewBag.Id_user = id_user;
+                ViewBag.Data = Data;
             }
             var разделы = db.Разделы.Include(т => т.Тесты);
             return View(await разделы.ToListAsync());
@@ -87,7 +100,7 @@ namespace WebApplicationForTest.Controllers
                     db.Разделы.Add(разделы);
                     await db.SaveChangesAsync();
                 }
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { redactor = "redactor" });
             }
 
             return View(разделы);
@@ -126,7 +139,7 @@ namespace WebApplicationForTest.Controllers
                     await db.SaveChangesAsync();
                    
                 }
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { redactor = "redactor" });
             }
             return View(разделы);
         }
@@ -185,7 +198,7 @@ namespace WebApplicationForTest.Controllers
             }
             db.Разделы.Remove(разделы); //удаляем раздел
             await db.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { redactor = "redactor" });
         }
 
         protected override void Dispose(bool disposing)

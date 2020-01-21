@@ -15,5 +15,87 @@
     }
     <div id="results"></div>
 </div>
+
+<form method="post" action="~/Практика/EditData">
+    <table class="table">
+
+
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td>
+                    @item.Фамилия
+                    @item.Имя
+                    @item.Отчество
+
+                </td>
+
+
+
+                <td>
+                    @item.Подразделение.Название_подразделения
+
+
+                </td>
+
+
+                <td>
+                    @item.Должность.Название_должности
+
+
+                </td>
+
+
+            </tr>
+            <tr>
+
+
+                <th>Оценка за теорию</th>
+                <th>Дата сдачи теории</th>
+                <th>Оценка за практику</th>
+                <th>Дата сдачи практики<</th>
+                <th>Общий результат</th>
+
+
+            </tr>
+            foreach (var itemR in item.Результат_теста)
+            {
+                <tr>
+                    <td>
+
+                        @itemR.Оценка_за_теорию
+
+                    </td>
+                    <td>
+
+                        @itemR.Дата_сдачи_теории
+
+                    </td>
+                    <td>
+
+                        @itemR.Отметка_о_практике
+
+                    </td>
+                    <td>
+
+                        @itemR.Дата_сдачи_практики
+
+                    </td>
+                    <td>
+
+                        @itemR.Общий_результат
+
+                    </td>
+</tr>
+                    }
+
+                    }
+
+
+
+            </table>
+</form>
+
 @Scripts.Render("~/scripts/jquery-1.12.1.min.js")
 @Scripts.Render("~/scripts/jquery.unobtrusive-ajax.min.js")

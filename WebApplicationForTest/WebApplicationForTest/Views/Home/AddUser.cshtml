@@ -13,6 +13,7 @@
         <h3> Вы успешно внесены в базу данных!</h3>
         <form method="post" action="~/Разделы/Index">
             <input type="hidden" value=@ViewBag.Id_user name="id_user" />
+            <input type="hidden" value=@ViewBag.Data name="Data" />
             <table>
 
                 <tr><td><p>Для повторного входа используйте логин и пароль </p> </td> </tr>

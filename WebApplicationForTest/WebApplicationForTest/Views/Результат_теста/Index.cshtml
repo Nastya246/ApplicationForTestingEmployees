@@ -4,7 +4,7 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+<small><a href="~/Home/Index">Сменить пользователя</a></small>
 <h2>Ваши результаты:</h2> <br />
 <table class="table">
 
@@ -18,21 +18,22 @@
             <form method="post" action="~/Разделы/Index">
                 <br /><input type="submit" value="Выбрать другой тест" />
                 <input type="hidden" value=@ViewBag.Id_user name="id_user" />
+                <input type="hidden" value=@ViewBag.Data name="Data" />
             </form>
         </td>
     </tr>
-@foreach (string result1 in ViewBag.QuestionAnswer)
-{
+    @foreach (string result1 in ViewBag.QuestionAnswer)
+    {
 
-    <tr>
-        <td>
-            <br /><br /><p>@result1</p><br /><br />
-        </td>
-    </tr>
+        <tr>
+            <td>
+                <br /><br /><p>@result1</p><br /><br />
+            </td>
+        </tr>
 
-}
+    }
 
 
 
-                          </table>
+</table>
 

@@ -1,15 +1,15 @@
 ﻿@model IEnumerable<WebApplicationForTest.Models.Подразделение>
 
 @{
-  
+
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2><big>Список подразделений</big><br /><br /><br /></h2>
 
 <p>
-    <big>  <big> @Html.ActionLink("Добавить подразделение", "Create")  </big> </big><br /><br />
-</p>
+    @Html.ActionLink("Добавить подразделение", "Create")
+</p> <br /><br />
 <table class="table">
 
 
@@ -17,7 +17,10 @@
     {
         <tr>
             <td>
-                <big>   <big> @Html.DisplayFor(modelItem => item.Название_подразделения)</big></big><br /><br />
+                <big>   <big> @Html.DisplayFor(modelItem => item.Название_подразделения)</big></big>
+                @Html.ActionLink("Изменить", "Edit", new { id = item.Id_подразделения }) |
+                @Html.ActionLink("Детали", "Details", new { id = item.Id_подразделения }) |
+                @Html.ActionLink("Удалить", "Delete", new { id = item.Id_подразделения })
             </td>
         </tr>
         foreach (var itemD in item.Должность)
@@ -29,17 +32,10 @@
             </tr>
 
         }
-        <tr>
-            <td>
-                <br /><br />
-                @Html.ActionLink("Изменить", "Edit", new { id = item.Id_подразделения }) |
-                @Html.ActionLink("Детали", "Details", new { id = item.Id_подразделения }) |
-                @Html.ActionLink("Удалить", "Delete", new { id = item.Id_подразделения })  <br /><br />
-            </td>
-        </tr>
+     
     }
 
-    
+
 </table>
 <form method="post" action="~/Home/Menu">
     <input type="hidden" value="admin" name="Login" />

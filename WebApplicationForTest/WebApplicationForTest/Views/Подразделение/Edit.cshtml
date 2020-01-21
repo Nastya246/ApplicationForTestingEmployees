@@ -2,12 +2,15 @@
 
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Редактирование";
    
 }
 
 <h2>Список должностей в подразделениях</h2>
 
+<div>
+    @Html.ActionLink("Назад к списку", "Index")
+</div>
 
 @using (Html.BeginForm())
 {
@@ -42,9 +45,7 @@
     </div>
 }
 
-<div>
-    @Html.ActionLink("Назад к списку", "Index")
-</div>
+
 <form method="post" action="~/Home/Menu">
     <input type="hidden" value="admin" name="Login" />
     <input type="hidden" value="admin12345" name="Password" />

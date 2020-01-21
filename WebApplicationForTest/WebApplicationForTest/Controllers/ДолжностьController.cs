@@ -54,7 +54,8 @@ namespace WebApplicationForTest.Controllers
         {
             if (ModelState.IsValid)
             {
-                if ((db.Должность.FindAsync(должность.Название_должности)) == null)
+                var position = await (from p in db.Должность where p.Название_должности.Replace(" ", "").ToLower() == должность.Название_должности.Replace(" ", "").ToLower() select p).ToListAsync();
+                if (position.Count() == 0)
                 {
                     db.Должность.Add(должность);
                     await db.SaveChangesAsync();
@@ -93,7 +94,8 @@ namespace WebApplicationForTest.Controllers
         {
             if (ModelState.IsValid)
             {
-                if ((db.Должность.FindAsync(должность.Название_должности)) == null)
+                var position = await (from p in db.Должность where p.Название_должности.Replace(" ", "").ToLower() == должность.Название_должности.Replace(" ", "").ToLower() select p).ToListAsync();
+                if (position.Count() == 0)
                 {
                     db.Entry(должность).State = EntityState.Modified;
                     await db.SaveChangesAsync();

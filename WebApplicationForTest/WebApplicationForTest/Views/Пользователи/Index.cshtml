@@ -8,7 +8,7 @@
 <h2>Список пользователей</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Добавить нового пользователя", "Create")
 </p>
 <table class="table">
     <tr>
@@ -60,9 +60,9 @@
             @Html.DisplayFor(modelItem => item.Подразделение.Название_подразделения)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.id_user }) |
-            @Html.ActionLink("Details", "Details", new { id=item.id_user }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.id_user })
+            @Html.ActionLink("Редактировать", "Edit", new { id=item.id_user }) |
+            @Html.ActionLink("Детали", "Details", new { id=item.id_user }) |
+            @Html.ActionLink("Удалить", "Delete", new { id=item.id_user })
         </td>
     </tr>
 }

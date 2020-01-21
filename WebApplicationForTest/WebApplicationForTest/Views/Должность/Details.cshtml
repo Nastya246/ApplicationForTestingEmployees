@@ -6,7 +6,10 @@
 }
 
 <h2>Просмотр деталей</h2>
-
+<p>
+    @Html.ActionLink("Редактировать", "Edit", new { id = Model.Id_должности }) |
+    @Html.ActionLink("Назад к списку", "Index")
+</p>
 <div>
     <h4>Должность</h4>
     <hr />
@@ -21,10 +24,7 @@
 
     </dl>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id_должности }) |
-    @Html.ActionLink("Назад к списку", "Index")
-</p>
+
 <form method="post" action="~/Home/Menu">
     <input type="hidden" value="admin" name="Login" />
     <input type="hidden" value="admin12345" name="Password" />
