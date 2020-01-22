@@ -16,8 +16,13 @@ namespace WebApplicationForTest.Controllers
         private TestEntities db = new TestEntities();
 
         // GET: Подразделение
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(string otchet="")
         {
+            if (otchet!="")
+            {
+                ViewBag.User = "otchet";
+            }
+
             var подразделения = db.Подразделение.Include(p => p.Должность);
             return View(await подразделения.ToListAsync());
         }
