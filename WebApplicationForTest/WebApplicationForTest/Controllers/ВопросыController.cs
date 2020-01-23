@@ -403,38 +403,41 @@ namespace WebApplicationForTest.Controllers
         {
 
             вопросы.id_Теста = id_Теста;
-
-            if (ModelState.IsValid)
-            {
-                try {
-                    Ответы ответы = new Ответы();
-                    вопросы.Текст_вопроса = вопросы.Текст_вопроса.Replace("  ", "");
-                    вопросы.Текст_вопроса = вопросы.Текст_вопроса.TrimEnd(' ');
-                    db.Вопросы.Add(вопросы);
-                    Тесты тесты = await db.Тесты.FindAsync(вопросы.id_Теста);
-                    тесты.Количество_вопросов = тесты.Количество_вопросов + 1;
-                    await db.SaveChangesAsync();
-                    ProcessingTypeAnswer(вопросы, "create",variant, def, correct);
-                    
-                    return RedirectToAction("Index", new { topic = вопросы.id_Теста.ToString(), redactor = "redactor" });
-                }
-                catch (DbEntityValidationException ex)
-
+            
+                if (ModelState.IsValid)
                 {
-                    foreach (DbEntityValidationResult validationError in ex.EntityValidationErrors)
+                    try
                     {
-                        Response.Write("Object: " + validationError.Entry.Entity.ToString());
-                        Response.Write(" ");
-                        foreach (DbValidationError err in validationError.ValidationErrors)
+                        Ответы ответы = new Ответы();
+                        вопросы.Текст_вопроса = вопросы.Текст_вопроса.Replace("  ", "");
+                        вопросы.Текст_вопроса = вопросы.Текст_вопроса.TrimEnd(' ');
+                        db.Вопросы.Add(вопросы);
+                        Тесты тесты = await db.Тесты.FindAsync(вопросы.id_Теста);
+                        тесты.Количество_вопросов = тесты.Количество_вопросов + 1;
+                        await db.SaveChangesAsync();
+                        ProcessingTypeAnswer(вопросы, "create", variant, def, correct);
+
+                        return RedirectToAction("Index", new { topic = вопросы.id_Теста.ToString(), redactor = "redactor" });
+                    }
+                    catch (DbEntityValidationException ex)
+
+                    {
+                        foreach (DbEntityValidationResult validationError in ex.EntityValidationErrors)
                         {
-                            Response.Write(err.ErrorMessage + " ");
+                            Response.Write("Object: " + validationError.Entry.Entity.ToString());
+                            Response.Write(" ");
+                            foreach (DbValidationError err in validationError.ValidationErrors)
+                            {
+                                Response.Write(err.ErrorMessage + " ");
+                            }
                         }
                     }
-                }
 
-            }
-            ViewBag.id_Теста = new SelectList(db.Тесты, "id_теста", "Название_темы_теста", вопросы.id_Теста);
-            return View(вопросы);
+                }
+                ViewBag.id_Теста = new SelectList(db.Тесты, "id_теста", "Название_темы_теста", вопросы.id_Теста);
+                return View(вопросы);
+            
+            
 
         }
 
