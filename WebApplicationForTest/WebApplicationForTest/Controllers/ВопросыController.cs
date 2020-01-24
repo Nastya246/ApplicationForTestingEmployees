@@ -14,6 +14,47 @@ namespace WebApplicationForTest.Controllers
     public class ВопросыController : Controller
     {
         private TestEntities db = new TestEntities();
+        public ActionResult GetElement(string id) //для динамического обновления элементов при выборе разных типов вопросов
+        {
+
+            if (id == "Ввод")
+            {
+                ViewBag.Def = false;
+                ViewBag.Variant = false;
+                ViewBag.Correct = true;
+                    }
+            else if ((id=="Выбор"))
+            {
+                ViewBag.Def = false;
+                ViewBag.Variant = true;
+                ViewBag.Correct = true;
+            }
+            else if (id == "Несколько")
+            {
+                ViewBag.Def = false;
+                ViewBag.Variant = true;
+                ViewBag.Correct = true;
+            }
+            else if (id == "Разрыв")
+            {
+                ViewBag.Def = false;
+                ViewBag.Variant = false;
+                ViewBag.Correct = true;
+            }
+            else if (id == "Соотношение")
+            {
+                ViewBag.Def = true;
+                ViewBag.Variant = false;
+                ViewBag.Correct = true;
+            }
+            else if (id == "--Выбор типа вопроса--") 
+            {
+                ViewBag.Def = false;
+                ViewBag.Variant = false;
+                ViewBag.Correct = false;
+            }
+            return PartialView();
+        }
         // функция добавления ответов к вопросу
         public void ProcessingTypeAnswer(Вопросы вопросы, string func, string variant = "", string def = "", string correct = "")
         {

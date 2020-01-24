@@ -1,0 +1,41 @@
+﻿<div class="c">
+    <div class="form-group">
+        @Html.Label("Варианты понятий (через запятую, только для типа \"Соотношение\"):")
+        <div class="col-md-10">
+            @if (@ViewBag.Def == true)
+            {
+                <input type="text" id="def" name="def" />
+            }
+            else
+            {
+                <input type="text" id="def" name="def" disabled="disabled" />
+            }
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.Label("Варианты ответов (через запятую):")
+        <div class="col-md-10">
+            @if (@ViewBag.Variant == true)
+            {
+                <input type="text" id="variant" name="variant" />
+            }
+            else
+            {
+                <input type="text" id="variant" name="variant" disabled="disabled" />
+            }
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.Label("Правильный ответ/ответы (через запятую):")
+        <div class="col-md-10">
+            @if (@ViewBag.Correct == true)
+            {
+                <input type="text" id="correct" name="correct" />
+            }
+            else
+            {
+                <input type="text" id="correct" name="correct" disabled="disabled" />
+            }
+        </div>
+    </div>
+</div>

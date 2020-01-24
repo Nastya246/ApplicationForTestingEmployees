@@ -433,6 +433,7 @@
     <Content Include="Views\Тесты\Edit.cshtml" />
     <Content Include="Views\Тесты\Index.cshtml" />
     <Content Include="Views\Отчеты\Index.cshtml" />
+    <Content Include="Views\Вопросы\GetElement.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\index.d.ts" />
