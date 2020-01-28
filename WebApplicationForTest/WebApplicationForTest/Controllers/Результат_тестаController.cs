@@ -23,15 +23,15 @@ namespace WebApplicationForTest.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Index(FormCollection form ) //обработка результатов по тесту
+        public async Task<ActionResult> Index(FormCollection form) //обработка результатов по тесту
         {
 
             var k = form.Keys;
             List<string> ResultQuestion = new List<string>(k.Count); //для хранения результатов верно/неверно
             List<string> QuestionAnswer = new List<string>(k.Count); //для хранения вопросов и ответов
             Dictionary<string, string> resultA = new Dictionary<string, string>(k.Count); //для хранения первичных результатов
-            var temp  = form.ToValueProvider(); //получаем все данные
-           string kD = ""; // для ключа словаря
+            var temp = form.ToValueProvider(); //получаем все данные
+            string kD = ""; // для ключа словаря
             string valD = ""; //для значения словаря
             int id_Test = 0; // для id теста
             int flagS = 0; // для количества вопросов в соотношений
@@ -41,8 +41,8 @@ namespace WebApplicationForTest.Controllers
             string data = "";
             foreach (var val in k)
             {
-               
-                kD = val.ToString().Replace(" ","");
+
+                kD = val.ToString().Replace(" ", "");
                 if (resultA.ContainsKey(kD)) //если есть запись в словаре под таким ключом, то удаляем, по идеи ее быть не должно, но мало ли
                 {
                     resultA.Remove(kD);
@@ -51,65 +51,54 @@ namespace WebApplicationForTest.Controllers
                 {
                     id_Test = Convert.ToInt32(temp.GetValue(kD).AttemptedValue);
                 }
-                if (kD == "id_user") //если получили id_пользователя, сохраняем в отдельной переменной
+                else if (kD == "id_user") //если получили id_пользователя, сохраняем в отдельной переменной
                 {
                     id_User = Convert.ToInt32(temp.GetValue(kD).AttemptedValue);
                     ViewBag.Id_user = id_User;
                 }
-                if (kD == "Data") //если получили дату прохождения теста, сохраняем в отдельной переменной
+                else if (kD == "Data") //если получили дату прохождения теста, сохраняем в отдельной переменной
                 {
                     data = temp.GetValue(kD).AttemptedValue;
                     ViewBag.Data = data;
                 }
-                /*  else if (kD == "id_Q") //если получили id_вопроса типа "соотношение", сохраняем в отдельной переменной
-                      {
-                      tempStrQ= temp.GetValue(kD).AttemptedValue.Replace(" ", "");
-                      string[] mystringTemp = tempStrQ.Split(',');
-                        tempIdQ = Convert.ToInt32(mystringTemp[0]);
-                      flagS = (from que in db.Ответы where que.id_Вопроса == tempIdQ select que).Count();
-                      flagS = flagS / 2; // количество подвопросов в соотношении
-                  }
-                  */
+              
                 else
                 {
                     valD = temp.GetValue(kD).AttemptedValue.Replace(" ", ""); // если получили ответы пользователя, то сохраняем в словарь
                     string[] mystringSootn = kD.Split('-');
 
-                    if (mystringSootn.Count()==2) // пришел ответ типа соотношение
+                    if (mystringSootn.Count() == 2) // пришел ответ типа соотношение
                     {
                         kD = "О " + mystringSootn[0]; // помечаем ответы из соотношения буквой "О" перед ключом 
-                      
+
                     }
 
                     string[] mystring = valD.Split(','); //обработка результатов из checkbox
                     List<string> ls = new List<string>(mystring.Count());
-                    if (mystring.Count()>1) //значит пришел результат со множетсвенным выбором, обрабатываем его
+                    if (mystring.Count() > 1) //значит пришел результат со множетсвенным выбором, обрабатываем его
                     {
-                       for (int i=0; i< mystring.Count(); i++)
-                            {
-                           
-                            ls.Add(mystring[i]);               
+                        for (int i = 0; i < mystring.Count(); i++)
+                        {
+
+                            ls.Add(mystring[i]);
                             if (mystring[i] == "true")
                             {
-                                    i++; //если пользователь отметил checkbox, то придет два значения - true и false, false пропускаем
+                                i++; //если пользователь отметил checkbox, то придет два значения - true и false, false пропускаем
                             }
                         }
                         valD = "";
-                        foreach(var l in ls)
+                        foreach (var l in ls)
                         {
-                            valD = valD + l+ " ";
+                            valD = valD + l + " ";
                         }
                     }
-                 /*   if (flagS>0)
-                    {
-                        kD = "О "+kD; // помечаем ответы из соотношения буквой "О" перед ключом 
-                        flagS--;
-                    } */
+                   
                     kD = kD.Replace("/", "");
                     resultA.Add(kD, valD);
-                    
+
                 }
             }
+        
             string textQ = "";
             string textA = "";
             var AllQuestion = (from question in db.Вопросы where question.id_Теста == id_Test select question).ToList(); //получаем все вопросы из теста
@@ -133,7 +122,7 @@ namespace WebApplicationForTest.Controllers
                         if (aList.Флаг_правильного_ответа == true)
                         {
                             textA = aList.Текст_ответа.Replace("  ", "");
-                            QuestionAnswer.Add("Вопрос: " + textQ + " Правильный ответ: " + textA);
+                            QuestionAnswer.Add("Вопрос: " + textQ +"\n"+ "Правильный ответ: " + textA +"\n");
                             break;
                         }
                     }
@@ -150,50 +139,33 @@ namespace WebApplicationForTest.Controllers
 
                         }
                     }
-                    QuestionAnswer.Add("Вопрос: " + textQ + " Правильный ответ: " + textA + " ");
+                    QuestionAnswer.Add("Вопрос: " + textQ + "\n" + "Правильный ответ: " + textA + "\n");
                 }
                 else if (qList.Тип_ответа.Replace(" ", "") == "Соотношение")
                 {
-                    List<Ответы> TempListA = new List<Ответы>();
-                    List<string> TempListA2 = new List<string>();
+                   
                     textA = "";
                     var tempSelectA = (from answ in db.Ответы where answ.id_Вопроса == qList.id_вопроса select answ).ToList();
                     foreach (var tempL in tempSelectA)
                     {
-                        if (tempL.Флаг_подвопроса == true)
+                        if (tempL.Флаг_подвопроса == true) //получаем подвопросы и ответы к ним
                         {
-                            TempListA.Add(tempL); //получили подвопросы
+                            textA = textA + tempL.Текст_ответа.Replace("  ", "") + "-" + tempL.Правильный_ответ.Replace("  ", "") + ",";
                         }
-                        if (tempL.Флаг_подвопроса == false)
-                        {
-                            TempListA2.Add(tempL.Текст_ответа); //получили варианты ответов
-                        }
-                    }
-                    foreach (var listA in TempListA)
-                    {
-                        foreach (var listA2 in TempListA2) //смотрим, что под буквой
-                        {
-                            string[] stringTempList = listA2.Split(' ');
-                            var resulttemp = stringTempList.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
-                            stringTempList = resulttemp;
-                            if ((listA.Правильный_ответ.Replace(" ", "") == (stringTempList[1]).Replace(" ", ""))) // если вариант под буквой совпал с правильным вариантом ответа подвопроса, то записываем эту букву
-                            {
-                                textA = textA + " " + listA.Текст_ответа[0] + "-" + stringTempList[0] + " ";
-                            }
-                        }
+                        
                     }
 
-                    QuestionAnswer.Add("Вопрос: " + textQ + " Правильный ответ: " + textA);
+                    QuestionAnswer.Add("Вопрос: " + textQ + "\n" + "Правильный ответ: " + textA + "\n");
                 }
                 else if (qList.Тип_ответа.Replace(" ", "") == "Разрыв")
                 {
                     var tempSelectR = (from answ in db.Ответы where answ.id_Вопроса == qList.id_вопроса && answ.Флаг_правильного_ответа==true select answ).ToList();
-                    QuestionAnswer.Add("Вопрос: " + textQ + " Правильный ответ: " + tempSelectR[0].Текст_ответа.Replace("  ",""));
+                  
+                    QuestionAnswer.Add("Вопрос: " + textQ + "\n" + "Правильный ответ: " + tempSelectR[0].Текст_ответа.Replace("  ", "") + "\n");
                 }
             }
-            foreach (var q1 in AllQuestion)
-            {
-              
+            foreach (var q1 in AllQuestion) //проверка на пустые поля в ответах
+            { 
                 if ((!(resultA.ContainsKey(q1.id_вопроса.ToString()))) && (q1.Тип_ответа.Replace(" ", "") != "Соотношение")) //если нет записи в словаре под таким ключом, то пользователь не ответил на этот вопрос, фиксируем это
                 {
                     resultA.Add(q1.id_вопроса.ToString(), "");
@@ -208,7 +180,7 @@ namespace WebApplicationForTest.Controllers
                         if ((sootnosh.Key)[0] == 'О')
                         {
                             int id_Ans = Convert.ToInt32(sootnosh.Key.Replace("О ", ""));
-                            Ответы ответы = db.Ответы.Find(id_Ans);
+                            Ответы ответы = await db.Ответы.FindAsync(id_Ans);
                             if (ответы.id_Вопроса == q1.id_вопроса) //такой вопрос на соотношение в словаре есть
                             {
                                 tempAnsw = tempAnsw+sootnosh.Key.Replace("О ", "") + " " + sootnosh.Value + ",";
@@ -337,7 +309,7 @@ namespace WebApplicationForTest.Controllers
                             string[] mystringTemp = id_q.Value.Split(',');
                             var result = mystringTemp.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray(); //убираем нулевые и пустые элементы
                             int flagCorrect = 0;
-                            string[] tempStrForSoothosh =new string[2]; //для хранения id_ответа и буквы, которую ввел пользователь
+                            string[] tempStrForSoothosh =new string[2]; //для хранения id_ответа и выбора пользователя
                             string AnswUser = "";
                             string strResult = "";
                             int strC = 1;
@@ -347,29 +319,32 @@ namespace WebApplicationForTest.Controllers
                                 tempStrForSoothosh = str.Split(' ');
                                 if (tempStrForSoothosh[1] != "")
                                 {
-                                    var tempStr = tempStrForSoothosh[1].ToCharArray();
-                                    strResult = strResult+ strC.ToString() + "-" + tempStrForSoothosh[1] + " ";
-                                    foreach (var valueSootnosh in tempSelect) //ищем значение под выбранной буквой
+                                    
+                                   
+                                    foreach (var valueSootnosh in tempSelect) //ищем значение под выбранным вариантом
                                     {
-
-                                        if ((valueSootnosh.Флаг_подвопроса == false) && (valueSootnosh.Текст_ответа[0] == tempStr[0]))
+                                       Ответы ответ = await db.Ответы.FindAsync(Convert.ToInt32(tempStrForSoothosh[1]));
+                                        if ((valueSootnosh.Флаг_подвопроса == false) && (valueSootnosh.Текст_ответа.Replace(" ","") == (ответ.Текст_ответа.Replace(" ","") )))
                                         {
                                            
                                             if ((tempStrForSoothosh[0] != "") && ((tempStrForSoothosh[1] != "")))
                                             {
-                                                AnswUser = valueSootnosh.Текст_ответа.Replace(tempStrForSoothosh[1] + " ", ""); //записываем вариант под буквой 
+                                                AnswUser = ответ.Текст_ответа.Replace("  ", ""); //записываем вариант ответа
                                                 Ответы ответы = await db.Ответы.FindAsync(Convert.ToInt32(tempStrForSoothosh[0]));
                                                 if (AnswUser.Replace(" ", "") == ответы.Правильный_ответ.Replace(" ", "")) //сраниваем вариант ответа подвопроса и того значения, что под буквой
                                                 {
                                                     flagCorrect++;
                                                 }
+                                                strResult = strResult + strC.ToString()+"." + ответы.Текст_ответа.Replace("  ","")+"-" + (ответ.Текст_ответа.Replace(" ", "")) + " ";
                                             }
                                         }
                                     }
+                                   
                                 }
                                 else
                                 {
-                                    strResult = strResult + strC.ToString() + "-" + "  ";
+                                    Ответы ответы = await db.Ответы.FindAsync(Convert.ToInt32(tempStrForSoothosh[0]));
+                                    strResult = strResult + strC.ToString()+". " + ответы.Текст_ответа.Replace("  ", "")+"-" + "  ";
                                 }
                                 strC++;
                             }

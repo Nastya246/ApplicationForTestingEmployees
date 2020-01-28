@@ -126,7 +126,6 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ВопросыController.cs" />
     <Compile Include="Controllers\ДолжностьController.cs" />
-    <Compile Include="Controllers\ОтветыController.cs" />
     <Compile Include="Controllers\ОтчетыController.cs" />
     <Compile Include="Controllers\ПодразделениеController.cs" />
     <Compile Include="Controllers\ПользователиController.cs" />

@@ -16,7 +16,7 @@
     </Key>
     <Property Name="id_вопроса" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="id_Теста" Type="Int32" Nullable="false" />
-    <Property Name="Текст_вопроса" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
+    <Property Name="Текст_вопроса" Type="String" MaxLength="600" FixedLength="true" Unicode="true" />
     <Property Name="Тип_ответа" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
     <NavigationProperty Name="Тесты" Relationship="Self.FK_Вопросы_Тесты1" FromRole="Вопросы" ToRole="Тесты" />
     <NavigationProperty Name="Ответы" Relationship="Self.FK_Ответы_Вопросы1" FromRole="Вопросы" ToRole="Ответы" />

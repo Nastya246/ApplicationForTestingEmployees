@@ -34,7 +34,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.Текст_вопроса, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.Текст_вопроса, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.TextAreaFor(model => model.Текст_вопроса, new { cols = "50", rows = "4", htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.Текст_вопроса, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -95,11 +95,11 @@
                     <div class="col-md-10">
                         @if (ViewBag.ТипОтвета == "Соотношение")
                         {
-                            <input type="text" name=def width="300" value="@ViewBag.Понятия" />
+                            <input type="text" name=def size="150" value="@ViewBag.Понятия" />
                         }
                         else
                         {
-                            <input type="text" name=def width="300" disabled="disabled" value="@ViewBag.Понятия" />
+                            <input type="text" name=def size="150" disabled="disabled" value="@ViewBag.Понятия" />
                         }
 
                     </div>
@@ -110,11 +110,11 @@
 
                         @if ((ViewBag.ТипОтвета != "Соотношение") && (ViewBag.ТипОтвета != "Разрыв") && (ViewBag.ТипОтвета != "Ввод"))
                         {
-                            <input type="text" name=variant width="300" value="@ViewBag.Варианты" />
+                            <input type="text" name=variant size="150" value="@ViewBag.Варианты" />
                         }
                         else
                         {
-                            <input type="text" name=variant width="300" disabled="disabled" value="@ViewBag.Варианты" />
+                            <input type="text" name=variant size="150" disabled="disabled" value="@ViewBag.Варианты" />
                         }
                     </div>
                 </div>
@@ -122,7 +122,8 @@
                 <div class="form-group">
                     @Html.Label("Правильный ответ/ответы (через запятую):")
                     <div class="col-md-10">
-                        <input type="text" name=correct width="300" value="@ViewBag.ВерныйОтвет" />
+                        <input type="text" size="150" name=correct value="@ViewBag.ВерныйОтвет" />
+                       
                     </div>
                 </div>
             </div>

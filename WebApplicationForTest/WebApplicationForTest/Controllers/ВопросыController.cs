@@ -14,7 +14,7 @@ namespace WebApplicationForTest.Controllers
     public class ВопросыController : Controller
     {
         private TestEntities db = new TestEntities();
-        public ActionResult GetElement(string id) //для динамического обновления элементов при выборе разных типов вопросов
+        public ActionResult GetElement(string id) //для динамического обновления элементов при выборе разных типов вопросов в редакторе
         {
 
             if (id == "Ввод")
@@ -55,7 +55,7 @@ namespace WebApplicationForTest.Controllers
             }
             return PartialView();
         }
-        // функция добавления ответов к вопросу
+        // метод добавления ответов к вопросу
         public void ProcessingTypeAnswer(Вопросы вопросы, string func, string variant = "", string def = "", string correct = "")
         {
             try
@@ -169,19 +169,18 @@ namespace WebApplicationForTest.Controllers
                     string[] stringTempListDef = (def.Replace("  ", "")).Split(',');//разделяем понятия
                     resulttemp = stringTempListDef.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
                     stringTempListDef = resulttemp;
-                    int countDef = 1;
+                    
                     int countCor = 0;
-
-
+                    
                     foreach (var deftemp in stringTempListDef) //вносим понятия в бд
                     {
                         Ответы ответы = new Ответы();
-                        ответы.Текст_ответа = countDef.ToString() + " " + deftemp.Replace("  ", "");
+                        ответы.Текст_ответа = deftemp.Replace("  ", "");
                         ответы.Флаг_правильного_ответа = true;
                         ответы.Флаг_подвопроса = true;
                         ответы.Правильный_ответ = stringTempListCor[countCor];
                         countCor++;
-                        countDef++;
+                       
                         if (func == "create")
                         {
                             ответы.id_Вопроса = вопросы.id_вопроса;
@@ -207,15 +206,15 @@ namespace WebApplicationForTest.Controllers
                         stringTempListVar[j] = stringTempListVar[i];
                         stringTempListVar[i] = tmp;
                     }
-                    char countV = 'a';
+                 
                     foreach (var vartemp in stringTempListVar) //вносим варианты ответов в бд
                     {
                         Ответы ответы = new Ответы();
-                        ответы.Текст_ответа = countV + " " + vartemp.Replace("  ", "");
+                        ответы.Текст_ответа = vartemp.Replace("  ", "");
                         ответы.Флаг_правильного_ответа = true;
                         ответы.Флаг_подвопроса = false;
                         ответы.Правильный_ответ = null;
-                        countV++;
+                       
                         if (func == "create")
                         {
                             ответы.id_Вопроса = вопросы.id_вопроса;
@@ -293,7 +292,42 @@ namespace WebApplicationForTest.Controllers
                 }
             }
         }
+        //метод выбора вопросов для конкретной темы
+        public IQueryable<Вопросы> QuestionChoose( IQueryable <Вопросы> вопросы, ref SelectList ans) 
+        {
+            int q = 1;
+            int countRazr = 0;
+           int countSootn = 1000;
+            int selectedIndex = 1;
+            foreach (var temp in вопросы)
+            {
 
+                temp.Текст_вопроса = q.ToString() + " " + temp.Текст_вопроса;
+                if (temp.Тип_ответа.Replace(" ", "") == "Разрыв")
+                {
+
+                    ans = new SelectList(from a in db.Ответы where a.id_Вопроса == temp.id_вопроса && a.Флаг_правильного_ответа == false select a, "id_ответа", "Текст_ответа", selectedIndex); //выпадающий список для вопросов с разрывами
+                    ViewData[countRazr.ToString()] = ans;
+
+                    countRazr++;
+
+                }
+                if (temp.Тип_ответа.Replace(" ", "") == "Соотношение")
+                {
+
+                    ans = new SelectList(from a in db.Ответы where a.id_Вопроса == temp.id_вопроса && a.Флаг_подвопроса == false select a, "id_ответа", "Текст_ответа", selectedIndex); //выпадающий список для вопросов соотношения
+                    ViewData[countSootn.ToString()] = ans;
+
+                    countSootn++;
+
+                }
+
+                q++;
+
+            }
+
+            return вопросы;
+        }
         // GET: Вопросы
         public async Task<ActionResult> Index(string redactor = "", string topic = "")
         {
@@ -310,31 +344,11 @@ namespace WebApplicationForTest.Controllers
                 ViewBag.Раздел = тема.Id_Раздела;
                 ViewBag.НазваниеТеста = тема.Название_темы_теста.Replace("  ", "");
                 ViewBag.IdТеста = id_Topic;
+                SelectList ans1=null;
                 var вопросы = db.Вопросы.Include(в => в.Тесты).Include(в => в.Ответы);
-                вопросы = (from v in db.Вопросы where v.id_Теста == id_Topic select v).Include(v => v.Ответы);
-                int q = 1;
-                int count = 0;
-
-                foreach (var temp in вопросы)
-                {
-
-                    temp.Текст_вопроса = q.ToString() + " " + temp.Текст_вопроса;
-                    if (temp.Тип_ответа.Replace(" ", "") == "Разрыв")
-                    {
-                        int selectedIndex = 1;
-                        SelectList ans = new SelectList(from a in db.Ответы where a.id_Вопроса == temp.id_вопроса && a.Флаг_правильного_ответа == false select a, "id_ответа", "Текст_ответа", selectedIndex); //выпадающий список для вопросов с разрывами
-                        ViewData[count.ToString()] = ans;
-
-                        count++;
-                        //  temp.Текст_вопроса = temp.Текст_вопроса.Replace("...", "@Html.DropDownList(\"Answ\", ViewBag.Ans as SelectList, new {id=\"ans\" }) ");
-
-                    }
-                    q++;
-
-                }
-
+                вопросы =  (from v in db.Вопросы where v.id_Теста == id_Topic select v).Include(v => v.Ответы);
+                вопросы = QuestionChoose(вопросы, ref ans1);
                 return View(await вопросы.ToListAsync());
-
             }
             else
             {
@@ -371,6 +385,7 @@ namespace WebApplicationForTest.Controllers
                 }
             }
             Тесты тема = db.Тесты.Find(userТестId);
+            SelectList ans = null;
             ViewBag.Раздел = тема.Id_Раздела;
             ViewBag.IdТеста = userТестId;
             var вопросы = db.Вопросы.Include(в => в.Тесты).Include(в => в.Ответы);
@@ -381,27 +396,7 @@ namespace WebApplicationForTest.Controllers
                 ViewBag.User = "redactor";
 
             }
-
-            int q = 1;
-            int count = 0;
-
-            foreach (var temp in вопросы)
-            {
-
-                temp.Текст_вопроса = q.ToString() + " " + temp.Текст_вопроса;
-                if (temp.Тип_ответа.Replace(" ", "") == "Разрыв")
-                {
-                    int selectedIndex = 1;
-                    SelectList ans = new SelectList(from a in db.Ответы where a.id_Вопроса == temp.id_вопроса && a.Флаг_правильного_ответа == false select a, "id_ответа", "Текст_ответа", selectedIndex); //выпадающий список для вопросов с разрывами
-                    ViewData[count.ToString()] = ans;
-
-                    count++;
-                    //  temp.Текст_вопроса = temp.Текст_вопроса.Replace("...", "@Html.DropDownList(\"Answ\", ViewBag.Ans as SelectList, new {id=\"ans\" }) ");
-
-                }
-                q++;
-
-            }
+            вопросы = QuestionChoose(вопросы, ref ans);
 
             return View(await вопросы.ToListAsync());
 
@@ -451,6 +446,7 @@ namespace WebApplicationForTest.Controllers
                     {
                         Ответы ответы = new Ответы();
                         вопросы.Текст_вопроса = вопросы.Текст_вопроса.Replace("  ", "");
+                        вопросы.Текст_вопроса = вопросы.Текст_вопроса.Replace("\r\n", " ");
                         вопросы.Текст_вопроса = вопросы.Текст_вопроса.TrimEnd(' ');
                         db.Вопросы.Add(вопросы);
                         Тесты тесты = await db.Тесты.FindAsync(вопросы.id_Теста);
@@ -542,7 +538,7 @@ namespace WebApplicationForTest.Controllers
                 var answerS = from v in db.Ответы where (v.id_Вопроса == вопросы.id_вопроса && v.Флаг_подвопроса==true) select v;
                 foreach (var variant in answerS)
                 {
-                    Def = Def+ variant.Текст_ответа.Replace("  ", "").TrimStart(' ').TrimEnd(' ').Substring(1) + ", ";
+                    Def = Def+ variant.Текст_ответа.Replace("  ", "").TrimStart(' ').TrimEnd(' ') + ", ";
                     
                     CorrectAnsw = CorrectAnsw + variant.Правильный_ответ.Replace("  ", "").TrimStart(' ').TrimEnd(' ') + ", ";
                     
@@ -570,6 +566,7 @@ namespace WebApplicationForTest.Controllers
                 {
                     Вопросы editВопрос = await (db.Вопросы.FindAsync(вопросы.id_вопроса));
                     editВопрос.Текст_вопроса = вопросы.Текст_вопроса.Replace("  ", "");
+                    editВопрос.Текст_вопроса= вопросы.Текст_вопроса.Replace("\r\n", " ");
                     editВопрос.Тип_ответа = вопросы.Тип_ответа;
                     editВопрос.id_Теста = вопросы.id_Теста;
                     var answerDelete = from a in db.Ответы where a.id_Вопроса == editВопрос.id_вопроса select a;

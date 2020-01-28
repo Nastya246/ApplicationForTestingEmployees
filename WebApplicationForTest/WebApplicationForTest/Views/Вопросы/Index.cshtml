@@ -4,7 +4,11 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@{ int T = 0;}
+@{ int T = 0;
+
+    int Soot = 1000;
+    int SootHelp = 1;
+    }
 <h2><big>Тема "@ViewBag.НазваниеТеста"</big></h2> <br /><br />
 
 @if (ViewBag.User != "redactor")
@@ -25,7 +29,7 @@
             @foreach (var item in Model)
 
             {
-                if ((item.Тип_ответа.Replace(" ", "") != "Соотношение") && (item.Тип_ответа.Replace(" ", "") != "Разрыв"))
+                if (item.Тип_ответа.Replace(" ", "") != "Разрыв")
                 {
                     <tr>
                         <td>
@@ -34,41 +38,7 @@
 
                     </tr>
                 }
-                else if (item.Тип_ответа.Replace(" ", "") != "Разрыв")
-                {
 
-                    <tr>
-
-
-                        <td>
-
-                            <br /><br /><big> @Html.DisplayFor(m => item.Текст_вопроса)</big><br /><br />
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td>
-                            @foreach (var itemS in item.Ответы)
-                            {
-
-                                if (itemS.Флаг_подвопроса == false)
-                                {
-                                    <em>
-                                        @Html.DisplayFor(m => itemS.Текст_ответа)
-                                    </em>
-                                }
-
-                                if (itemS.Флаг_подвопроса == true)
-                                {
-                                    <b>
-                                        @Html.DisplayFor(m => itemS.Текст_ответа)
-                                    </b>
-                                }
-                            }
-                        </td>
-                    </tr>
-
-                }
                 else
                 {
 
@@ -115,36 +85,45 @@
                     else if (item.Тип_ответа.Replace(" ", "") == "Соотношение")
                     {
 
-                        <tr>
-                            @if (itemO.Флаг_подвопроса == true)
+                        
+                            if (itemO.Флаг_подвопроса == true)
                             {
-
-                                <td> @Html.DisplayFor(m => itemO.Текст_ответа) </td>
-                                <td><input type="text" name=@(itemO.id_ответа + "-"+ item.id_вопроса) /></td>
-                            }
+                        <tr>
+                            <td> @Html.DisplayFor(m => itemO.Текст_ответа) </td>
+                            <td> @Html.DropDownList((itemO.id_ответа.ToString() + "-" + item.id_вопроса.ToString()), ViewData[Soot.ToString()] as SelectList, "--Выбор ответа--", new { id = "ansSoot" })</td>
                         </tr>
+                            //  Soot++;
+
+                        }
+                        SootHelp++;
+                        if (SootHelp >= item.Ответы.Count())
+                        {
+                            Soot++;
+                            SootHelp = 1;
+                        }
+
                     }
                     else if (item.Тип_ответа.Replace(" ", "") == "Несколько")
                     {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(m => itemO.Текст_ответа)
-                            </td>
-                            <td>
-                                @Html.CheckBox(item.id_вопроса.ToString(), false)
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(m => itemO.Текст_ответа)
+                                </td>
+                                <td>
+                                    @Html.CheckBox(item.id_вопроса.ToString(), false)
 
-                            </td>
-                        </tr>
-                    }
+                                </td>
+                            </tr>
+                        }
 
-                }
+                            }
 
 
-            }
+                            }
 
-            <tr><td><br /><br /><input type="submit" value="Отправить" /> </td><td></td></tr>
+                            <tr><td><br /><br /><input type="submit" value="Отправить" /> </td><td></td></tr>
 
-        </table>
+                        </table>
     </form>
 }
 else
