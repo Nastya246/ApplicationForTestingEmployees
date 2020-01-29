@@ -1,122 +1,131 @@
 ﻿@model IEnumerable<WebApplicationForTest.Models.Пользователи>
 
 <div id="searchresults">
-    <h3>Найденные пользователи : @Model.First().Фамилия</h3>
-    <form method="post" action="~/Практика/EditData">
-        <table class="table">
+    @if (Model.Count() > 0)
+    {
+        <h3>Найденные пользователи : @Model.First().Фамилия</h3>
+        <form method="post" action="~/Практика/EditData">
+            <table class="table">
 
 
-            @foreach (var item in Model)
-            {
-                <tr>
-
-                    <td>
-                        <br /> <ul>
-                            <li>
-                                @item.Фамилия.ToUpper()
-                                @item.Имя.ToUpper()
-                                @item.Отчество.ToUpper()
-                            </li>
-                        </ul>
-
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        <small>@item.Подразделение.Название_подразделения</small>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <small> @item.Должность.Название_должности</small>
-                    </td>
-
-
-                </tr>
-                <tr>
-
-
-                    <th>Оценка за теорию</th>
-                    <th>Дата сдачи теории</th>
-                    <th>Оценка за практику</th>
-                    <th>Дата сдачи практики</th>
-                    <th>Общий результат</th>
-
-
-                </tr>
-                foreach (var itemR in item.Результат_теста)
+                @foreach (var item in Model)
                 {
-                    if (@ViewBag.id_topic == itemR.id_Теста)
+                    <tr>
+
+                        <td>
+                            <br /> <ul>
+                                <li>
+                                    @item.Фамилия.ToUpper()
+                                    @item.Имя.ToUpper()
+                                    @item.Отчество.ToUpper()
+                                </li>
+                            </ul>
+
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <small>@item.Подразделение.Название_подразделения</small>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <small> @item.Должность.Название_должности</small>
+                        </td>
+
+
+                    </tr>
+                    <tr>
+
+
+                        <th>Оценка за теорию</th>
+                        <th>Дата сдачи теории</th>
+                        <th>Оценка за практику</th>
+                        <th>Дата сдачи практики</th>
+                        <th>Общий результат</th>
+
+
+                    </tr>
+                    foreach (var itemR in item.Результат_теста)
                     {
-                        <tr>
-                            <td>
+                        if (@ViewBag.id_topic == itemR.id_Теста)
+                        {
+                            <tr>
+                                <td>
 
-                                @itemR.Оценка_за_теорию
-                                <input type="hidden" value=@ViewBag.id_topic name=topic />
+                                    @itemR.Оценка_за_теорию
+                                    <input type="hidden" value=@ViewBag.id_topic name=topic />
 
-                            </td>
-                            <td>
+                                </td>
+                                <td>
 
-                                @itemR.Дата_сдачи_теории.ToString().Substring(0, 10)
+                                    @itemR.Дата_сдачи_теории.ToString().Substring(0, 10)
 
-                            </td>
-                            <td>
+                                </td>
+                                <td>
 
 
-                                <select id=@(item.id_user.ToString()+","+itemR.id_Теста.ToString()) name=@(item.id_user.ToString()+","+itemR.id_Теста.ToString())>
+                                    <select id=@(item.id_user.ToString() + "," + itemR.id_Теста.ToString()) name=@(item.id_user.ToString() + "," + itemR.id_Теста.ToString())>
+                                        @if (itemR.Отметка_о_практике == null)
+                                        {
+                                            <option selected value="Не сдавалось">Не сдавалось</option>
+                                            <option value="Не сдано">Не сдано</option>
+                                            <option value="Сдано">Сдано</option>
+
+
+                                        }
+                                        else
+                                        {
+
+                                            if (@itemR.Отметка_о_практике == true)
+                                            {
+                                                <option selected value="Сдано">Сдано</option>
+                                                <option value="Не сдано">Не сдано</option>
+                                            }
+                                            else if (@itemR.Отметка_о_практике == false)
+                                            {
+                                                <option selected value="Не сдано">Не сдано</option>
+                                                <option value="Сдано">Сдано</option>
+                                            }
+                                        }
+
+                                    </select>
+
+                                </td>
+                                <td>
+
+
                                     @if (itemR.Отметка_о_практике == null)
                                     {
-                                        <option selected value="Не сдавалось">Не сдавалось</option>
-                                        <option value="Не сдано">Не сдано</option>
-                                        <option value="Сдано">Сдано</option>
-
-
+                                        <input type="hidden" value="@DateTime.Now.ToString("yyyy/MM/dd")" name=@(item.id_user.ToString() + "," + itemR.id_Теста.ToString()) />
                                     }
                                     else
                                     {
-
-                                        if (@itemR.Отметка_о_практике == true)
-                                        {
-                                            <option selected value="Сдано">Сдано</option>
-                                            <option value="Не сдано">Не сдано</option>
-                                        }
-                                        else if (@itemR.Отметка_о_практике == false)
-                                        {
-                                            <option selected value="Не сдано">Не сдано</option>
-                                            <option value="Cдано">Cдано</option>
-                                        }
+                                        @itemR.Дата_сдачи_практики.ToString().Substring(0, 10)
+                                        <input type="hidden" value="@DateTime.Now.ToString("yyyy/MM/dd")" name=@(item.id_user.ToString() + "," + itemR.id_Теста.ToString()) />
                                     }
+                                </td>
+                                <td>
 
-                                </select>
-
-                            </td>
-                            <td>
-
-
-                                @if (itemR.Отметка_о_практике == null)
-                                {
-                                    <input type="hidden" value="@DateTime.Now.ToString("yyyy/MM/dd")" name=@(item.id_user.ToString()+","+itemR.id_Теста.ToString()) />
-                                }
-                                else
-                                {
-                                    @itemR.Дата_сдачи_практики.ToString().Substring(0, 10)
-                                    <input type="hidden" value="@DateTime.Now.ToString("yyyy/MM/dd")" name=@(item.id_user.ToString()+","+itemR.id_Теста.ToString()) />
-                                }
-                            </td>
-                            <td>
-
-                                @itemR.Общий_результат
-
-                            </td>
-                        </tr>
+                                    @itemR.Общий_результат
+                                    <div class="un">
+                                        <input type="hidden" value=@ViewBag.id_units name=units />
+                                    </div>
+                                </td>
+                            </tr>
+                        }
                     }
+
                 }
 
-            }
+                <tr><td><input type="submit" value="Сохранить" /> <br /></td><td></td></tr>
 
-            <tr><td><input type="submit" value="Сохранить" /> <br /></td><td></td></tr>
-
-        </table>
-    </form>
+            </table>
+        </form>
+    }
+    else
+    {
+        <h3>Пользователи не найдены</h3>
+    }
 </div>

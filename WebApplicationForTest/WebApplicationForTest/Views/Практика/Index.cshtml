@@ -9,42 +9,42 @@
 <h2>Проставление практики</h2> <br />
 <p>
 
-    
-     @Html.ActionLink("К списку тем", "Index", "Тесты", new { practice = "practice", razdel = @ViewBag.razdel }, null)
+
+    @Html.ActionLink("К списку тем", "Index", "Тесты", new { practice = "practice", razdel = @ViewBag.razdel }, null)
     @Html.ActionLink("К списку разделов", "Index", "Разделы", new { practice = "practice" }, null)
 </p>
 <div>
     @using (Ajax.BeginForm("UserSearch", new AjaxOptions { UpdateTargetId = "results" }))
     {
-        <p>Поиск по фамилии пользователя</p> <br />
+        <p><b>Поиск по фамилии пользователя</b></p> <br />
+        <p>Выберите подразделение</p>
+        @Html.DropDownList("Units", ViewBag.Подразделения as SelectList, "--Выбор подразделения--", new { id = "Units" })
         <br /><input type="text" name="name" />
+
         <input type="hidden" value=@ViewBag.id_topic name=idTopic />
         <input type="submit" value="Поиск" />
     }
-    <div id="results"></div>
-</div>
+    <div id="results">
+
+        <form method="post" action="~/Практика/EditData">
+            <table class="table">
 
 
-
-<form method="post" action="~/Практика/EditData">
-    <table class="table">
-
-       
-            @foreach (var item in Model)
-            { 
+                @foreach (var item in Model)
+                {
                     <tr>
 
                         <td>
                             <br /> <ul>
-                                       <li>
-                                           @item.Фамилия.ToUpper()
-                                           @item.Имя.ToUpper()
-                                           @item.Отчество.ToUpper()
-                                       </li>
+                                <li>
+                                    @item.Фамилия.ToUpper()
+                                    @item.Имя.ToUpper()
+                                    @item.Отчество.ToUpper()
+                                </li>
                             </ul>
                         </td>
                     </tr>
-               
+
                     <tr>
                         <td>
                             <small>@item.Подразделение.Название_подразделения</small>
@@ -70,78 +70,114 @@
                     </tr>
                     foreach (var itemR in item.Результат_теста)
                     {
-                    if (@ViewBag.id_topic == itemR.id_Теста)
-                    {
-                    <tr>
-                        <td>
+                        if (@ViewBag.id_topic == itemR.id_Теста)
+                        {
+                            <tr>
+                                <td>
 
-                            @itemR.Оценка_за_теорию
-                            <input type="hidden" value=@ViewBag.id_topic name=topic />
+                                    @itemR.Оценка_за_теорию
+                                    <input type="hidden" value=@ViewBag.id_topic name=topic />
 
-                        </td>
-                        <td>
+                                </td>
+                                <td>
 
-                            @itemR.Дата_сдачи_теории.ToString().Substring(0, 10)
+                                    @itemR.Дата_сдачи_теории.ToString().Substring(0, 10)
 
-                        </td>
-                        <td>
-
-
-                            <select id=@(item.id_user.ToString()+","+itemR.id_Теста.ToString()) name=@(item.id_user.ToString()+","+itemR.id_Теста.ToString())>
-                                @if (itemR.Отметка_о_практике == null)
-                                {
-                                    <option selected value="Не сдавалось">Не сдавалось</option>
-                                    <option value="Не сдано">Не сдано</option>
-                                    <option value="Сдано">Сдано</option>
+                                </td>
+                                <td>
 
 
-                                }
-                                else
-                                {
+                                    <select id=@(item.id_user.ToString()+","+itemR.id_Теста.ToString()) name=@(item.id_user.ToString()+","+itemR.id_Теста.ToString())>
+                                        @if (itemR.Отметка_о_практике == null)
+                                        {
+                                            <option selected value="Не сдавалось">Не сдавалось</option>
+                                            <option value="Не сдано">Не сдано</option>
+                                            <option value="Сдано">Сдано</option>
 
-                                    if (@itemR.Отметка_о_практике == true)
+
+                                        }
+                                        else
+                                        {
+
+                                            if (itemR.Отметка_о_практике == true)
+                                            {
+                                                <option selected value="Сдано">Сдано</option>
+                                                <option value="Не сдано">Не сдано</option>
+                                            }
+                                            else if (itemR.Отметка_о_практике == false)
+                                            {
+                                                <option selected value="Не сдано">Не сдано</option>
+                                                <option value="Сдано">Сдано</option>
+                                            }
+                                        }
+
+                                    </select>
+
+                                </td>
+                                <td>
+
+
+                                    @if (itemR.Отметка_о_практике == null)
                                     {
-                                        <option selected value="Сдано">Сдано</option>
-                                        <option value="Не сдано">Не сдано</option>
+                                        <input type="hidden" value="@DateTime.Now.ToString("yyyy/MM/dd")" name=@(item.id_user.ToString()+","+itemR.id_Теста.ToString()) />
                                     }
-                                    else if (@itemR.Отметка_о_практике == false)
+                                    else
                                     {
-                                        <option selected value="Не сдано">Не сдано</option>
-                                        <option value="Cдано">Cдано</option>
+                                        @itemR.Дата_сдачи_практики.ToString().Substring(0, 10)
+                                        <input type="hidden" value="@DateTime.Now.ToString("yyyy/MM/dd")" name=@(item.id_user.ToString()+","+itemR.id_Теста.ToString()) />
                                     }
-                                }
+                                </td>
+                                <td>
 
-                            </select>
+                                    @itemR.Общий_результат
 
-                        </td>
-                        <td>
-
-
-                            @if (itemR.Отметка_о_практике == null)
-                            {
-                                <input type="hidden" value="@DateTime.Now.ToString("yyyy/MM/dd")" name=@(item.id_user.ToString()+","+itemR.id_Теста.ToString()) />
-                            }
-                            else
-                            {
-                                @itemR.Дата_сдачи_практики.ToString().Substring(0, 10)
-                                <input type="hidden" value="@DateTime.Now.ToString("yyyy/MM/dd")" name=@(item.id_user.ToString()+","+itemR.id_Теста.ToString()) />
-                            }
-                        </td>
-                        <td>
-
-                            @itemR.Общий_результат
-
-                        </td>
-                    </tr>
-                    }
+                                    <div class="un">
+                                        <input type="hidden" value=-1 name=units />
+                                    </div>
+                                </td>
+                            </tr>
+                        }
                     }
 
-                    }
-            
-            <tr><td><input type="submit" value="Сохранить" /> </td><td></td></tr>
+                }
 
-</table>
-</form>
+                <tr><td><input type="submit" value="Сохранить" /> </td><td></td></tr>
 
+            </table>
+        </form>
+    </div>
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+        <script type="text/javascript">
+        $(function () {
+
+           $('#Units').change(function()
+        {
+            // получаем выбранное значение
+            var id = $(this).val();
+                     $.ajax({
+                type: 'GET',
+                url: '@Url.Action("GetElementsHidden")/' + id,
+                success: function (data) {
+
+                    // заменяем содержимое присланным частичным представлением
+                   // $('#def').replaceWith(data);
+                    $("div.un").replaceWith(data);
+
+                }
+            });
+        });
+        })
+
+
+        </script>
+    }
+</div>
+
+
+
+
+
+    
 @Scripts.Render("~/scripts/jquery-1.12.1.min.js")
 @Scripts.Render("~/scripts/jquery.unobtrusive-ajax.min.js")

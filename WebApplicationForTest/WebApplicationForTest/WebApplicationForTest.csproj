@@ -536,6 +536,7 @@
     <Content Include="Views\Тесты\Index.cshtml" />
     <Content Include="Views\Отчеты\Index.cshtml" />
     <Content Include="Views\Вопросы\GetElement.cshtml" />
+    <Content Include="Views\Практика\GetElementsHidden.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\index.d.ts" />
