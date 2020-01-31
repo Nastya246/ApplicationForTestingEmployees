@@ -9,21 +9,48 @@
 <h2>Проставление практики</h2> <br />
 <p>
 
+@Html.ActionLink("Разделы", "Index", "Разделы", new { practice = "practice" }, null)<small>>>    </small>@ViewBag.razdelName
+@Html.ActionLink("Темы", "Index", "Тесты", new { practice = "practice", razdel = @ViewBag.razdel }, null)<small>>>    </small>@ViewBag.НазваниеТеста
 
-    @Html.ActionLink("К списку тем", "Index", "Тесты", new { practice = "practice", razdel = @ViewBag.razdel }, null)
-    @Html.ActionLink("К списку разделов", "Index", "Разделы", new { practice = "practice" }, null)
+
+</p>
+<p>
+    <ul>
+        <li>
+            Для поиска по подразделениям выберите подразделение и нажмите кнопку "Поиск"
+        </li>
+        <li>
+            Для поиска по подразделениям и фамилиям выберите подразделение, введите фамилию или ее часть и нажмите кнопку "Поиск"
+        </li>
+        <li>
+            Для поиска по фамилиям пользователей во всех подразделениях, сдававших выбранную тему, введите фамилию или ее часть и нажмите кнопку "Поиск"
+        </li>
+        <li>
+            Поиск по фамилиям ищет все фамилии, которые содержат введеный набор символов, например при вводе "Петров" будут выведены также "Петрова"
+        </li>
+    </ul>
 </p>
 <div>
-    @using (Ajax.BeginForm("UserSearch", new AjaxOptions { UpdateTargetId = "results" }))
+    @using (Ajax.BeginForm("UserSearch", new AjaxOptions { UpdateTargetId = "results", LoadingElementId = "loading", LoadingElementDuration = 1000 }))
     {
         <p><b>Поиск по фамилии пользователя</b></p> <br />
         <p>Выберите подразделение</p>
         @Html.DropDownList("Units", ViewBag.Подразделения as SelectList, "--Выбор подразделения--", new { id = "Units" })
-        <br /><input type="text" name="name" />
-
+        if (@ViewBag.nameUser != "")
+        {
+            <br /><input type="text" name="name" value="@ViewBag.nameUser"/>
+        }
+        else
+        {
+            <br /><input type="text" name="name" />
+        }
         <input type="hidden" value=@ViewBag.id_topic name=idTopic />
         <input type="submit" value="Поиск" />
     }
+    <div id="loading" style="display:none; color:blue; font-weight:bold;">
+        <p>Идет загрузка...</p>
+    </div>
+
     <div id="results">
 
         <form method="post" action="~/Практика/EditData">
@@ -130,10 +157,9 @@
                                 <td>
 
                                     @itemR.Общий_результат
+                                    <input type="hidden" value=@ViewBag.id_units name=units />
+                                    <input type="hidden" value=@ViewBag.nameUser name=userName />
 
-                                    <div class="un">
-                                        <input type="hidden" value=-1 name=units />
-                                    </div>
                                 </td>
                             </tr>
                         }
@@ -146,32 +172,7 @@
             </table>
         </form>
     </div>
-    @section Scripts {
-        @Scripts.Render("~/bundles/jqueryval")
-        <script type="text/javascript">
-        $(function () {
 
-           $('#Units').change(function()
-        {
-            // получаем выбранное значение
-            var id = $(this).val();
-                     $.ajax({
-                type: 'GET',
-                url: '@Url.Action("GetElementsHidden")/' + id,
-                success: function (data) {
-
-                    // заменяем содержимое присланным частичным представлением
-                   // $('#def').replaceWith(data);
-                    $("div.un").replaceWith(data);
-
-                }
-            });
-        });
-        })
-
-
-        </script>
-    }
 </div>
 
 

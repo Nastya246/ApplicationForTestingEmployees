@@ -12,9 +12,11 @@ namespace WebApplicationForTest.Controllers
     {
         private TestEntities db = new TestEntities();
         // GET: Практика
-        public ActionResult Index(int topic=0, int units=-1)
+        public ActionResult Index(int topic=0, int units=-1, string nameUser="")
         {
             ViewBag.id_topic = topic;
+            ViewBag.nameUser = nameUser;
+            ViewBag.id_units = units;
             int selectedIndex = 0;
             SelectList подразделения = new SelectList(db.Подразделение, "Id_подразделения", "Название_подразделения", selectedIndex); //для передачи в представление списка подразделений
             ViewBag.Подразделения = подразделения;
@@ -22,14 +24,28 @@ namespace WebApplicationForTest.Controllers
             ViewBag.razdel = (тема.Id_Раздела).ToString();
             ViewBag.НазваниеТеста = тема.Название_темы_теста.Replace("  ", "");
             IQueryable<Результат_теста> users;
-            if (units != -1)
+            if (units != -1) //если подразделение указано
             {
-                users = (from u in db.Результат_теста where u.id_Теста == тема.id_теста && u.Пользователи.id_подразделения == units select u); //выбор тех, кто уже сдавал теорию
+                if (nameUser != "") //если указана фамилия
+                {
+                    users = (from u in db.Результат_теста where u.id_Теста == тема.id_теста && u.Пользователи.id_подразделения == units && u.Пользователи.Фамилия.Contains(nameUser) select u); //выбор тех, кто уже сдавал теорию
+                }
+                else //если поле для фамилии пусто
+                {
+                    users = (from u in db.Результат_теста where u.id_Теста == тема.id_теста && u.Пользователи.id_подразделения == units select u); //выбор тех, кто уже сдавал теорию
+                }
             }
-            else
+            else // если подразделение не указано то выводим всех пользователй
             {
-                users = (from u in db.Результат_теста where u.id_Теста == тема.id_теста  select u); //выбор тех, кто уже сдавал теорию
-            }
+                if (nameUser != "") //если указана фамилия
+                {
+                    users = (from u in db.Результат_теста where u.id_Теста == тема.id_теста && u.Пользователи.Фамилия.Contains(nameUser) select u); //выбор тех, кто уже сдавал теорию
+                }
+                else
+                {
+                    users = (from u in db.Результат_теста where u.id_Теста == тема.id_теста select u); //выбор тех, кто уже сдавал теорию
+                }
+                }
             List<Пользователи> пользователи = new List<Пользователи>();
             foreach (var temp in users)
             {
@@ -44,9 +60,11 @@ namespace WebApplicationForTest.Controllers
         [HttpPost]
         public async Task <ActionResult> Index(int razdel, Тесты item, int? Units)
         {
-            ViewBag.razdel = razdel.ToString();
+            Разделы разделы = await db.Разделы.FindAsync(razdel); //получаем раздел по Id
+            ViewBag.razdelName = разделы.Название_раздела.Replace("  ", ""); //передаем название раздела в представлнение
+            ViewBag.razdel = razdel.ToString(); //Передаем Id раздела в представление
             string nameTest = item.Название_темы_теста;
-            ViewBag.НазваниеТеста = nameTest; //передаем название теста в представление
+            ViewBag.НазваниеТеста = nameTest.Replace("  ", ""); //передаем название теста в представление
             int selectedIndex = 0;
             SelectList подразделения = new SelectList(db.Подразделение, "Id_подразделения", "Название_подразделения", selectedIndex); //для передачи в представление списка подразделений
             ViewBag.Подразделения = подразделения;
@@ -89,6 +107,7 @@ namespace WebApplicationForTest.Controllers
         [HttpPost]
        public async Task <ActionResult> EditData (FormCollection form)
         {
+            string name = "";
             int unit = -1;
             int id_Test = 0;
             var k = form.Keys;
@@ -118,12 +137,24 @@ namespace WebApplicationForTest.Controllers
                 {
                     var tempU= temp.GetValue(kD).AttemptedValue;
                     string[] mystringUnit = (temp.GetValue(kD).AttemptedValue).Split(',');
+                    var tempString = mystringUnit.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
+                    mystringUnit = tempString;
                     if (mystringUnit.Count() > 0)
                     {
                         unit = Convert.ToInt32(mystringUnit[0]);
-
+                        
                     }
                     //  unit = Convert.ToInt32(temp.GetValue(kD).AttemptedValue);
+                }
+                else if (kD== "userName")
+                {
+                    var tempN = temp.GetValue(kD).AttemptedValue;
+                    string[] mystringName = (temp.GetValue(kD).AttemptedValue).Split(',');
+                    if (mystringName.Count() > 0)
+                    {
+                        name = mystringName[0];
+                      
+                    }
                 }
                 else
                 {
@@ -176,10 +207,10 @@ namespace WebApplicationForTest.Controllers
                     }
                 }
             }
-            return RedirectToAction("Index", new { topic = id_Test, units=unit});
+            return RedirectToAction("Index", new { topic = id_Test, units=unit, nameUser=name});
         }
         [HttpPost]
-        public async Task <ActionResult> UserSearch(int idTopic, int? Units, string name = "")
+        public async Task <ActionResult> UserSearch(int idTopic, int? Units, int? units, string name = "")
         {
             /* List<string> lSelectP = new List<string>(3);
              lSelectP.Add("Сдано");
@@ -188,15 +219,17 @@ namespace WebApplicationForTest.Controllers
              SelectList отметка = new SelectList(lSelectP); 
              */
             // ViewBag.Отметка = отметка;
-            @ViewBag.id_topic = idTopic;
+            ViewBag.id_topic = idTopic;
           
             var alluserResult = await db.Результат_теста.Where(r => r.id_Теста == idTopic).ToListAsync();
             List<Пользователи> alluser;
+            ViewBag.nameUser = name;
             if (Units != null) //если выбрано подразделение
             {
-                @ViewBag.id_units = Units;
+                ViewBag.id_units = Units;
                 if (name != "") //если введено имя
                 {
+                    
                     alluser = await db.Пользователи.Where(r => (r.Фамилия.Contains(name) && r.id_подразделения == Units)).ToListAsync();
                 }
                 else //если поле для имени пустое
@@ -204,11 +237,26 @@ namespace WebApplicationForTest.Controllers
                     alluser = await db.Пользователи.Where(r => r.id_подразделения == Units).ToListAsync();
                 }
             }
+            else if ((units!=null) && (units!=-1))
+            {
+                
+                ViewBag.id_units = units;
+                if (name != "") //если введено имя
+                {
+                    
+                    alluser = await db.Пользователи.Where(r => (r.Фамилия.Contains(name) && r.id_подразделения == units)).ToListAsync();
+                }
+                else //если поле для имени пустое
+                {
+                    alluser = await db.Пользователи.Where(r => r.id_подразделения == units).ToListAsync();
+                }
+            }
             else //если не выбранно подразделение
             {
-                @ViewBag.id_units = -1;
+                ViewBag.id_units = -1;
                 if (name != "")
                 {
+                   
                     alluser = await db.Пользователи.Where(r => r.Фамилия.Contains(name)).ToListAsync();
                 }
                 else
@@ -231,13 +279,7 @@ namespace WebApplicationForTest.Controllers
            
             return PartialView(us);
         }
-        public ActionResult GetElementsHidden(int id) //для динамического обновления элементов при выборе разных типов вопросов в редакторе
-        {
-            
-                ViewBag.IdUnits = id;
-               
-            return PartialView();
-        }
+     
         // GET: Практика/Details/5
         public ActionResult Details(int id)
         {
