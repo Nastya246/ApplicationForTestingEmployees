@@ -1,16 +1,17 @@
+D:\repositoriy\WebApplicationForTest\WebApplicationForTest\bin\roslyn\csc.exe
+D:\repositoriy\WebApplicationForTest\WebApplicationForTest\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+D:\repositoriy\WebApplicationForTest\WebApplicationForTest\bin\roslyn\Microsoft.CodeAnalysis.dll
+D:\repositoriy\WebApplicationForTest\WebApplicationForTest\bin\roslyn\System.IO.Compression.dll
 D:\repositoriy\WebApplicationForTest\WebApplicationForTest\bin\WebApplicationForTest.dll.config
 D:\repositoriy\WebApplicationForTest\WebApplicationForTest\bin\WebApplicationForTest.dll
 D:\repositoriy\WebApplicationForTest\WebApplicationForTest\bin\WebApplicationForTest.pdb
-D:\repositoriy\WebApplicationForTest\WebApplicationForTest\bin\roslyn\csc.exe
 D:\repositoriy\WebApplicationForTest\WebApplicationForTest\bin\roslyn\csc.exe.config
 D:\repositoriy\WebApplicationForTest\WebApplicationForTest\bin\roslyn\csc.rsp
 D:\repositoriy\WebApplicationForTest\WebApplicationForTest\bin\roslyn\csi.exe
 D:\repositoriy\WebApplicationForTest\WebApplicationForTest\bin\roslyn\csi.exe.config
 D:\repositoriy\WebApplicationForTest\WebApplicationForTest\bin\roslyn\csi.rsp
 D:\repositoriy\WebApplicationForTest\WebApplicationForTest\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
-D:\repositoriy\WebApplicationForTest\WebApplicationForTest\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
 D:\repositoriy\WebApplicationForTest\WebApplicationForTest\bin\roslyn\Microsoft.CodeAnalysis.CSharp.Scripting.dll
-D:\repositoriy\WebApplicationForTest\WebApplicationForTest\bin\roslyn\Microsoft.CodeAnalysis.dll
 D:\repositoriy\WebApplicationForTest\WebApplicationForTest\bin\roslyn\Microsoft.CodeAnalysis.Scripting.dll
 D:\repositoriy\WebApplicationForTest\WebApplicationForTest\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
 D:\repositoriy\WebApplicationForTest\WebApplicationForTest\bin\roslyn\Microsoft.CSharp.Core.targets
@@ -26,7 +27,6 @@ D:\repositoriy\WebApplicationForTest\WebApplicationForTest\bin\roslyn\System.Dia
 D:\repositoriy\WebApplicationForTest\WebApplicationForTest\bin\roslyn\System.Diagnostics.FileVersionInfo.dll
 D:\repositoriy\WebApplicationForTest\WebApplicationForTest\bin\roslyn\System.Diagnostics.StackTrace.dll
 D:\repositoriy\WebApplicationForTest\WebApplicationForTest\bin\roslyn\System.Globalization.Calendars.dll
-D:\repositoriy\WebApplicationForTest\WebApplicationForTest\bin\roslyn\System.IO.Compression.dll
 D:\repositoriy\WebApplicationForTest\WebApplicationForTest\bin\roslyn\System.IO.Compression.ZipFile.dll
 D:\repositoriy\WebApplicationForTest\WebApplicationForTest\bin\roslyn\System.IO.FileSystem.dll
 D:\repositoriy\WebApplicationForTest\WebApplicationForTest\bin\roslyn\System.IO.FileSystem.Primitives.dll
@@ -53,4 +53,3 @@ D:\repositoriy\WebApplicationForTest\WebApplicationForTest\obj\Debug\WebApplicat
 D:\repositoriy\WebApplicationForTest\WebApplicationForTest\obj\Debug\WebApplicationForTest.csproj.CopyComplete
 D:\repositoriy\WebApplicationForTest\WebApplicationForTest\obj\Debug\WebApplicationForTest.dll
 D:\repositoriy\WebApplicationForTest\WebApplicationForTest\obj\Debug\WebApplicationForTest.pdb
-D:\repositoriy\WebApplicationForTest\WebApplicationForTest\obj\Debug\WebApplicationForTest.csprojAssemblyReference.cache

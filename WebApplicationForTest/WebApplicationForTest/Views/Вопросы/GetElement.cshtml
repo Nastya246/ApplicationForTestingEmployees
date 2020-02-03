@@ -4,11 +4,11 @@
         <div class="col-md-10">
             @if (@ViewBag.Def == true)
             {
-                <input type="text" id="def" name="def" size="150"/>
+                @Html.TextBox("def", "", new { @class = "form-control", @style = "width:500px" })
             }
             else
             {
-                <input type="text" id="def" name="def" size="150" disabled="disabled" />
+                @Html.TextBox("def", "", new { @class = "form-control", @style = "width:500px", @disabled = "disabled" })
             }
         </div>
     </div>
@@ -17,24 +17,26 @@
         <div class="col-md-10">
             @if (@ViewBag.Variant == true)
             {
-                <input type="text" id="variant" name="variant" size="150"/>
+                @Html.TextBox("variant", "", new { @class = "form-control", @style = "width:500px" })
             }
             else
             {
-                <input type="text" id="variant" name="variant" disabled="disabled" size="150"/>
+                @Html.TextBox("variant", "", new { @class = "form-control", @style = "width:500px", @disabled = "disabled" })
             }
         </div>
     </div>
     <div class="form-group">
         @Html.Label("Правильный ответ/ответы (через запятую):")
         <div class="col-md-10">
-            @if (@ViewBag.Correct == true)
+            @if (ViewBag.NULL == '0')
             {
-                <input type="text" id="correct" name="correct" size="150"/>
+
+                @Html.TextBox("correct", "", new { @class = "form-control", @style = "width:500px", @disabled = "disabled" })
+
             }
             else
             {
-                <input type="text" id="correct" name="correct" disabled="disabled" size="150"/>
+                @Html.TextBox("correct", "", new { @class = "form-control", @style = "width:500px"})
             }
         </div>
     </div>

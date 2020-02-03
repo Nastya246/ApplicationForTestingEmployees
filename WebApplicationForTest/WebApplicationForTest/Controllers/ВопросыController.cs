@@ -49,6 +49,7 @@ namespace WebApplicationForTest.Controllers
             }
             else if (id == "--Выбор типа вопроса--") 
             {
+                ViewBag.NULL = '0';
                 ViewBag.Def = false;
                 ViewBag.Variant = false;
                 ViewBag.Correct = false;
