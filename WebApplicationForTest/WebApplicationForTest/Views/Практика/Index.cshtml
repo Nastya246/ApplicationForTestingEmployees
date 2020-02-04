@@ -14,6 +14,7 @@
 
 
 </p>
+<br />
 <p>
     <ul>
         <li>
@@ -30,10 +31,11 @@
         </li>
     </ul>
 </p>
+<br/>
 <div>
     @using (Ajax.BeginForm("UserSearch", new AjaxOptions { UpdateTargetId = "results", LoadingElementId = "loading", LoadingElementDuration = 1000 }))
     {
-        <p><b>Поиск по фамилии пользователя</b></p> <br />
+        <p><b>Поиск по фамилии пользователя</b></p>
         <p>Выберите подразделение</p>
         @Html.DropDownList("Units", ViewBag.Подразделения as SelectList, "--Выбор подразделения--", new { id = "Units" })
         if (@ViewBag.nameUser != "")
@@ -166,8 +168,8 @@
                     }
 
                 }
-
-                <tr><td><input type="submit" value="Сохранить" /> </td><td></td></tr>
+               
+                <tr><td>  <br /><input type="submit" value="Сохранить" /> </td><td></td></tr>
 
             </table>
         </form>

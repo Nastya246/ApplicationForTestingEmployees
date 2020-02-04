@@ -36,7 +36,8 @@ namespace WebApplicationForTest.Models
         public virtual DbSet<Разделы> Разделы { get; set; }
         public virtual DbSet<Результат_теста> Результат_теста { get; set; }
         public virtual DbSet<Тесты> Тесты { get; set; }
-    
+     
+
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {
             var diagramnameParameter = diagramname != null ?

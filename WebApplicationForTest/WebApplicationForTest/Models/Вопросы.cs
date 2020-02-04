@@ -24,9 +24,12 @@ namespace WebApplicationForTest.Models
         public int id_Теста { get; set; }
         [Required(ErrorMessage = "Введите текст вопроса")]
         public string Текст_вопроса { get; set; }
+
         [Required(ErrorMessage = "Выберите тип вопроса")]
         public string Тип_ответа { get; set; }
-    
+
+       
+
         public virtual Тесты Тесты { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Ответы> Ответы { get; set; }

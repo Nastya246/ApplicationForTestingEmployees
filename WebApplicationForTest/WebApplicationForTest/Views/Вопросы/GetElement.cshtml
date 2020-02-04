@@ -1,14 +1,17 @@
-﻿<div class="c">
+﻿@model WebApplicationForTest.Models.ВопросОтветРедактор
+
+<div class="c">
     <div class="form-group">
         @Html.Label("Варианты понятий (через запятую, только для типа \"Соотношение\"):")
         <div class="col-md-10">
             @if (@ViewBag.Def == true)
             {
-                @Html.TextBox("def", "", new { @class = "form-control", @style = "width:500px" })
+                @Html.TextBoxFor(model => model.Понятия, new { @class = "form-control", @style = "width:500px" })
+                @Html.ValidationMessageFor(model => model.Понятия, "", new { @class = "text-danger" })
             }
             else
             {
-                @Html.TextBox("def", "", new { @class = "form-control", @style = "width:500px", @disabled = "disabled" })
+                @Html.TextBoxFor(model => model.Понятия, new { @class = "form-control", @style = "width:500px", @disabled = "disabled" })
             }
         </div>
     </div>
@@ -17,11 +20,12 @@
         <div class="col-md-10">
             @if (@ViewBag.Variant == true)
             {
-                @Html.TextBox("variant", "", new { @class = "form-control", @style = "width:500px" })
+                @Html.TextBoxFor(model => model.Варианты_ответов, new { @class = "form-control", @style = "width:500px" })
+                @Html.ValidationMessageFor(model => model.Варианты_ответов, "", new { @class = "text-danger" })
             }
             else
             {
-                @Html.TextBox("variant", "", new { @class = "form-control", @style = "width:500px", @disabled = "disabled" })
+                @Html.TextBoxFor(model => model.Варианты_ответов, new { @class = "form-control", @style = "width:500px", @disabled = "disabled" })
             }
         </div>
     </div>
@@ -31,12 +35,14 @@
             @if (ViewBag.NULL == '0')
             {
 
-                @Html.TextBox("correct", "", new { @class = "form-control", @style = "width:500px", @disabled = "disabled" })
+                @Html.TextBoxFor(model => model.Правильный_ответ, new { @class = "form-control", @style = "width:500px", @disabled = "disabled" })
+              
 
             }
             else
             {
-                @Html.TextBox("correct", "", new { @class = "form-control", @style = "width:500px"})
+                @Html.TextBoxFor(model => model.Правильный_ответ, new { @class = "form-control", @style = "width:500px" })
+                @Html.ValidationMessageFor(model => model.Правильный_ответ, "", new { @class = "text-danger" })
             }
         </div>
     </div>

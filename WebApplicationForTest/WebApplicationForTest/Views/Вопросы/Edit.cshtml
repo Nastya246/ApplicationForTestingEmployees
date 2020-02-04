@@ -1,4 +1,4 @@
-﻿@model WebApplicationForTest.Models.Вопросы
+﻿@model WebApplicationForTest.Models.ВопросОтветРедактор
 
 @{
     ViewBag.Title = "Edit";
@@ -7,7 +7,7 @@
 <div>
     <h2>Редактирование вопроса</h2>
     <p>
-        @Html.ActionLink("К списку вопросов", "Index", new { topic = Model.id_Теста, redactor = "redactor" })
+        @Html.ActionLink("К списку вопросов", "Index", new { topic = @ViewBag.Тема, redactor = "redactor" })
 
         @Html.ActionLink("К списку тем", "Index", "Тесты", new { razdel = @ViewBag.Раздел, redactor = "redactor" }, null)
         @Html.ActionLink("К списку разделов", "Index", "Разделы", new { redactor = "redactor" }, null)
@@ -21,26 +21,26 @@
 
             <hr />
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            @Html.HiddenFor(model => model.id_вопроса)
+            @Html.HiddenFor(model => model.вопросыРедактор.id_вопроса)
 
             <div class="form-group">
-                @Html.LabelFor(model => model.id_Теста, "id_Теста", htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.вопросыРедактор.id_Теста, "id_Теста", htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
                     @Html.DropDownList("id_Теста", (SelectList)ViewBag.id_Теста, htmlAttributes: new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.id_Теста, "", new { @class = "text-danger" })
+                    @Html.ValidationMessageFor(model => model.вопросыРедактор.id_Теста, "", new { @class = "text-danger" })
                 </div>
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.Текст_вопроса, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.вопросыРедактор.Текст_вопроса, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.TextAreaFor(model => model.Текст_вопроса, new { cols = "50", rows = "4", htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Текст_вопроса, "", new { @class = "text-danger" })
+                    @Html.TextAreaFor(model => model.вопросыРедактор.Текст_вопроса, new { cols = "50", rows = "4", htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.вопросыРедактор.Текст_вопроса, "", new { @class = "text-danger" })
                 </div>
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.Тип_ответа, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.вопросыРедактор.Тип_ответа, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
 
                     <select id="Тип_ответа" name="Тип_ответа">
@@ -95,11 +95,12 @@
                     <div class="col-md-10">
                         @if (ViewBag.ТипОтвета == "Соотношение")
                         {
-                            <input type="text" name=def size="150" value="@ViewBag.Понятия" />
+                            @Html.TextBoxFor(model => model.Понятия, new { @class = "form-control", @style = "width:500px" })
+                            @Html.ValidationMessageFor(model => model.Понятия, "", new { @class = "text-danger" })
                         }
                         else
                         {
-                            <input type="text" name=def size="150" disabled="disabled" value="@ViewBag.Понятия" />
+                            @Html.TextBoxFor(model => model.Понятия, new { @class = "form-control", @style = "width:500px", @disabled = "disabled" })
                         }
 
                     </div>
@@ -110,11 +111,12 @@
 
                         @if ((ViewBag.ТипОтвета != "Соотношение") && (ViewBag.ТипОтвета != "Разрыв") && (ViewBag.ТипОтвета != "Ввод"))
                         {
-                            <input type="text" name=variant size="150" value="@ViewBag.Варианты" />
+                            @Html.TextBoxFor(model => model.Варианты_ответов, new { @class = "form-control", @style = "width:500px" })
+                            @Html.ValidationMessageFor(model => model.Варианты_ответов, "", new { @class = "text-danger" })
                         }
                         else
                         {
-                            <input type="text" name=variant size="150" disabled="disabled" value="@ViewBag.Варианты" />
+                            @Html.TextBoxFor(model => model.Варианты_ответов, new { @class = "form-control", @style = "width:500px", @disabled = "disabled" })
                         }
                     </div>
                 </div>
@@ -122,8 +124,9 @@
                 <div class="form-group">
                     @Html.Label("Правильный ответ/ответы (через запятую):")
                     <div class="col-md-10">
-                        <input type="text" size="150" name=correct value="@ViewBag.ВерныйОтвет" />
-                       
+                        @Html.TextBoxFor(model => model.Правильный_ответ, new { @class = "form-control", @style = "width:500px" })
+                        @Html.ValidationMessageFor(model => model.Правильный_ответ, "", new { @class = "text-danger" })
+
                     </div>
                 </div>
             </div>

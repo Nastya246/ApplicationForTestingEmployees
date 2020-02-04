@@ -14,7 +14,8 @@ namespace WebApplicationForTest.Controllers
     public class ВопросыController : Controller
     {
         private TestEntities db = new TestEntities();
-        public ActionResult GetElement(string id) //для динамического обновления элементов при выборе разных типов вопросов в редакторе
+        //метод для динамического обновления элементов при выборе разных типов вопросов в редакторе
+        public ActionResult GetElement(string id) 
         {
 
             if (id == "Ввод")
@@ -436,16 +437,43 @@ namespace WebApplicationForTest.Controllers
         // сведения см. в статье https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "id_вопроса,id_Теста,Текст_вопроса,Тип_ответа,Номер_подвопроса")] Вопросы вопросы, int id_Теста, string variant, string correct, string def)
+        public async Task<ActionResult> Create(int id_Теста, ВопросОтветРедактор вопросОтветРедактор, string Тип_ответа)
         {
-
-            вопросы.id_Теста = id_Теста;
+            if (Тип_ответа != null)
+            {
+                вопросОтветРедактор.вопросыРедактор.Тип_ответа = Тип_ответа.Replace(" ", "");
+            }
+            Вопросы вопросы = вопросОтветРедактор.вопросыРедактор;
+          
+            string variant="", def="", correct="";
+            if (вопросОтветРедактор.Варианты_ответов != null)
+            {
+                variant = вопросОтветРедактор.Варианты_ответов.Replace("\r\n", " ");
+                variant = вопросОтветРедактор.Варианты_ответов.Replace("  ", "");
+                variant = вопросОтветРедактор.Варианты_ответов.TrimEnd(' ');
+            }
             
-                if (ModelState.IsValid)
+
+            correct = вопросОтветРедактор.Правильный_ответ.Replace("\r\n", " ");
+            correct = вопросОтветРедактор.Правильный_ответ.Replace("  ", "");
+            correct = вопросОтветРедактор.Правильный_ответ.TrimEnd(' ');
+
+            if (вопросОтветРедактор.Понятия != null)
+            {
+                def = вопросОтветРедактор.Понятия.Replace("\r\n", " ");
+                def = вопросОтветРедактор.Понятия.Replace("  ", "");
+                def = вопросОтветРедактор.Понятия.TrimEnd(' ');
+            }
+           
+            
+                if ((вопросОтветРедактор.вопросыРедактор.Текст_вопроса!=null)&&(вопросОтветРедактор.Правильный_ответ != null)&&(вопросОтветРедактор.вопросыРедактор.Тип_ответа != null))
                 {
                     try
                     {
+                       
+                        вопросы.id_Теста = id_Теста;
                         Ответы ответы = new Ответы();
+                        вопросы.Тип_ответа = вопросы.Тип_ответа.Replace(" ", "");
                         вопросы.Текст_вопроса = вопросы.Текст_вопроса.Replace("\r\n", " ");
                         вопросы.Текст_вопроса = вопросы.Текст_вопроса.Replace("  ", "");
                         вопросы.Текст_вопроса = вопросы.Текст_вопроса.TrimEnd(' ');
@@ -491,7 +519,9 @@ namespace WebApplicationForTest.Controllers
             {
                 return HttpNotFound();
             }
+            ВопросОтветРедактор вопросОтветРедактор = new ВопросОтветРедактор();
             ViewBag.Раздел = вопросы.Тесты.Id_Раздела;
+            ViewBag.Тема= вопросы.id_Теста;
             int selected = вопросы.id_Теста;
             ViewBag.id_Теста = new SelectList(db.Тесты.Where(a=>a.id_теста==вопросы.id_Теста), "id_теста", "Название_темы_теста", selected);
             ViewBag.ТипОтвета = вопросы.Тип_ответа.Replace(" ", "");
@@ -503,7 +533,8 @@ namespace WebApplicationForTest.Controllers
                 {
                     if (t.Флаг_правильного_ответа)
                     {
-                        ViewBag.ВерныйОтвет = t.Текст_ответа.Replace("  ", "").TrimStart(' ').TrimEnd(' ');
+                        вопросОтветРедактор.Правильный_ответ= t.Текст_ответа.Replace("  ", "").TrimStart(' ').TrimEnd(' ');
+                        ViewBag.ВерныйОтвет = вопросОтветРедактор.Правильный_ответ;
                         break;
                     }
                 }
@@ -530,6 +561,9 @@ namespace WebApplicationForTest.Controllers
                     correctStr =correctStr.Substring(0, correctStr.Length-2); //убираем лишнюю запятую
                 
                 ViewBag.Варианты = variantStr;
+                вопросОтветРедактор.Варианты_ответов = variantStr;
+
+                вопросОтветРедактор.Правильный_ответ= correctStr;
                 ViewBag.ВерныйОтвет = correctStr;
             }
             else if (вопросы.Тип_ответа.Replace(" ", "") == "Соотношение")
@@ -547,11 +581,17 @@ namespace WebApplicationForTest.Controllers
 
                 Def = Def.Substring(0, Def.Length - 2);
                 CorrectAnsw = CorrectAnsw.Substring(0, CorrectAnsw.Length-2); //убираем лишнюю запятую
-                
+
+                вопросОтветРедактор.Понятия = Def;
                 ViewBag.Понятия = Def;
+
+                вопросОтветРедактор.Правильный_ответ = CorrectAnsw;
                 ViewBag.ВерныйОтвет = CorrectAnsw;
             }
-                return View(вопросы);
+           
+            вопросОтветРедактор.вопросыРедактор = вопросы;
+          
+                return View(вопросОтветРедактор);
         }
 
         // POST: Вопросы/Edit/5
@@ -559,17 +599,41 @@ namespace WebApplicationForTest.Controllers
         // сведения см. в статье https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "id_вопроса,id_Теста,Текст_вопроса,Тип_ответа,Номер_подвопроса")] Вопросы вопросы, string variant, string correct, string def)
+        public async Task<ActionResult> Edit(ВопросОтветРедактор вопросОтветРедактор, string Тип_ответа, int id_Теста)
         {
-            if (ModelState.IsValid)
+            string variant="", def="", correct = "";
+            if (вопросОтветРедактор.Варианты_ответов != null)
+            {
+                variant = вопросОтветРедактор.Варианты_ответов.Replace("\r\n", " ");
+                variant = вопросОтветРедактор.Варианты_ответов.Replace("  ", "");
+                variant = вопросОтветРедактор.Варианты_ответов.TrimEnd(' ');
+            }
+
+
+            correct = вопросОтветРедактор.Правильный_ответ.Replace("\r\n", " ");
+            correct = вопросОтветРедактор.Правильный_ответ.Replace("  ", "");
+            correct = вопросОтветРедактор.Правильный_ответ.TrimEnd(' ');
+
+            if (вопросОтветРедактор.Понятия != null)
+            {
+                def = вопросОтветРедактор.Понятия.Replace("\r\n", " ");
+                def = вопросОтветРедактор.Понятия.Replace("  ", "");
+                def = вопросОтветРедактор.Понятия.TrimEnd(' ');
+            }
+            if (Тип_ответа != null)
+            {
+                вопросОтветРедактор.вопросыРедактор.Тип_ответа = Тип_ответа.Replace(" ", "");
+            }
+            if ((вопросОтветРедактор.Правильный_ответ!=null) &&(вопросОтветРедактор.вопросыРедактор.Текст_вопроса != null) && (вопросОтветРедактор.вопросыРедактор.Тип_ответа!=null))
             {
                 try
                 {
-                    Вопросы editВопрос = await (db.Вопросы.FindAsync(вопросы.id_вопроса));
-                    editВопрос.Текст_вопроса = вопросы.Текст_вопроса.Replace("\r\n", " ");
-                    editВопрос.Текст_вопроса = вопросы.Текст_вопроса.Replace("  ", "");
-                    editВопрос.Тип_ответа = вопросы.Тип_ответа;
-                    editВопрос.id_Теста = вопросы.id_Теста;
+                    Вопросы editВопрос = await (db.Вопросы.FindAsync(вопросОтветРедактор.вопросыРедактор.id_вопроса));
+                    editВопрос.Текст_вопроса = вопросОтветРедактор.вопросыРедактор.Текст_вопроса.Replace("\r\n", " ");
+                    editВопрос.Текст_вопроса = вопросОтветРедактор.вопросыРедактор.Текст_вопроса.Replace("  ", "");
+                    editВопрос.Текст_вопроса = вопросОтветРедактор.вопросыРедактор.Текст_вопроса.Trim(' ');
+                    editВопрос.Тип_ответа = вопросОтветРедактор.вопросыРедактор.Тип_ответа;
+                    editВопрос.id_Теста = id_Теста;
                     var answerDelete = from a in db.Ответы where a.id_Вопроса == editВопрос.id_вопроса select a;
                     foreach (var aDelete in answerDelete)
                     {
@@ -598,8 +662,8 @@ namespace WebApplicationForTest.Controllers
                     }
                 }
             }
-            ViewBag.id_Теста = new SelectList(db.Тесты, "id_теста", "Название_темы_теста", вопросы.id_Теста);
-            return View(вопросы);
+            ViewBag.id_Теста = new SelectList(db.Тесты, "id_теста", "Название_темы_теста", вопросОтветРедактор.вопросыРедактор.id_Теста);
+            return View(вопросОтветРедактор.вопросыРедактор);
         }
 
         // GET: Вопросы/Delete/5

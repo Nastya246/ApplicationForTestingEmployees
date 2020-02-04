@@ -28,16 +28,7 @@ namespace WebApplicationForTest.Controllersd
        [HttpPost]
        public async Task<ActionResult> Menu(string Login, string Password)
        {
-            ///////////////////////////////////
-         //   Dictionary<string, string> loginPass = new Dictionary<string, string>(db.Пользователи.Count()); //отправляем все логины и пароли в представление
-
-         /*   foreach (var i in db.Пользователи)
-            {
-                loginPass.Add(i.Логин.Replace(" ", ""), i.Пароль.Replace(" ", ""));
-            }
-            ViewBag.LoginPassword = loginPass;
-            */
-            //////////////////////////////
+       
             int selectedIndex = 0;
             
             SelectList подразделения = new SelectList(db.Подразделение, "Id_подразделения", "Название_подразделения", selectedIndex); //для передачи в представление списка подразделений
@@ -53,8 +44,7 @@ namespace WebApplicationForTest.Controllersd
                     {
                         ДолжностьList.Add(temp2);
                     }
-                }
-               
+                }      
             }
             SelectList должности = new SelectList(ДолжностьList, "Id_должности", "Название_должности");
             ViewBag.Должности = должности;
@@ -63,17 +53,18 @@ namespace WebApplicationForTest.Controllersd
             ViewBag.Password = Password;
             
             //если ввели логин и пароль, то корректно ли
-            var userLogin = (from user in db.Пользователи where user.Пароль.Replace(" ", "") == Password && user.Логин.Replace(" ", "") == Login select user);
+            var userLogin = await (from user in db.Пользователи where user.Пароль.Replace(" ", "") == Password && user.Логин.Replace(" ", "") == Login select user).ToListAsync();
            
             if (userLogin.Count()!=0)
-                    {
+            {
+
                 ViewBag.LogPas = "Success";
                 ViewBag.Id_user = userLogin.First().id_user;
                 ViewBag.Data = @DateTime.Now.ToString("yyyy/MM/dd");
             }
             if ((Login == "redactor") && (Password == "redactor12345"))
             {
-                List<string> ls=new List<string> (db.Разделы.Count());
+                List<string> ls=new List<string> (await (db.Разделы.CountAsync()));
                 foreach (var r in db.Разделы)
                 {
                     ls.Add(r.Название_раздела.Replace("  ", ""));
@@ -81,17 +72,14 @@ namespace WebApplicationForTest.Controllersd
                 ViewBag.ListSection = ls;
             }
             return View(); //открываем меню, соответ. пользователю
-           
-         
         }
-       
-
-            public ActionResult GetItems(int id) //для динамического обновления списка должностей при выборе другого подразделения
+        //метод для динамического обновления списка должностей при выборе другого подразделения
+        public async Task <ActionResult> GetItems(int id) 
         {
-           
-            List<Должность> ДолжностьList1 = db.Должность.ToList();
-            ДолжностьList1.Clear();
-            foreach (Подразделение temp in db.Подразделение.Include(t => t.Должность))
+
+            List<Должность> ДолжностьList1 = new List<Должность>();
+            var подразделение = await (db.Подразделение.Include(t => t.Должность)).ToListAsync();
+            foreach (Подразделение temp in подразделение)
             {
                 if (temp.Id_подразделения == id)
                 {
@@ -105,8 +93,8 @@ namespace WebApplicationForTest.Controllersd
            
             return PartialView(ДолжностьList1.ToList());
         }
-      
-        public ActionResult AutocompleteSearch(string term) // автодополнение слов, пока что не используется
+        // метод автодополнения слов, пока что не используется
+        public ActionResult AutocompleteSearch(string term) 
         {
             var models = db.Подразделение.Where(a => a.Название_подразделения.Contains(term))
                             .Select(a => new { value = a.Название_подразделения })
@@ -127,6 +115,7 @@ namespace WebApplicationForTest.Controllersd
             }
                 return false;
         }
+        //Проверка на существование пользователя в бд, если его там нет, то добавляем
         [HttpPost]
         public async Task<ActionResult> AddUser(string LastName, string FirstName, string Otchectvo, int? Units, int? Position,  string Date)
         {
@@ -140,7 +129,6 @@ namespace WebApplicationForTest.Controllersd
                     if ((temp.Фамилия.Replace(" ", "") == LastName)&&(temp.Имя.Replace(" ", "") == FirstName) &&(temp.Отчество.Replace(" ", "") == Otchectvo) &&(temp.id_должности == Position) &&(temp.id_подразделения == Units))
                     {
                                         flagEx = 1;
-       
                     }
                 }
                 if (flagEx == 0) //если нет пользователя с такими данными - вносим его в Бд

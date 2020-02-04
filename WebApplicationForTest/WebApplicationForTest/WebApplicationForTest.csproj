@@ -160,6 +160,7 @@
     <Compile Include="Models\sysdiagram.cs">
       <DependentUpon>ModelTest.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ВопросОтветРедактор.cs" />
     <Compile Include="Models\Вопросы.cs">
       <DependentUpon>ModelTest.tt</DependentUpon>
     </Compile>
