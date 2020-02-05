@@ -1,0 +1,42 @@
+﻿@model IEnumerable<WebApplicationForTest.Models.Должность>
+
+@{
+    ViewBag.Title = "Должности";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2><big>Список должностей</big></h2><br /><br /><br />
+
+<p>
+      @Html.ActionLink("Добавить новую должность", "Create") <br /><br />
+</p>
+<table class="table">
+    <tr>
+        <th>
+            <big><big>  @Html.DisplayName("Название должности")</big></big><br /><br />
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Название_должности)
+            </td>
+            <td>
+                <br /><br />
+                @Html.ActionLink("Изменить", "Edit", new { id = item.Id_должности }) |
+                @Html.ActionLink("Детали", "Details", new { id = item.Id_должности }) |
+                @Html.ActionLink("Удалить", "Delete", new { id = item.Id_должности }) <br /><br />
+            </td>
+        </tr>
+    }
+
+</table>
+<form method="post" action="~/Home/Menu">
+    <input type="hidden" value="admin" name="Login" />
+    <input type="hidden" value="admin12345" name="Password" />
+    <input type="submit" value="В меню" />
+
+</form>

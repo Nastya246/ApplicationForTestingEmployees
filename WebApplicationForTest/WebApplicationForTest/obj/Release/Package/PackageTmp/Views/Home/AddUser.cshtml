@@ -1,0 +1,50 @@
+﻿@model  WebApplicationForTest.Models.Пользователи
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div>
+
+
+
+    @if (ViewBag.CorrectData == "1")
+    {
+        <h3> Вы успешно внесены в базу данных!</h3>
+        <form method="post" action="~/Разделы/Index">
+            <input type="hidden" value=@ViewBag.Id_user name="id_user" />
+            <input type="hidden" value=@ViewBag.Data name="Data" />
+            <table>
+
+                <tr><td><p>Для повторного входа используйте логин и пароль </p> </td> </tr>
+                <tr><td><p>Ваш логин: @ViewBag.Login </p> </td> </tr>
+                <tr><td><p>Ваш пароль: @ViewBag.Passw </p> </td> </tr>
+                <tr><td><input type="submit" value="Перейти к тестированию" /> </td><td></td></tr>
+
+            </table>
+        </form>
+    }
+    else if (ViewBag.CorrectData == "3")
+    {
+        <h3> Вы заполнили не все данные! Вернитесь назад и заполните все поля</h3>
+        <form method="post" action="~/Home/Menu">
+            <input type="hidden" value="user" name="Login" />
+            <input type="hidden" value="user" name="Password" />
+            <input type="submit" value="Назад" />
+
+        </form>
+    }
+    else if (ViewBag.CorrectData == "2")
+    {
+
+        <h3> Такой пользователь уже есть в БД! Вернитесь в меню и введите свой логин и пароль</h3>
+        <form method="post" action="~/Home/Index">
+            
+            <input type="submit" value="В меню" />
+
+        </form>
+
+    }
+   
+    
+</div>

@@ -1,0 +1,58 @@
+﻿@model WebApplicationForTest.Models.Тесты
+
+@{
+    ViewBag.Title = "Детали";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Просмотр деталей</h2>
+<p>@Html.ActionLink("Редактировать", "Edit", new { id = Model.id_теста })
+@Html.ActionLink("К списку тем", "Index", new { razdel = Model.Id_Раздела, redactor = "redactor" })</p>
+
+<p>@Html.ActionLink("К списку разделов", "Index", "Разделы", new { redactor = "redactor" },null)</p>
+<div>
+    <h4>Темы</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Название_темы_теста)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Название_темы_теста)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Количество_вопросов)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Количество_вопросов)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Разделы.Название_раздела)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Разделы.Название_раздела)
+        </dd>
+
+    </dl>
+</div>
+
+
+<form method="post" action="~/Home/Menu">
+    <table class="table">
+        <tr>
+            <td>
+                <input type="hidden" value="redactor" name="Login" />
+                <input type="hidden" value="redactor12345" name="Password" />
+                <input type="submit" value="В меню" />
+
+
+            </td>
+        </tr>
+
+    </table>
+</form>

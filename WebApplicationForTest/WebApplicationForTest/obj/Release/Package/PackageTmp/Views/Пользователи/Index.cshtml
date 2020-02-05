@@ -1,0 +1,76 @@
+﻿@model IEnumerable<WebApplicationForTest.Models.Пользователи>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Список пользователей</h2>
+
+<p>
+    @Html.ActionLink("Добавить нового пользователя", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Фамилия)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Имя)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Отчество)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Логин)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Пароль)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Должность.Название_должности)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Подразделение.Название_подразделения)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Фамилия)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Имя)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Отчество)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Логин)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Пароль)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Должность.Название_должности)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Подразделение.Название_подразделения)
+        </td>
+        <td>
+            @Html.ActionLink("Редактировать", "Edit", new { id=item.id_user }) |
+            @Html.ActionLink("Детали", "Details", new { id=item.id_user }) |
+            @Html.ActionLink("Удалить", "Delete", new { id=item.id_user })
+        </td>
+    </tr>
+}
+
+</table>
+<form method="post" action="~/Home/Menu">
+    <input type="hidden" value="admin" name="Login" />
+    <input type="hidden" value="admin12345" name="Password" />
+    <input type="submit" value="В меню" />
+
+</form>

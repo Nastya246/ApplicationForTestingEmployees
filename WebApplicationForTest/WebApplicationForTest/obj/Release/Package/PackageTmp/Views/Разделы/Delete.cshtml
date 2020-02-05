@@ -1,0 +1,40 @@
+﻿@model WebApplicationForTest.Models.Разделы
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Удаление раздела</h2>
+<p>@Html.ActionLink("К списку разделов", "Index", new { redactor = "redactor" }) </p>
+<h3>Вы действительно хотите удалить этот раздел и связанные темы с ним?</h3>
+<div>
+
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Название_раздела)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Название_раздела)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Удалить" class="btn btn-default" /> 
+
+        </div>
+    }
+</div>
+<form method="post" action="~/Home/Menu">
+    <input type="hidden" value="redactor" name="Login" />
+    <input type="hidden" value="redactor12345" name="Password" />
+    <input type="submit" value="В меню" />
+
+</form>

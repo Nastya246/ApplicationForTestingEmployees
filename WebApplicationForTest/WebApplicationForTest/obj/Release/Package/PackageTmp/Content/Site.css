@@ -1,0 +1,119 @@
+﻿body {
+    font-size: 15px;
+    font-family: Verdana, Arial, Helvetica, Sans-Serif;
+    background-color: #f7f7fa;
+    padding-left: 40px;
+}
+
+a {
+    text-decoration: none;
+    display: inline-block;
+    padding: 5px 10px;
+    letter-spacing: 1px;
+    margin: 0 20px;
+    font-size: 12px;
+    transition: .3s ease-in-out;
+}
+nav {
+    display: block;
+}
+
+a {
+    color: #4800ff;
+    border: 2px solid transparent;
+}
+
+    a:hover {
+        border: 2px solid #4800ff;
+    }
+.menu {
+    padding-left: 10px;
+}
+
+    .menu ul {
+        list-style: none;
+    }
+
+    .menu li {
+        display: inline;
+    }
+
+
+
+table {
+    vertical-align: top;
+    text-align: left;
+    table-layout: fixed;
+    padding: 12px 10px;
+}
+
+.header {
+    font-weight: bold;
+}
+
+td {
+    padding-right: 10px;
+}
+.col-md-10 {
+    width: 400px;
+}
+input {
+    width: 200px;
+}
+
+#form-control {
+    width: 300px;
+}
+
+.field-validation-error {
+    color: #f00;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+.input-validation-error {
+    border: 1px solid #fa7a7a;
+    background-color: #fa7a7a;
+}
+
+.validation-summary-errors {
+    font-weight: bold;
+    color: #f00;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+button {
+    width: 90px;
+    text-align: center;
+    display: block;
+    font-family: arial;
+    text-decoration: none;
+    font-weight: 300;
+    font-size: 14px;
+    border: #000 1px solid;
+    color: #000;
+    padding: 3px;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin: 20px auto;
+    transition: .5s;
+    border-radius: 0px;
+}
+
+    button:hover {
+        top: 5px;
+        transition: .5s;
+        color: #4800ff;
+        border: #4800ff 1px solid;
+        border-radius: 10px;
+    }
+    button:active {
+        color: #000;
+        border: #1A1A1A 1px solid;
+        transition: .07s;
+        background-color: #FFF;
+    }

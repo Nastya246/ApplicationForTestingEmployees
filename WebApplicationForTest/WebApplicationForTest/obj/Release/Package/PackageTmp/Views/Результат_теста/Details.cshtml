@@ -1,0 +1,75 @@
+﻿@model WebApplicationForTest.Models.Результат_теста
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Результат_теста</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Дата_сдачи_теории)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Дата_сдачи_теории)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Оценка_за_теорию)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Оценка_за_теорию)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Дата_сдачи_практики)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Дата_сдачи_практики)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Отметка_о_практике)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Отметка_о_практике)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Общий_результат)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Общий_результат)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Пользователи.Фамилия)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Пользователи.Фамилия)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Тесты.Название_темы_теста)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Тесты.Название_темы_теста)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.id_результата_теста }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,0 +1,50 @@
+﻿@model WebApplicationForTest.Models.Подразделение
+
+@{
+   
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Добавить подразделение<br /><br /><br /></h2>
+
+<div>
+    @Html.ActionLink("Вернуться к списку подразделений", "Index")
+</div>
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+       
+        
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            <big>
+                @Html.Label("Введите название подразделения")</big>
+    <br /><br />
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.Название_подразделения, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Название_подразделения, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <br /><br />
+                <input type="submit" value="Добавить" class="btn btn-default" /><br /><br />
+               
+            </div>
+        </div>
+    </div>
+}
+
+    
+    <form method="post" action="~/Home/Menu">
+        <input type="hidden" value="admin" name="Login" />
+        <input type="hidden" value="admin12345" name="Password" />
+        <input type="submit" value="В меню" />
+
+    </form>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,21 @@
+﻿@model  IEnumerable<WebApplicationForTest.Models.Подразделение>
+
+@using (Ajax.BeginForm("SelectPosition", "Home", new AjaxOptions { UpdateTargetId = "Positions" }))
+{
+    foreach (var n in Model)
+    {
+    @Html.HiddenFor(m => n.Id_подразделения)
+       
+    @Html.DropDownListFor(m => n.Id_подразделения, new SelectList(n.Должность, "Id_должности", "Название_должности"),
+                            string.Empty
+                         )
+        
+    }
+}
+
+<script type="text/javascript">
+    $('#Id_должности').change(function () {
+        $(this).parents('form').submit();
+    });
+</script>
+

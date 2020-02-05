@@ -1,0 +1,7 @@
+﻿@model IEnumerable<WebApplicationForTest.Models.Должность>
+<select id="position" name="Position">
+    @foreach (var item in Model)
+    {
+        <option value="@item.Id_должности">@item.Название_должности</option>
+    }
+</select>

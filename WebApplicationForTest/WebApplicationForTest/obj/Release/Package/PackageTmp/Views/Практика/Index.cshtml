@@ -1,0 +1,186 @@
+﻿@model IEnumerable<WebApplicationForTest.Models.Пользователи>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h2>Проставление практики</h2> <br />
+<p>
+
+@Html.ActionLink("Разделы", "Index", "Разделы", new { practice = "practice" }, null)<small>>>    </small>@ViewBag.razdelName
+@Html.ActionLink("Темы", "Index", "Тесты", new { practice = "practice", razdel = @ViewBag.razdel }, null)<small>>>    </small>@ViewBag.НазваниеТеста
+
+
+</p>
+<br />
+<p>
+    <ul>
+        <li>
+            Для поиска по подразделениям выберите подразделение и нажмите кнопку "Поиск"
+        </li>
+        <li>
+            Для поиска по подразделениям и фамилиям выберите подразделение, введите фамилию или ее часть и нажмите кнопку "Поиск"
+        </li>
+        <li>
+            Для поиска по фамилиям пользователей во всех подразделениях, сдававших выбранную тему, введите фамилию или ее часть и нажмите кнопку "Поиск"
+        </li>
+        <li>
+            Поиск по фамилиям ищет все фамилии, которые содержат введеный набор символов, например при вводе "Петров" будут выведены также "Петрова"
+        </li>
+    </ul>
+</p>
+<br/>
+<div>
+    @using (Ajax.BeginForm("UserSearch", new AjaxOptions { UpdateTargetId = "results", LoadingElementId = "loading", LoadingElementDuration = 1000 }))
+    {
+        <p><b>Поиск по фамилии пользователя</b></p>
+        <p>Выберите подразделение</p>
+        @Html.DropDownList("Units", ViewBag.Подразделения as SelectList, "--Выбор подразделения--", new { id = "Units" })
+        if (@ViewBag.nameUser != "")
+        {
+            <br /><input type="text" name="name" value="@ViewBag.nameUser"/>
+        }
+        else
+        {
+            <br /><input type="text" name="name" />
+        }
+        <input type="hidden" value=@ViewBag.id_topic name=idTopic />
+        <input type="submit" value="Поиск" />
+    }
+    <div id="loading" style="display:none; color:blue; font-weight:bold;">
+        <p>Идет загрузка...</p>
+    </div>
+
+    <div id="results">
+
+        <form method="post" action="~/Практика/EditData">
+            <table class="table">
+
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+
+                        <td>
+                            <br /> <ul>
+                                <li>
+                                    @item.Фамилия.ToUpper()
+                                    @item.Имя.ToUpper()
+                                    @item.Отчество.ToUpper()
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <small>@item.Подразделение.Название_подразделения</small>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <small> @item.Должность.Название_должности</small>
+                        </td>
+
+
+                    </tr>
+                    <tr>
+
+
+                        <th>Оценка за теорию  </th>
+                        <th>Дата сдачи теории  </th>
+                        <th>Оценка за практику  </th>
+                        <th>Дата сдачи практики  </th>
+                        <th>Общий результат  </th>
+
+
+                    </tr>
+                    foreach (var itemR in item.Результат_теста)
+                    {
+                        if (@ViewBag.id_topic == itemR.id_Теста)
+                        {
+                            <tr>
+                                <td>
+
+                                    @itemR.Оценка_за_теорию
+                                    <input type="hidden" value=@ViewBag.id_topic name=topic />
+
+                                </td>
+                                <td>
+
+                                    @itemR.Дата_сдачи_теории.ToString().Substring(0, 10)
+
+                                </td>
+                                <td>
+
+
+                                    <select id=@(item.id_user.ToString()+","+itemR.id_Теста.ToString()) name=@(item.id_user.ToString()+","+itemR.id_Теста.ToString())>
+                                        @if (itemR.Отметка_о_практике == null)
+                                        {
+                                            <option selected value="Не сдавалось">Не сдавалось</option>
+                                            <option value="Не сдано">Не сдано</option>
+                                            <option value="Сдано">Сдано</option>
+
+
+                                        }
+                                        else
+                                        {
+
+                                            if (itemR.Отметка_о_практике == true)
+                                            {
+                                                <option selected value="Сдано">Сдано</option>
+                                                <option value="Не сдано">Не сдано</option>
+                                            }
+                                            else if (itemR.Отметка_о_практике == false)
+                                            {
+                                                <option selected value="Не сдано">Не сдано</option>
+                                                <option value="Сдано">Сдано</option>
+                                            }
+                                        }
+
+                                    </select>
+
+                                </td>
+                                <td>
+
+
+                                    @if (itemR.Отметка_о_практике == null)
+                                    {
+                                        <input type="hidden" value="@DateTime.Now.ToString("yyyy/MM/dd")" name=@(item.id_user.ToString()+","+itemR.id_Теста.ToString()) />
+                                    }
+                                    else
+                                    {
+                                        @itemR.Дата_сдачи_практики.ToString().Substring(0, 10)
+                                        <input type="hidden" value="@DateTime.Now.ToString("yyyy/MM/dd")" name=@(item.id_user.ToString()+","+itemR.id_Теста.ToString()) />
+                                    }
+                                </td>
+                                <td>
+
+                                    @itemR.Общий_результат
+                                    <input type="hidden" value=@ViewBag.id_units name=units />
+                                    <input type="hidden" value=@ViewBag.nameUser name=userName />
+
+                                </td>
+                            </tr>
+                        }
+                    }
+
+                }
+               
+                <tr><td>  <br /><input type="submit" value="Сохранить" /> </td><td></td></tr>
+
+            </table>
+        </form>
+    </div>
+
+</div>
+
+
+
+
+
+    
+@Scripts.Render("~/scripts/jquery-1.12.1.min.js")
+@Scripts.Render("~/scripts/jquery.unobtrusive-ajax.min.js")

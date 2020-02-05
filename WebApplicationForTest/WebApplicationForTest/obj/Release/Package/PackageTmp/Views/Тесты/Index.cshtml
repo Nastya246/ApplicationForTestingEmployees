@@ -1,0 +1,199 @@
+﻿@model IEnumerable<WebApplicationForTest.Models.Тесты>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (ViewBag.Id_user == "redactor")
+{
+    <h2>Темы для тестирования из раздела "@ViewBag.НазваниеРаздела"</h2> <br /><br />
+    <p>
+        @Html.ActionLink("Добавить новую тему", "Create", new { id = @ViewBag.IdРаздела })
+        @Html.ActionLink("К списку разделов", "Index", "Разделы", new { redactor = "redactor" }, null)
+    </p>
+
+
+
+}
+else if (ViewBag.Id_user == "practice")
+{
+    <h2>Выбор темы из раздела "@ViewBag.НазваниеРаздела" для проставления практики</h2> <br /><br />
+    <p>
+
+        @Html.ActionLink("К списку разделов", "Index", "Разделы", new { practice = "practice" }, null)
+    </p>
+}
+else
+{
+    <h2>Доступные темы для тестирования из раздела "@ViewBag.НазваниеРаздела"</h2> <br /><br />
+}
+
+@if (ViewBag.Id_user != "practice")
+{
+    <form method="post" action="~/Вопросы/Index">
+        <table class="table">
+            <tr>
+
+                <th>
+                    Название темы<br />
+                    <br />
+                </th>
+
+
+                <th>Число вопросов<br /><br /></th>
+
+
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Название_темы_теста)
+
+                    </td>
+                    <td>
+
+                       @item.Вопросы.Count().ToString()
+                    </td>
+
+                    <td>
+                        @Html.RadioButtonFor(modelItem => item.Название_темы_теста, item.Название_темы_теста)<br />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @if (ViewBag.Id_user == "redactor")
+                        {
+
+
+                            <small>
+                                @Html.ActionLink("Переименовать", "Edit", new { id = item.id_теста }) |
+                            </small>
+                            <small>
+                                @Html.ActionLink("Детали", "Details", new { id = item.id_теста }) |
+                            </small>
+                            <small>
+                                @Html.ActionLink("Удалить", "Delete", new { id = item.id_теста })
+                            </small>
+                            <br />
+                        }
+
+                    </td>
+                </tr>
+
+            }
+
+            <tr>
+                <td>
+
+                    @if (ViewBag.Id_user == "redactor")
+                    {
+                        <input type="hidden" value=@ViewBag.Id_user name="redactor" />
+                        <br />
+                        <br /><input type="submit" value="Внести изменения" />
+                    }
+
+                    else
+                    {
+                        <input type="hidden" value=@ViewBag.Id_user name="id_user" />
+                        <input type="hidden" value=@ViewBag.Data name="Data" />
+                        <br />
+                        <br /><input type="submit" value="Начать" />}
+                </td>
+
+                <td></td>
+            </tr>
+
+        </table>
+    </form>
+}
+else
+
+{
+    <form method="post" action="~/Практика/Index">
+        <table class="table">
+            <tr>
+
+                <th>
+                    Название темы<br />
+                    <br />
+                </th>
+
+
+                <th>Число вопросов<br /><br /></th>
+
+
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Название_темы_теста)
+
+                    </td>
+                    <td>
+
+                        @item.Вопросы.Count().ToString()
+                    </td>
+
+                    <td>
+                        @Html.RadioButtonFor(modelItem => item.Название_темы_теста, item.Название_темы_теста)<br />
+                    </td>
+                </tr>
+
+            }
+
+            <tr>
+                <td>
+
+                    <input type="hidden" value=@ViewBag.Id_user name="practice" />
+                    <input type="hidden" value=@ViewBag.IdРаздела name="razdel" />
+                    <br />
+                    <br /><input type="submit" value="Далее" />
+
+                </td>
+
+                <td></td>
+            </tr>
+
+        </table>
+    </form>
+}
+@if (ViewBag.Id_user == "redactor")
+{
+
+    <form method="post" action="~/Home/Menu">
+        <table class="table">
+            <tr>
+                <td>
+                    <input type="hidden" value="redactor" name="Login" />
+                    <input type="hidden" value="redactor12345" name="Password" />
+                    <input type="submit" value="В меню" />
+
+
+                </td>
+            </tr>
+
+        </table>
+    </form>
+}
+@if (ViewBag.Id_user == "practice")
+{
+
+    <form method="post" action="~/Home/Menu">
+        <table class="table">
+            <tr>
+                <td>
+                    <input type="hidden" value="practice" name="Login" />
+                    <input type="hidden" value="practice12345" name="Password" />
+                    <input type="submit" value="В меню" />
+
+
+                </td>
+            </tr>
+
+        </table>
+    </form>
+}

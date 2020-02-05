@@ -1,0 +1,35 @@
+﻿@model WebApplicationForTest.Models.Разделы
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Детали</h2>
+<p>
+    @Html.ActionLink("Переименовать", "Edit", new { id = Model.id_Раздела }) 
+    @Html.ActionLink("К списку разделов", "Index", new { redactor = "redactor" })
+
+</p>
+
+<div>
+    <h4>Разделы</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Название_раздела)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Название_раздела)
+        </dd>
+
+    </dl>
+</div>
+
+<form method="post" action="~/Home/Menu">
+    <input type="hidden" value="redactor" name="Login" />
+    <input type="hidden" value="redactor12345" name="Password" />
+    <input type="submit" value="В меню" />
+
+</form>

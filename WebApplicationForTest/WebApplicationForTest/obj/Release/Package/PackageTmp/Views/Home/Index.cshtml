@@ -1,0 +1,52 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div>
+    <h3><big><big>Добро пожаловать!</big></big></h3>
+    <h3>Чтобы продолжить, войдите в систему:</h3>
+    <form method="post" action="Menu">
+
+        <table>
+            <tr>
+                <td><p>Введите логин: </p></td>
+                <td><input type="text" name="Login" /> </td>
+            </tr>
+            <tr>
+                <td><p>Введите пароль:</p></td>
+                <td>
+                    <input type="password" name="Password" />
+                </td>
+            </tr>
+            <tr><td><input type="submit" value="Войти" /> </td><td></td></tr>
+        </table>
+    </form>
+    <br /><br /><br /><br /><br /><br />
+
+                                  <table>
+                                      <tr>
+                                          <td><p>Виды уч.записи: </p></td>
+
+                                      </tr>
+                                      <tr>
+                                          <td><p>1. Тестируемый - нажать кнопку "Войти" либо личный пароль и логин </p></td>
+
+                                      </tr>
+                                      <tr>
+                                          <td><p>2. Редактор тестов - логин "redactor", пароль "redactor12345"  </p></td>
+
+                                      </tr>
+                                      <tr>
+                                          <td><p>3. Отчеты - логин "otchet", пароль "otchet12345"  </p></td>
+
+                                      </tr>
+                                      <tr>
+                                          <td><p>4. Админ (управление пользователями, подразделениями, должностями в бд) - логин "admin", пароль "admin12345" </p></td>
+
+                                      </tr>
+                                      <tr>
+                                          <td><p>5. Ведущий практику - логин "practice", пароль "practice12345" </p></td>
+
+                                      </tr>
+                                     
+                                  </table>
+</div>

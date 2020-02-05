@@ -1,0 +1,43 @@
+﻿@model WebApplicationForTest.Models.Должность
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Удалить должность</h2>
+<div class="form-actions no-color">
+    
+    @Html.ActionLink("Назад к списку", "Index")
+</div>
+<h3>Вы действительно хотите удалить эту должность?</h3>
+<div>
+    
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Название_должности)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Название_должности)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Удалить" class="btn btn-default" /> 
+
+        </div>
+    }
+</div>
+<form method="post" action="~/Home/Menu">
+    <input type="hidden" value="admin" name="Login" />
+    <input type="hidden" value="admin12345" name="Password" />
+    <input type="submit" value="В меню" />
+
+</form>
