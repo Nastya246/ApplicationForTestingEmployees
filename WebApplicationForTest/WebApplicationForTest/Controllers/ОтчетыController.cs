@@ -52,7 +52,7 @@ namespace WebApplicationForTest.Controllers
                 else if ((beginCalendar != "") && (endCalendar == "")) //если указано только начало периода
                 {
                     List<Пользователи> usData = new List<Пользователи>();
-
+                    
                     var userResult = (from u in db.Пользователи where (u.Подразделение.Id_подразделения == idUnits && u.Результат_теста.Count != 0) orderby u.Фамилия select u);
                     List<Результат_теста> результат_ = new List<Результат_теста>();
                     if (userResult.Count() != 0)

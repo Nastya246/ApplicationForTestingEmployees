@@ -23,7 +23,7 @@ namespace WebApplicationForTest.Models
     
         public int id_теста { get; set; }
         public string Название_темы_теста { get; set; }
-        public int Количество_вопросов { get; set; }
+        public Nullable<int> Количество_вопросов { get; set; }
         public int Id_Раздела { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

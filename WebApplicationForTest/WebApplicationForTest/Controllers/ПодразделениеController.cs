@@ -22,9 +22,11 @@ namespace WebApplicationForTest.Controllers
             {
                 ViewBag.User = "otchet";
             }
-
-            var подразделения = db.Подразделение.Include(p => p.Должность);
-            return View(await подразделения.ToListAsync());
+          
+    
+            var подразделения = await db.Подразделение.Include(p => p.ДолжностьПодразделение).ToListAsync();
+            ViewBag.Positions = await db.Должность.ToListAsync();
+            return View(подразделения);
         }
 
         // GET: Подразделение/Details/5
@@ -78,11 +80,14 @@ namespace WebApplicationForTest.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Подразделение подразделение = await db.Подразделение.FindAsync(id);
+           // var должностьПодразделение = await (from d in db.ДолжностьПодразделение where d.id_подразделения == id select d).ToListAsync();
             if (подразделение == null)
             {
                 return HttpNotFound();
             }
+            //   ViewBag.Position = db.Должность.ToList();
             ViewBag.Position = db.Должность.ToList();
+            ViewBag.PositionUnits = await (from c in db.ДолжностьПодразделение where  c.id_подразделения==подразделение.Id_подразделения   select c).ToListAsync();
             return View(подразделение);
         }
 
@@ -94,21 +99,32 @@ namespace WebApplicationForTest.Controllers
         public async Task<ActionResult> Edit([Bind(Include = "Id_подразделения,Название_подразделения")] Подразделение подразделение, int[] selectedPosition)
         {
             
-                Подразделение Newподразделение = await db.Подразделение.FindAsync(подразделение.Id_подразделения);
+            Подразделение Newподразделение = await db.Подразделение.FindAsync(подразделение.Id_подразделения);
+         
             var unit = await (from u in db.Подразделение where u.Название_подразделения.Replace(" ", "").ToLower() == подразделение.Название_подразделения.Replace(" ", "").ToLower() select u).ToListAsync();
             if (unit.Count() == 0)
             {
                 Newподразделение.Название_подразделения = подразделение.Название_подразделения;
             }
-                Newподразделение.Должность.Clear();
-                if (selectedPosition != null)
+                Newподразделение.ДолжностьПодразделение.Clear();
+            db.Entry(Newподразделение).State = EntityState.Modified;
+            await db.SaveChangesAsync();
+            if (selectedPosition != null)
                 {
                     foreach (var c in db.Должность.Where(co => selectedPosition.Contains(co.Id_должности)))
-                    { Newподразделение.Должность.Add(c); }
+                    {
+                    ДолжностьПодразделение должностьПодразделение = new ДолжностьПодразделение();
+                    должностьПодразделение.id_подразделения = подразделение.Id_подразделения;
+                    должностьПодразделение.id_должности=c.Id_должности;
+                    db.ДолжностьПодразделение.Add(должностьПодразделение);
+                  
                 }
-                db.Entry(Newподразделение).State = EntityState.Modified;
-                await db.SaveChangesAsync();
-            
+                }
+            await db.SaveChangesAsync();
+
+
+
+
             return RedirectToAction("Index");
             /*  if (ModelState.IsValid)
               {
@@ -140,7 +156,7 @@ namespace WebApplicationForTest.Controllers
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
             Подразделение подразделение = await db.Подразделение.FindAsync(id);
-            подразделение.Должность.Clear();
+            подразделение.ДолжностьПодразделение.Clear();
          //   var relations=await (from r in db.)
             db.Подразделение.Remove(подразделение);
             await db.SaveChangesAsync();

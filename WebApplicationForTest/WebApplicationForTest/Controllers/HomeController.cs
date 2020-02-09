@@ -7,7 +7,7 @@ using WebApplicationForTest;
 using System.Data.Entity;
 using WebApplicationForTest.Models;
 using System.Threading.Tasks;
-///сделать контроль регистра
+
 namespace WebApplicationForTest.Controllersd
 {
     public class HomeController : Controller
@@ -24,7 +24,7 @@ namespace WebApplicationForTest.Controllersd
 
             return View(); //возврат на дом. стр. если ошибка данных
         }
-        
+      
        [HttpPost]
        public async Task<ActionResult> Menu(string Login, string Password)
        {
@@ -36,13 +36,14 @@ namespace WebApplicationForTest.Controllersd
 
             List<Должность> ДолжностьList = db.Должность.ToList(); // для передачи в представление списка должностей
             ДолжностьList.Clear();
-            foreach (Подразделение temp in db.Подразделение.Include(t => t.Должность))
+            foreach (Подразделение temp in db.Подразделение.Include(t => t.ДолжностьПодразделение))
             {
                 if (temp.Id_подразделения == selectedIndex)
                 {
-                    foreach (Должность temp2 in temp.Должность)
+                    foreach (var temp2 in temp.ДолжностьПодразделение)
                     {
-                        ДолжностьList.Add(temp2);
+                        
+                        ДолжностьList.Add(temp2.Должность);
                     }
                 }      
             }
@@ -78,14 +79,14 @@ namespace WebApplicationForTest.Controllersd
         {
 
             List<Должность> ДолжностьList1 = new List<Должность>();
-            var подразделение = await (db.Подразделение.Include(t => t.Должность)).ToListAsync();
+            var подразделение = await (db.Подразделение.Include(t => t.ДолжностьПодразделение)).ToListAsync();
             foreach (Подразделение temp in подразделение)
             {
                 if (temp.Id_подразделения == id)
                 {
-                    foreach (Должность temp2 in temp.Должность)
+                    foreach (var temp2 in temp.ДолжностьПодразделение)
                     {
-                        ДолжностьList1.Add(temp2);
+                        ДолжностьList1.Add(await db.Должность.FindAsync(temp2.id_должности));
                        
                     }
                 }
@@ -179,7 +180,7 @@ namespace WebApplicationForTest.Controllersd
            
 
         }
-
+        
     
     }
     

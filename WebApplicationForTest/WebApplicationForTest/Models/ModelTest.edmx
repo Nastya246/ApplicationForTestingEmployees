@@ -21,7 +21,7 @@
           </Key>
           <Property Name="id_вопроса" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="id_Теста" Type="int" Nullable="false" />
-          <Property Name="Текст вопроса" Type="nchar" MaxLength="100" />
+          <Property Name="Текст вопроса" Type="nchar" MaxLength="600" />
           <Property Name="Тип ответа" Type="nchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Должность">
@@ -33,11 +33,11 @@
         </EntityType>
         <EntityType Name="ДолжностьПодразделение">
           <Key>
-            <PropertyRef Name="id_должности" />
             <PropertyRef Name="id_подразделения" />
+            <PropertyRef Name="id_должности" />
           </Key>
-          <Property Name="id_должности" Type="int" Nullable="false" />
           <Property Name="id_подразделения" Type="int" Nullable="false" />
+          <Property Name="id_должности" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Ответы">
           <Key>
@@ -45,7 +45,7 @@
           </Key>
           <Property Name="id_ответа" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="id_Вопроса" Type="int" Nullable="false" />
-          <Property Name="Текст ответа" Type="nchar" MaxLength="100" Nullable="false" />
+          <Property Name="Текст ответа" Type="nchar" MaxLength="200" Nullable="false" />
           <Property Name="Флаг правильного ответа" Type="bit" Nullable="false" />
           <Property Name="Флаг подвопроса" Type="bit" />
           <Property Name="Правильный ответ" Type="nchar" MaxLength="100" />
@@ -81,25 +81,25 @@
           <Key>
             <PropertyRef Name="id_результата теста" />
           </Key>
-          <Property Name="id_результата теста" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_результата теста" Type="int" Nullable="false" />
           <Property Name="Дата сдачи теории" Type="date" />
           <Property Name="Оценка за теорию" Type="int" />
           <Property Name="id_Теста" Type="int" Nullable="false" />
           <Property Name="id_User" Type="int" Nullable="false" />
           <Property Name="Дата сдачи практики" Type="date" />
           <Property Name="Отметка о практике" Type="bit" />
-          <Property Name="Общий результат" Type="nchar" MaxLength="20" />
+          <Property Name="Общий результат" Type="nchar" MaxLength="30" />
         </EntityType>
         <EntityType Name="Тесты">
           <Key>
             <PropertyRef Name="id_теста" />
           </Key>
-          <Property Name="id_теста" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Название темы теста" Type="nchar" MaxLength="100" Nullable="false" />
-          <Property Name="Количество вопросов" Type="int" Nullable="false" />
+          <Property Name="id_теста" Type="int" Nullable="false" />
+          <Property Name="Название темы теста" Type="nchar" MaxLength="100" />
+          <Property Name="Количество вопросов" Type="int" />
           <Property Name="Id_Раздела" Type="int" Nullable="false" />
         </EntityType>
-        <Association Name="FK_Вопросы_Тесты1">
+        <Association Name="FK_Вопросы_Тесты">
           <End Role="Тесты" Type="Self.Тесты" Multiplicity="1" />
           <End Role="Вопросы" Type="Self.Вопросы" Multiplicity="*" />
           <ReferentialConstraint>
@@ -111,7 +111,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ДолжностьПодразделение_Должность1">
+        <Association Name="FK_ДолжностьПодразделение_Должность">
           <End Role="Должность" Type="Self.Должность" Multiplicity="1" />
           <End Role="ДолжностьПодразделение" Type="Self.ДолжностьПодразделение" Multiplicity="*" />
           <ReferentialConstraint>
@@ -119,7 +119,7 @@
               <PropertyRef Name="Id_должности" />
             </Principal>
             <Dependent Role="ДолжностьПодразделение">
-              <PropertyRef Name="id_должности" />
+              <PropertyRef Name="id_подразделения" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -135,7 +135,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Ответы_Вопросы1">
+        <Association Name="FK_Ответы_Вопросы">
           <End Role="Вопросы" Type="Self.Вопросы" Multiplicity="1" />
           <End Role="Ответы" Type="Self.Ответы" Multiplicity="*" />
           <ReferentialConstraint>
@@ -183,7 +183,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Результат теста_Тесты1">
+        <Association Name="FK_Результат теста_Тесты">
           <End Role="Тесты" Type="Self.Тесты" Multiplicity="1" />
           <End Role="Результат теста" Type="Self.Результат теста" Multiplicity="*" />
           <ReferentialConstraint>
@@ -207,37 +207,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
-        <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-          <Parameter Name="version" Type="int" Mode="In" />
-          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
-        </Function>
-        <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-          <Parameter Name="version" Type="int" Mode="In" />
-          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
-        </Function>
-        <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-        </Function>
-        <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-        </Function>
-        <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-        </Function>
-        <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-          <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
-        </Function>
-        <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="Хранилище TestModelContainer">
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Вопросы" EntityType="Self.Вопросы" Schema="dbo" store:Type="Tables" />
@@ -249,11 +218,11 @@
           <EntitySet Name="Разделы" EntityType="Self.Разделы" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Результат теста" EntityType="Self.Результат теста" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Тесты" EntityType="Self.Тесты" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_Вопросы_Тесты1" Association="Self.FK_Вопросы_Тесты1">
+          <AssociationSet Name="FK_Вопросы_Тесты" Association="Self.FK_Вопросы_Тесты">
             <End Role="Тесты" EntitySet="Тесты" />
             <End Role="Вопросы" EntitySet="Вопросы" />
           </AssociationSet>
-          <AssociationSet Name="FK_ДолжностьПодразделение_Должность1" Association="Self.FK_ДолжностьПодразделение_Должность1">
+          <AssociationSet Name="FK_ДолжностьПодразделение_Должность" Association="Self.FK_ДолжностьПодразделение_Должность">
             <End Role="Должность" EntitySet="Должность" />
             <End Role="ДолжностьПодразделение" EntitySet="ДолжностьПодразделение" />
           </AssociationSet>
@@ -261,7 +230,7 @@
             <End Role="Подразделение" EntitySet="Подразделение" />
             <End Role="ДолжностьПодразделение" EntitySet="ДолжностьПодразделение" />
           </AssociationSet>
-          <AssociationSet Name="FK_Ответы_Вопросы1" Association="Self.FK_Ответы_Вопросы1">
+          <AssociationSet Name="FK_Ответы_Вопросы" Association="Self.FK_Ответы_Вопросы">
             <End Role="Вопросы" EntitySet="Вопросы" />
             <End Role="Ответы" EntitySet="Ответы" />
           </AssociationSet>
@@ -277,7 +246,7 @@
             <End Role="Пользователи" EntitySet="Пользователи" />
             <End Role="Результат теста" EntitySet="Результат теста" />
           </AssociationSet>
-          <AssociationSet Name="FK_Результат теста_Тесты1" Association="Self.FK_Результат теста_Тесты1">
+          <AssociationSet Name="FK_Результат теста_Тесты" Association="Self.FK_Результат теста_Тесты">
             <End Role="Тесты" EntitySet="Тесты" />
             <End Role="Результат теста" EntitySet="Результат теста" />
           </AssociationSet>
@@ -309,8 +278,8 @@
           <Property Name="id_Теста" Type="Int32" Nullable="false" />
           <Property Name="Текст_вопроса" Type="String" MaxLength="600" FixedLength="true" Unicode="true" />
           <Property Name="Тип_ответа" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
-          <NavigationProperty Name="Тесты" Relationship="Self.FK_Вопросы_Тесты1" FromRole="Вопросы" ToRole="Тесты" />
-          <NavigationProperty Name="Ответы" Relationship="Self.FK_Ответы_Вопросы1" FromRole="Вопросы" ToRole="Ответы" />
+          <NavigationProperty Name="Тесты" Relationship="Self.FK_Вопросы_Тесты" FromRole="Вопросы" ToRole="Тесты" />
+          <NavigationProperty Name="Ответы" Relationship="Self.FK_Ответы_Вопросы" FromRole="Вопросы" ToRole="Ответы" />
         </EntityType>
         <EntityType Name="Должность">
           <Key>
@@ -318,8 +287,18 @@
           </Key>
           <Property Name="Название_должности" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="Id_должности" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="ДолжностьПодразделение" Relationship="Self.FK_ДолжностьПодразделение_Должность" FromRole="Должность" ToRole="ДолжностьПодразделение" />
           <NavigationProperty Name="Пользователи" Relationship="Self.FK_Пользователи_Должность" FromRole="Должность" ToRole="Пользователи" />
-          <NavigationProperty Name="Подразделение" Relationship="Self.ДолжностьПодразделение" FromRole="Должность" ToRole="Подразделение" />
+        </EntityType>
+        <EntityType Name="ДолжностьПодразделение">
+          <Key>
+            <PropertyRef Name="id_подразделения" />
+            <PropertyRef Name="id_должности" />
+          </Key>
+          <Property Name="id_подразделения" Type="Int32" Nullable="false" />
+          <Property Name="id_должности" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Должность" Relationship="Self.FK_ДолжностьПодразделение_Должность" FromRole="ДолжностьПодразделение" ToRole="Должность" />
+          <NavigationProperty Name="Подразделение" Relationship="Self.FK_ДолжностьПодразделение_Подразделение" FromRole="ДолжностьПодразделение" ToRole="Подразделение" />
         </EntityType>
         <EntityType Name="Ответы">
           <Key>
@@ -327,11 +306,11 @@
           </Key>
           <Property Name="id_ответа" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="id_Вопроса" Type="Int32" Nullable="false" />
-          <Property Name="Текст_ответа" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Текст_ответа" Type="String" MaxLength="200" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="Флаг_правильного_ответа" Type="Boolean" Nullable="false" />
           <Property Name="Флаг_подвопроса" Type="Boolean" />
           <Property Name="Правильный_ответ" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
-          <NavigationProperty Name="Вопросы" Relationship="Self.FK_Ответы_Вопросы1" FromRole="Ответы" ToRole="Вопросы" />
+          <NavigationProperty Name="Вопросы" Relationship="Self.FK_Ответы_Вопросы" FromRole="Ответы" ToRole="Вопросы" />
         </EntityType>
         <EntityType Name="Подразделение">
           <Key>
@@ -339,8 +318,8 @@
           </Key>
           <Property Name="Id_подразделения" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Название_подразделения" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="ДолжностьПодразделение" Relationship="Self.FK_ДолжностьПодразделение_Подразделение" FromRole="Подразделение" ToRole="ДолжностьПодразделение" />
           <NavigationProperty Name="Пользователи" Relationship="Self.FK_Пользователи_Подразделение" FromRole="Подразделение" ToRole="Пользователи" />
-          <NavigationProperty Name="Должность" Relationship="Self.ДолжностьПодразделение" FromRole="Подразделение" ToRole="Должность" />
         </EntityType>
         <EntityType Name="Пользователи">
           <Key>
@@ -370,30 +349,30 @@
           <Key>
             <PropertyRef Name="id_результата_теста" />
           </Key>
-          <Property Name="id_результата_теста" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_результата_теста" Type="Int32" Nullable="false" />
           <Property Name="Дата_сдачи_теории" Type="DateTime" Precision="0" />
           <Property Name="Оценка_за_теорию" Type="Int32" />
           <Property Name="id_Теста" Type="Int32" Nullable="false" />
           <Property Name="id_User" Type="Int32" Nullable="false" />
           <Property Name="Дата_сдачи_практики" Type="DateTime" Precision="0" />
           <Property Name="Отметка_о_практике" Type="Boolean" />
-          <Property Name="Общий_результат" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
+          <Property Name="Общий_результат" Type="String" MaxLength="30" FixedLength="true" Unicode="true" />
           <NavigationProperty Name="Пользователи" Relationship="Self.FK_Результат_теста_Пользователи" FromRole="Результат_теста" ToRole="Пользователи" />
-          <NavigationProperty Name="Тесты" Relationship="Self.FK_Результат_теста_Тесты1" FromRole="Результат_теста" ToRole="Тесты" />
+          <NavigationProperty Name="Тесты" Relationship="Self.FK_Результат_теста_Тесты" FromRole="Результат_теста" ToRole="Тесты" />
         </EntityType>
         <EntityType Name="Тесты">
           <Key>
             <PropertyRef Name="id_теста" />
           </Key>
-          <Property Name="id_теста" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Название_темы_теста" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="Количество_вопросов" Type="Int32" Nullable="false" />
+          <Property Name="id_теста" Type="Int32" Nullable="false" />
+          <Property Name="Название_темы_теста" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
+          <Property Name="Количество_вопросов" Type="Int32" />
           <Property Name="Id_Раздела" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Вопросы" Relationship="Self.FK_Вопросы_Тесты1" FromRole="Тесты" ToRole="Вопросы" />
+          <NavigationProperty Name="Вопросы" Relationship="Self.FK_Вопросы_Тесты" FromRole="Тесты" ToRole="Вопросы" />
           <NavigationProperty Name="Разделы" Relationship="Self.FK_Тесты_Разделы" FromRole="Тесты" ToRole="Разделы" />
-          <NavigationProperty Name="Результат_теста" Relationship="Self.FK_Результат_теста_Тесты1" FromRole="Тесты" ToRole="Результат_теста" />
+          <NavigationProperty Name="Результат_теста" Relationship="Self.FK_Результат_теста_Тесты" FromRole="Тесты" ToRole="Результат_теста" />
         </EntityType>
-        <Association Name="FK_Вопросы_Тесты1">
+        <Association Name="FK_Вопросы_Тесты">
           <End Role="Тесты" Type="Self.Тесты" Multiplicity="1" />
           <End Role="Вопросы" Type="Self.Вопросы" Multiplicity="*" />
           <ReferentialConstraint>
@@ -405,7 +384,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Ответы_Вопросы1">
+        <Association Name="FK_Ответы_Вопросы">
           <End Role="Вопросы" Type="Self.Вопросы" Multiplicity="1" />
           <End Role="Ответы" Type="Self.Ответы" Multiplicity="*" />
           <ReferentialConstraint>
@@ -414,6 +393,18 @@
             </Principal>
             <Dependent Role="Ответы">
               <PropertyRef Name="id_Вопроса" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ДолжностьПодразделение_Должность">
+          <End Role="Должность" Type="Self.Должность" Multiplicity="1" />
+          <End Role="ДолжностьПодразделение" Type="Self.ДолжностьПодразделение" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Должность">
+              <PropertyRef Name="Id_должности" />
+            </Principal>
+            <Dependent Role="ДолжностьПодразделение">
+              <PropertyRef Name="id_подразделения" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -426,6 +417,18 @@
             </Principal>
             <Dependent Role="Пользователи">
               <PropertyRef Name="id_должности" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ДолжностьПодразделение_Подразделение">
+          <End Role="Подразделение" Type="Self.Подразделение" Multiplicity="1" />
+          <End Role="ДолжностьПодразделение" Type="Self.ДолжностьПодразделение" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Подразделение">
+              <PropertyRef Name="Id_подразделения" />
+            </Principal>
+            <Dependent Role="ДолжностьПодразделение">
+              <PropertyRef Name="id_подразделения" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -465,7 +468,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Результат_теста_Тесты1">
+        <Association Name="FK_Результат_теста_Тесты">
           <End Role="Тесты" Type="Self.Тесты" Multiplicity="1" />
           <End Role="Результат_теста" Type="Self.Результат_теста" Multiplicity="*" />
           <ReferentialConstraint>
@@ -477,31 +480,36 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="ДолжностьПодразделение">
-          <End Role="Должность" Type="Self.Должность" Multiplicity="*" />
-          <End Role="Подразделение" Type="Self.Подразделение" Multiplicity="*" />
-        </Association>
         <EntityContainer Name="TestEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
           <EntitySet Name="Вопросы" EntityType="Self.Вопросы" />
           <EntitySet Name="Должность" EntityType="Self.Должность" />
+          <EntitySet Name="ДолжностьПодразделение" EntityType="Self.ДолжностьПодразделение" />
           <EntitySet Name="Ответы" EntityType="Self.Ответы" />
           <EntitySet Name="Подразделение" EntityType="Self.Подразделение" />
           <EntitySet Name="Пользователи" EntityType="Self.Пользователи" />
           <EntitySet Name="Разделы" EntityType="Self.Разделы" />
           <EntitySet Name="Результат_теста" EntityType="Self.Результат_теста" />
           <EntitySet Name="Тесты" EntityType="Self.Тесты" />
-          <AssociationSet Name="FK_Вопросы_Тесты1" Association="Self.FK_Вопросы_Тесты1">
+          <AssociationSet Name="FK_Вопросы_Тесты" Association="Self.FK_Вопросы_Тесты">
             <End Role="Тесты" EntitySet="Тесты" />
             <End Role="Вопросы" EntitySet="Вопросы" />
           </AssociationSet>
-          <AssociationSet Name="FK_Ответы_Вопросы1" Association="Self.FK_Ответы_Вопросы1">
+          <AssociationSet Name="FK_Ответы_Вопросы" Association="Self.FK_Ответы_Вопросы">
             <End Role="Вопросы" EntitySet="Вопросы" />
             <End Role="Ответы" EntitySet="Ответы" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ДолжностьПодразделение_Должность" Association="Self.FK_ДолжностьПодразделение_Должность">
+            <End Role="Должность" EntitySet="Должность" />
+            <End Role="ДолжностьПодразделение" EntitySet="ДолжностьПодразделение" />
           </AssociationSet>
           <AssociationSet Name="FK_Пользователи_Должность" Association="Self.FK_Пользователи_Должность">
             <End Role="Должность" EntitySet="Должность" />
             <End Role="Пользователи" EntitySet="Пользователи" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ДолжностьПодразделение_Подразделение" Association="Self.FK_ДолжностьПодразделение_Подразделение">
+            <End Role="Подразделение" EntitySet="Подразделение" />
+            <End Role="ДолжностьПодразделение" EntitySet="ДолжностьПодразделение" />
           </AssociationSet>
           <AssociationSet Name="FK_Пользователи_Подразделение" Association="Self.FK_Пользователи_Подразделение">
             <End Role="Подразделение" EntitySet="Подразделение" />
@@ -515,56 +523,11 @@
             <End Role="Разделы" EntitySet="Разделы" />
             <End Role="Тесты" EntitySet="Тесты" />
           </AssociationSet>
-          <AssociationSet Name="FK_Результат_теста_Тесты1" Association="Self.FK_Результат_теста_Тесты1">
+          <AssociationSet Name="FK_Результат_теста_Тесты" Association="Self.FK_Результат_теста_Тесты">
             <End Role="Тесты" EntitySet="Тесты" />
             <End Role="Результат_теста" EntitySet="Результат_теста" />
           </AssociationSet>
-          <AssociationSet Name="ДолжностьПодразделение" Association="Self.ДолжностьПодразделение">
-            <End Role="Должность" EntitySet="Должность" />
-            <End Role="Подразделение" EntitySet="Подразделение" />
-          </AssociationSet>
-          <FunctionImport Name="sp_alterdiagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-            <Parameter Name="version" Mode="In" Type="Int32" />
-            <Parameter Name="definition" Mode="In" Type="Binary" />
-          </FunctionImport>
-          <FunctionImport Name="sp_creatediagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-            <Parameter Name="version" Mode="In" Type="Int32" />
-            <Parameter Name="definition" Mode="In" Type="Binary" />
-          </FunctionImport>
-          <FunctionImport Name="sp_dropdiagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(TestModel.sp_helpdiagramdefinition_Result)">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(TestModel.sp_helpdiagrams_Result)">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="sp_renamediagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-            <Parameter Name="new_diagramname" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="sp_upgraddiagrams" />
         </EntityContainer>
-        <ComplexType Name="sp_helpdiagramdefinition_Result">
-          <Property Type="Int32" Name="version" Nullable="true" />
-          <Property Type="Binary" Name="definition" Nullable="true" />
-        </ComplexType>
-        <ComplexType Name="sp_helpdiagrams_Result">
-          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
-          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
-          <Property Type="Int32" Name="ID" Nullable="false" />
-          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
-          <Property Type="Int32" Name="OwnerID" Nullable="false" />
-        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -597,6 +560,14 @@
               <MappingFragment StoreEntitySet="Должность">
                 <ScalarProperty Name="Название_должности" ColumnName="Название должности" />
                 <ScalarProperty Name="Id_должности" ColumnName="Id_должности" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ДолжностьПодразделение">
+            <EntityTypeMapping TypeName="TestModel.ДолжностьПодразделение">
+              <MappingFragment StoreEntitySet="ДолжностьПодразделение">
+                <ScalarProperty Name="id_подразделения" ColumnName="id_подразделения" />
+                <ScalarProperty Name="id_должности" ColumnName="id_должности" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -666,38 +637,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="ДолжностьПодразделение" TypeName="TestModel.ДолжностьПодразделение" StoreEntitySet="ДолжностьПодразделение">
-            <EndProperty Name="Должность">
-              <ScalarProperty Name="Id_должности" ColumnName="id_должности" />
-            </EndProperty>
-            <EndProperty Name="Подразделение">
-              <ScalarProperty Name="Id_подразделения" ColumnName="id_подразделения" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="Хранилище TestModel.sp_alterdiagram" />
-          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="Хранилище TestModel.sp_creatediagram" />
-          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="Хранилище TestModel.sp_dropdiagram" />
-          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="Хранилище TestModel.sp_helpdiagramdefinition">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="TestModel.sp_helpdiagramdefinition_Result">
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="definition" ColumnName="definition" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="Хранилище TestModel.sp_helpdiagrams">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="TestModel.sp_helpdiagrams_Result">
-                <ScalarProperty Name="Database" ColumnName="Database" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Owner" ColumnName="Owner" />
-                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="Хранилище TestModel.sp_renamediagram" />
-          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="Хранилище TestModel.sp_upgraddiagrams" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

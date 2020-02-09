@@ -17,16 +17,16 @@ namespace WebApplicationForTest.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Подразделение()
         {
+            this.ДолжностьПодразделение = new HashSet<ДолжностьПодразделение>();
             this.Пользователи = new HashSet<Пользователи>();
-            this.Должность = new HashSet<Должность>();
         }
     
         public int Id_подразделения { get; set; }
         public string Название_подразделения { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Пользователи> Пользователи { get; set; }
+        public virtual ICollection<ДолжностьПодразделение> ДолжностьПодразделение { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Должность> Должность { get; set; }
+        public virtual ICollection<Пользователи> Пользователи { get; set; }
     }
 }
