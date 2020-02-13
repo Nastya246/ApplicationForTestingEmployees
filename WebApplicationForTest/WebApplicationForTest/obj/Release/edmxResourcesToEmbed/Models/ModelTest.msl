@@ -30,6 +30,14 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="ДолжностьПодразделение">
+      <EntityTypeMapping TypeName="TestModel.ДолжностьПодразделение">
+        <MappingFragment StoreEntitySet="ДолжностьПодразделение">
+          <ScalarProperty Name="id_подразделения" ColumnName="id_подразделения" />
+          <ScalarProperty Name="id_должности" ColumnName="id_должности" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="Ответы">
       <EntityTypeMapping TypeName="TestModel.Ответы">
         <MappingFragment StoreEntitySet="Ответы">
@@ -96,37 +104,5 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <AssociationSetMapping Name="ДолжностьПодразделение" TypeName="TestModel.ДолжностьПодразделение" StoreEntitySet="ДолжностьПодразделение">
-      <EndProperty Name="Должность">
-        <ScalarProperty Name="Id_должности" ColumnName="id_должности" />
-      </EndProperty>
-      <EndProperty Name="Подразделение">
-        <ScalarProperty Name="Id_подразделения" ColumnName="id_подразделения" />
-      </EndProperty>
-    </AssociationSetMapping>
-    <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="Хранилище TestModel.sp_alterdiagram" />
-    <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="Хранилище TestModel.sp_creatediagram" />
-    <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="Хранилище TestModel.sp_dropdiagram" />
-    <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="Хранилище TestModel.sp_helpdiagramdefinition">
-      <ResultMapping>
-        <ComplexTypeMapping TypeName="TestModel.sp_helpdiagramdefinition_Result">
-          <ScalarProperty Name="version" ColumnName="version" />
-          <ScalarProperty Name="definition" ColumnName="definition" />
-        </ComplexTypeMapping>
-      </ResultMapping>
-    </FunctionImportMapping>
-    <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="Хранилище TestModel.sp_helpdiagrams">
-      <ResultMapping>
-        <ComplexTypeMapping TypeName="TestModel.sp_helpdiagrams_Result">
-          <ScalarProperty Name="Database" ColumnName="Database" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="ID" ColumnName="ID" />
-          <ScalarProperty Name="Owner" ColumnName="Owner" />
-          <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
-        </ComplexTypeMapping>
-      </ResultMapping>
-    </FunctionImportMapping>
-    <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="Хранилище TestModel.sp_renamediagram" />
-    <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="Хранилище TestModel.sp_upgraddiagrams" />
   </EntityContainerMapping>
 </Mapping>

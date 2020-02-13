@@ -36,41 +36,42 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Фамилия)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Имя)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Отчество)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Логин)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Пароль)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Должность.Название_должности)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Подразделение.Название_подразделения)
-        </td>
-        <td>
-            @Html.ActionLink("Редактировать", "Edit", new { id=item.id_user }) |
-            @Html.ActionLink("Детали", "Details", new { id=item.id_user }) |
-            @Html.ActionLink("Удалить", "Delete", new { id=item.id_user })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Фамилия)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Имя)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Отчество)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Логин)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Пароль)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Должность.Название_должности)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Подразделение.Название_подразделения)
+            </td>
+            <td>
+                @Html.ActionLink("Редактировать", "Edit", new { id = item.id_user }) |
+                @Html.ActionLink("Детали", "Details", new { id = item.id_user }) |
+                @Html.ActionLink("Удалить", "Delete", new { id = item.id_user })
+            </td>
+        </tr>
+    }
 
 </table>
 <form method="post" action="~/Home/Menu">
-    <input type="hidden" value="admin" name="Login" />
-    <input type="hidden" value="admin12345" name="Password" />
+    <input type="hidden" value="1" name="adminForBack" />
+
     <input type="submit" value="В меню" />
 
 </form>

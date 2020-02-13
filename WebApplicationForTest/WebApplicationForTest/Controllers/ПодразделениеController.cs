@@ -8,13 +8,16 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using WebApplicationForTest.Models;
+using System.Diagnostics;
 
 namespace WebApplicationForTest.Controllers
 {
+    
     public class ПодразделениеController : Controller
     {
         private TestEntities db = new TestEntities();
 
+        
         // GET: Подразделение
         public async Task<ActionResult> Index(string otchet="")
         {
@@ -99,40 +102,51 @@ namespace WebApplicationForTest.Controllers
         public async Task<ActionResult> Edit([Bind(Include = "Id_подразделения,Название_подразделения")] Подразделение подразделение, int[] selectedPosition)
         {
             
-            Подразделение Newподразделение = await db.Подразделение.FindAsync(подразделение.Id_подразделения);
-         
-            var unit = await (from u in db.Подразделение where u.Название_подразделения.Replace(" ", "").ToLower() == подразделение.Название_подразделения.Replace(" ", "").ToLower() select u).ToListAsync();
-            if (unit.Count() == 0)
-            {
-                Newподразделение.Название_подразделения = подразделение.Название_подразделения;
-            }
+            
+            //using (TestEntities context = new TestEntities())
+           // {
+                
+               //context.Database.Log = message => File. (message);
+                
+
+                Подразделение Newподразделение = await db.Подразделение.FindAsync(подразделение.Id_подразделения);
                 Newподразделение.ДолжностьПодразделение.Clear();
-            db.Entry(Newподразделение).State = EntityState.Modified;
-            await db.SaveChangesAsync();
-            if (selectedPosition != null)
+               
+                var unit = await (from u in db.Подразделение where u.Название_подразделения.Replace(" ", "").ToLower() == подразделение.Название_подразделения.Replace(" ", "").ToLower() select u).ToListAsync();
+                if (unit.Count() == 0)
                 {
-                    foreach (var c in db.Должность.Where(co => selectedPosition.Contains(co.Id_должности)))
-                    {
+                    Newподразделение.Название_подразделения = подразделение.Название_подразделения;
+                }
+               
+                db.Entry(Newподразделение).State = EntityState.Modified;
+               await db.SaveChangesAsync();
+            if (selectedPosition != null)
+            {
+                foreach (var c in db.Должность.Where(co => selectedPosition.Contains(co.Id_должности)))
+                {
+
+                   
                     ДолжностьПодразделение должностьПодразделение = new ДолжностьПодразделение();
-                    должностьПодразделение.id_подразделения = подразделение.Id_подразделения;
-                    должностьПодразделение.id_должности=c.Id_должности;
+                    должностьПодразделение.id_должности = c.Id_должности;
+                    должностьПодразделение.id_подразделения = Newподразделение.Id_подразделения;
                     db.ДолжностьПодразделение.Add(должностьПодразделение);
-                  
+                    
+                  //  Newподразделение.ДолжностьПодразделение.Add(new ДолжностьПодразделение{  id_должности=d.Id_должности});
+
                 }
-                }
+            }
             await db.SaveChangesAsync();
-
-
-
+          
 
             return RedirectToAction("Index");
-            /*  if (ModelState.IsValid)
-              {
-                  db.Entry(подразделение).State = EntityState.Modified;
-                  await db.SaveChangesAsync();
-                  return RedirectToAction("Index");
-              }*/
-          //  return View(подразделение);
+                /*  if (ModelState.IsValid)
+                  {
+                      db.Entry(подразделение).State = EntityState.Modified;
+                      await db.SaveChangesAsync();
+                      return RedirectToAction("Index");
+                  }*/
+                //  return View(подразделение);
+           // }
         }
 
         // GET: Подразделение/Delete/5

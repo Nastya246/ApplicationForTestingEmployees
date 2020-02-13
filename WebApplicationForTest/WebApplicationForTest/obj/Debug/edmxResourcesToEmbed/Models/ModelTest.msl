@@ -104,5 +104,14 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="Учетные_записи">
+      <EntityTypeMapping TypeName="TestModel.Учетные_записи">
+        <MappingFragment StoreEntitySet="Учетные записи">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="Имя_учетной_записи" ColumnName="Имя учетной записи" />
+          <ScalarProperty Name="Пароль" ColumnName="Пароль" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

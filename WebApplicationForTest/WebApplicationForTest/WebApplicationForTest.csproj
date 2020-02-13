@@ -133,6 +133,7 @@
     <Compile Include="Controllers\РазделыController.cs" />
     <Compile Include="Controllers\Результат_тестаController.cs" />
     <Compile Include="Controllers\ТестыController.cs" />
+    <Compile Include="Controllers\Учетные_записиController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -180,6 +181,9 @@
       <DependentUpon>ModelTest.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Тесты.cs">
+      <DependentUpon>ModelTest.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Учетные_записи.cs">
       <DependentUpon>ModelTest.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -275,6 +279,7 @@
     <Content Include="Models\ModelTest.edmx.diagram">
       <DependentUpon>ModelTest.edmx</DependentUpon>
     </Content>
+    <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -364,6 +369,7 @@
     <Content Include="Scripts\umd\popper.js" />
     <Content Include="Scripts\umd\popper.min.js" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Учетные_записи\Create.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -431,6 +437,8 @@
     <Content Include="Views\Тесты\Details.cshtml" />
     <Content Include="Views\Тесты\Edit.cshtml" />
     <Content Include="Views\Тесты\Index.cshtml" />
+    <Content Include="Views\Учетные_записи\Edit.cshtml" />
+    <Content Include="Views\Учетные_записи\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\index.d.ts" />

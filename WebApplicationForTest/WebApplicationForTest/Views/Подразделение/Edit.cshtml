@@ -3,69 +3,69 @@
 
 @{
     ViewBag.Title = "Редактирование";
-   
+
 
 }
 @{
     int f = 0;
 }
-    <h2>Список должностей в подразделениях</h2>
+<h2>Список должностей в подразделениях</h2>
 
-    <div>
-        @Html.ActionLink("Назад к списку", "Index")
-    </div>
+<div>
+    @Html.ActionLink("Назад к списку", "Index")
+</div>
 
-    @using (Html.BeginForm())
-    {
-        @Html.AntiForgeryToken()
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
 
-        <div class="form-horizontal">
-            <h4>Подразделение</h4>
-            <hr />
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            @Html.HiddenFor(model => model.Id_подразделения)
+    <div class="form-horizontal">
+        <h4>Подразделение</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id_подразделения)
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.Название_подразделения, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Название_подразделения, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Название_подразделения, "", new { @class = "text-danger" })
-                </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Название_подразделения, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Название_подразделения, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Название_подразделения, "", new { @class = "text-danger" })
+            </div>
 
-                <h4>Должности</h4>
-                @foreach (var d in ViewBag.Position)
+            <h4>Должности</h4>
+            @foreach (var d in ViewBag.Position)
+            {
+                foreach (var pu in ViewBag.PositionUnits)
                 {
-                    foreach (var pu in ViewBag.PositionUnits)
+
+                    if (pu.id_должности == d.Id_должности)
                     {
+                        f = 1;
+                    }
 
-                        if (pu.id_должности == d.Id_должности)
-                        {
-                            f = 1;
-                         }
-
-                     }
-                    <input type="checkbox" name="selectedPosition" value="@d.Id_должности"
-                           @((f == 1) ? "checked=\"checked\"" : "") />@d.Название_должности <br />
+                }
+                <input type="checkbox" name="selectedPosition" value="@d.Id_должности"
+                       @((f == 1) ? "checked=\"checked\"" : "") />@d.Название_должности <br />
 
                     f = 0;
                 }
-            </div>
+        </div>
 
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Сохранить" class="btn btn-default" />
-                </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Сохранить" class="btn btn-default" />
             </div>
         </div>
-    }
+    </div>
+}
 
 
-    <form method="post" action="~/Home/Menu">
-        <input type="hidden" value="admin" name="Login" />
-        <input type="hidden" value="admin12345" name="Password" />
-        <input type="submit" value="В меню" />
+<form method="post" action="~/Home/Menu">
+    <input type="hidden" value="1" name="adminForBack" />
 
-    </form>
-    @section Scripts {
-        @Scripts.Render("~/bundles/jqueryval")
-    }
+    <input type="submit" value="В меню" />
+
+</form>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

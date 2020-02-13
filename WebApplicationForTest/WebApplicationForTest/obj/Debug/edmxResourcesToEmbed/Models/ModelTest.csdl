@@ -112,6 +112,14 @@
     <NavigationProperty Name="Разделы" Relationship="Self.FK_Тесты_Разделы" FromRole="Тесты" ToRole="Разделы" />
     <NavigationProperty Name="Результат_теста" Relationship="Self.FK_Результат_теста_Тесты" FromRole="Тесты" ToRole="Результат_теста" />
   </EntityType>
+  <EntityType Name="Учетные_записи">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="Имя_учетной_записи" Type="String" MaxLength="60" FixedLength="true" Unicode="true" />
+    <Property Name="Пароль" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+  </EntityType>
   <Association Name="FK_Вопросы_Тесты">
     <End Role="Тесты" Type="Self.Тесты" Multiplicity="1" />
     <End Role="Вопросы" Type="Self.Вопросы" Multiplicity="*" />
@@ -231,6 +239,7 @@
     <EntitySet Name="Разделы" EntityType="Self.Разделы" />
     <EntitySet Name="Результат_теста" EntityType="Self.Результат_теста" />
     <EntitySet Name="Тесты" EntityType="Self.Тесты" />
+    <EntitySet Name="Учетные_записи" EntityType="Self.Учетные_записи" />
     <AssociationSet Name="FK_Вопросы_Тесты" Association="Self.FK_Вопросы_Тесты">
       <End Role="Тесты" EntitySet="Тесты" />
       <End Role="Вопросы" EntitySet="Вопросы" />

@@ -8,7 +8,7 @@
 <h2><big><big>Добавить должность</big></big><br /><br /><br /></h2>
 
 <div>
-      @Html.ActionLink("Вернуться к списку должностей", "Index")
+    @Html.ActionLink("Вернуться к списку должностей", "Index")
 </div>
 @using (Html.BeginForm())
 {
@@ -37,9 +37,9 @@
 }
 
 
-<form method="post" action="~/Home/Menu">
-    <input type="hidden" value="admin" name="Login" />
-    <input type="hidden" value="admin12345" name="Password" />
+  <form method="post" action="~/Home/Menu">
+    <input type="hidden" value="1" name="adminForBack" />
+
     <input type="submit" value="В меню" />
 
 </form>

@@ -7,7 +7,7 @@ using WebApplicationForTest;
 using System.Data.Entity;
 using WebApplicationForTest.Models;
 using System.Threading.Tasks;
-
+//изменялся для учетки
 namespace WebApplicationForTest.Controllersd
 {
     public class HomeController : Controller
@@ -15,7 +15,7 @@ namespace WebApplicationForTest.Controllersd
         private TestEntities db = new TestEntities();
         public ActionResult Index()
         {
-            
+           
             return View(); //стартовая стр авторизации
         }
         [HttpPost]
@@ -24,13 +24,75 @@ namespace WebApplicationForTest.Controllersd
 
             return View(); //возврат на дом. стр. если ошибка данных
         }
-      
-       [HttpPost]
-       public async Task<ActionResult> Menu(string Login, string Password)
-       {
-       
+
+        [HttpPost]
+        public async Task<ActionResult> Menu(string Login, string Password, string adminForBack)
+        {
+
+            if (adminForBack=="1")
+            {
+                ViewBag.adminForBack = "1";
+            }
+            else 
+            { 
+            var admin = db.Учетные_записи.AsNoTracking().Where(a => a.Имя_учетной_записи == "admin");
+            string redactorLogin = "";
+            string redactorPass = "";
+            var redactor = db.Учетные_записи.AsNoTracking().Where(a => a.Имя_учетной_записи == "redactor");
+            var practice = db.Учетные_записи.AsNoTracking().Where(a => a.Имя_учетной_записи == "practice");
+            var otchet = db.Учетные_записи.AsNoTracking().Where(a => a.Имя_учетной_записи == "otchet");
+
+            ViewBag.Admin = "admin"; //логин админа
+            if ((admin.Count() == 0) || (admin.First().Пароль == null))
+            {
+
+                ViewBag.AdminPas = "admin12345"; // если в бд нет логина админа либо нет пароля, то применяем стандартный пароль 
+            }
+            else
+            {
+
+                ViewBag.AdminPas = admin.First().Пароль.ToString().TrimEnd(); //иначе берем пароль из бд
+            }
+            redactorLogin = "redactor";
+            ViewBag.Redactor = redactorLogin;
+            if (redactor.Count() == 0 || (redactor.First().Пароль == null))
+            {
+                redactorPass = "redactor12345";
+                ViewBag.RedactorPas = redactorPass;
+            }
+            else
+            {
+                redactorPass = redactor.First().Пароль.ToString().TrimEnd();
+                ViewBag.RedactorPas = redactorPass;
+            }
+
+            ViewBag.Practice = "practice";
+            if (practice.Count() == 0 || (practice.First().Пароль == null))
+            {
+
+                ViewBag.PracticePas = "practice12345";
+            }
+            else
+            {
+
+                ViewBag.PracticePas = practice.First().Пароль.ToString().TrimEnd();
+            }
+
+            ViewBag.Otchet = "otchet";
+            if (otchet.Count() == 0 || (otchet.First().Пароль == null))
+            {
+
+                ViewBag.OtchetPas = "otchet12345";
+            }
+            else
+            {
+
+                ViewBag.OtchetPas = otchet.First().Пароль.ToString().TrimEnd();
+            }
+
+
             int selectedIndex = 0;
-            
+
             SelectList подразделения = new SelectList(db.Подразделение, "Id_подразделения", "Название_подразделения", selectedIndex); //для передачи в представление списка подразделений
             ViewBag.Подразделения = подразделения;
 
@@ -42,36 +104,37 @@ namespace WebApplicationForTest.Controllersd
                 {
                     foreach (var temp2 in temp.ДолжностьПодразделение)
                     {
-                        
+
                         ДолжностьList.Add(temp2.Должность);
                     }
-                }      
+                }
             }
             SelectList должности = new SelectList(ДолжностьList, "Id_должности", "Название_должности");
             ViewBag.Должности = должности;
-           
+
             ViewBag.Login = Login;
             ViewBag.Password = Password;
-            
+
             //если ввели логин и пароль, то корректно ли
             var userLogin = await (from user in db.Пользователи where user.Пароль.Replace(" ", "") == Password && user.Логин.Replace(" ", "") == Login select user).ToListAsync();
-           
-            if (userLogin.Count()!=0)
+
+            if (userLogin.Count() != 0)
             {
 
                 ViewBag.LogPas = "Success";
                 ViewBag.Id_user = userLogin.First().id_user;
                 ViewBag.Data = @DateTime.Now.ToString("yyyy/MM/dd");
             }
-            if ((Login == "redactor") && (Password == "redactor12345"))
+            if ((Login == redactorLogin) && (Password == redactorPass))
             {
-                List<string> ls=new List<string> (await (db.Разделы.CountAsync()));
+                List<string> ls = new List<string>(await (db.Разделы.CountAsync()));
                 foreach (var r in db.Разделы)
                 {
                     ls.Add(r.Название_раздела.Replace("  ", ""));
                 }
                 ViewBag.ListSection = ls;
             }
+        }
             return View(); //открываем меню, соответ. пользователю
         }
         //метод для динамического обновления списка должностей при выборе другого подразделения

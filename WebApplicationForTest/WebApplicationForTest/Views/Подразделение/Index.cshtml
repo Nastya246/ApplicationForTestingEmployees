@@ -12,44 +12,44 @@
     <p>
         @Html.ActionLink("Добавить подразделение", "Create")
     </p> <br /><br />
-               <table class="table">
+    <table class="table">
 
 
-                   @foreach (var item in Model)
-                   {
-                       <tr>
-                           <td>
-                               <big>   <big> @Html.DisplayFor(modelItem => item.Название_подразделения)</big></big>
-                               @Html.ActionLink("Изменить", "Edit", new { id = item.Id_подразделения }) |
-                               @Html.ActionLink("Детали", "Details", new { id = item.Id_подразделения }) |
-                               @Html.ActionLink("Удалить", "Delete", new { id = item.Id_подразделения })
-                           </td>
-                       </tr>
-                       foreach (var itemPosition in ViewBag.Positions)
-                       {
-                           foreach (var itemP in item.ДолжностьПодразделение)
-                           {
-                               if (itemPosition.Id_должности == itemP.id_должности)
-                               {
-                                   <tr>
-                                       <td>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <big>   <big> @Html.DisplayFor(modelItem => item.Название_подразделения)</big></big>
+                    @Html.ActionLink("Изменить", "Edit", new { id = item.Id_подразделения }) |
+                    @Html.ActionLink("Детали", "Details", new { id = item.Id_подразделения }) |
+                    @Html.ActionLink("Удалить", "Delete", new { id = item.Id_подразделения })
+                </td>
+            </tr>
+            foreach (var itemPosition in ViewBag.Positions)
+            {
+                foreach (var itemP in item.ДолжностьПодразделение)
+                {
+                    if (itemPosition.Id_должности == itemP.id_должности)
+                    {
+                        <tr>
+                            <td>
 
-                                           @itemPosition.Название_должности
+                                @itemPosition.Название_должности
 
-                                       </td>
-                                   </tr>
-                               }
-                           }
+                            </td>
+                        </tr>
+                    }
+                }
 
-                       }
+            }
 
-                   }
+        }
 
 
-               </table>
+    </table>
     <form method="post" action="~/Home/Menu">
-        <input type="hidden" value="admin" name="Login" />
-        <input type="hidden" value="admin12345" name="Password" />
+        <input type="hidden" value="1" name="adminForBack" />
+
         <input type="submit" value="В меню" />
 
     </form>
@@ -80,10 +80,10 @@ else
 
         </table>
     </form>
-        <form method="post" action="~/Home/Menu">
-            <input type="hidden" value="otchet" name="Login" />
-            <input type="hidden" value="otchet12345" name="Password" />
-            <input type="submit" value="В меню" />
+    <form method="post" action="~/Home/Menu">
+        <input type="hidden" value="otchet" name="Login" />
+        <input type="hidden" value="otchet12345" name="Password" />
+        <input type="submit" value="В меню" />
 
-        </form>
-        }
+    </form>
+}

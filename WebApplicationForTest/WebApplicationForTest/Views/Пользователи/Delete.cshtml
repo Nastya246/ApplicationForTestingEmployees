@@ -7,12 +7,12 @@
 
 <h2>Удалить пользователя</h2>
 <div class="form-actions no-color">
-   
+
     @Html.ActionLink("Вернуться к списку", "Index")
 </div>
 <h3>Вы действительно хотите удалить этого пользователя?</h3>
 <div>
-    
+
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -78,14 +78,14 @@
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="Удалить" class="btn btn-default" /> 
-           
+            <input type="submit" value="Удалить" class="btn btn-default" />
+
         </div>
     }
 </div>
 <form method="post" action="~/Home/Menu">
-    <input type="hidden" value="admin" name="Login" />
-    <input type="hidden" value="admin12345" name="Password" />
+    <input type="hidden" value="1" name="adminForBack" />
+
     <input type="submit" value="В меню" />
 
 </form>

@@ -1,0 +1,45 @@
+﻿@model IEnumerable<WebApplicationForTest.Models.Учетные_записи>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Учетные записи приложения</h2>
+
+<p>
+    @Html.ActionLink("Добавить новую учетную запись", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Имя_учетной_записи)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Пароль)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Имя_учетной_записи)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Пароль)
+        </td>
+        <td>
+            @Html.ActionLink("Изменить пароль", "Edit", new { id=item.id }) |
+          
+           
+        </td>
+    </tr>
+}
+
+</table>
+<form method="post" action="~/Home/Menu">
+    <input type="hidden" value="1" name="adminForBack" />
+    <input type="submit" value="В меню" />
+
+</form>

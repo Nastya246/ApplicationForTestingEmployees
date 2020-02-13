@@ -94,6 +94,14 @@
     <Property Name="Количество вопросов" Type="int" />
     <Property Name="Id_Раздела" Type="int" Nullable="false" />
   </EntityType>
+  <EntityType Name="Учетные записи">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" Nullable="false" />
+    <Property Name="Имя учетной записи" Type="nchar" MaxLength="60" />
+    <Property Name="Пароль" Type="nchar" MaxLength="10" />
+  </EntityType>
   <Association Name="FK_Вопросы_Тесты">
     <End Role="Тесты" Type="Self.Тесты" Multiplicity="1" />
     <End Role="Вопросы" Type="Self.Вопросы" Multiplicity="*" />
@@ -213,6 +221,7 @@
     <EntitySet Name="Разделы" EntityType="Self.Разделы" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Результат теста" EntityType="Self.Результат теста" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Тесты" EntityType="Self.Тесты" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Учетные записи" EntityType="Self.Учетные записи" Schema="dbo" store:Type="Tables" />
     <AssociationSet Name="FK_Вопросы_Тесты" Association="Self.FK_Вопросы_Тесты">
       <End Role="Тесты" EntitySet="Тесты" />
       <End Role="Вопросы" EntitySet="Вопросы" />

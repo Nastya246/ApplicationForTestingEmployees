@@ -99,6 +99,14 @@
           <Property Name="Количество вопросов" Type="int" />
           <Property Name="Id_Раздела" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="Учетные записи">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="Имя учетной записи" Type="nchar" MaxLength="60" />
+          <Property Name="Пароль" Type="nchar" MaxLength="10" />
+        </EntityType>
         <Association Name="FK_Вопросы_Тесты">
           <End Role="Тесты" Type="Self.Тесты" Multiplicity="1" />
           <End Role="Вопросы" Type="Self.Вопросы" Multiplicity="*" />
@@ -218,6 +226,7 @@
           <EntitySet Name="Разделы" EntityType="Self.Разделы" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Результат теста" EntityType="Self.Результат теста" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Тесты" EntityType="Self.Тесты" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Учетные записи" EntityType="Self.Учетные записи" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Вопросы_Тесты" Association="Self.FK_Вопросы_Тесты">
             <End Role="Тесты" EntitySet="Тесты" />
             <End Role="Вопросы" EntitySet="Вопросы" />
@@ -372,6 +381,14 @@
           <NavigationProperty Name="Разделы" Relationship="Self.FK_Тесты_Разделы" FromRole="Тесты" ToRole="Разделы" />
           <NavigationProperty Name="Результат_теста" Relationship="Self.FK_Результат_теста_Тесты" FromRole="Тесты" ToRole="Результат_теста" />
         </EntityType>
+        <EntityType Name="Учетные_записи">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="Имя_учетной_записи" Type="String" MaxLength="60" FixedLength="true" Unicode="true" />
+          <Property Name="Пароль" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+        </EntityType>
         <Association Name="FK_Вопросы_Тесты">
           <End Role="Тесты" Type="Self.Тесты" Multiplicity="1" />
           <End Role="Вопросы" Type="Self.Вопросы" Multiplicity="*" />
@@ -491,6 +508,7 @@
           <EntitySet Name="Разделы" EntityType="Self.Разделы" />
           <EntitySet Name="Результат_теста" EntityType="Self.Результат_теста" />
           <EntitySet Name="Тесты" EntityType="Self.Тесты" />
+          <EntitySet Name="Учетные_записи" EntityType="Self.Учетные_записи" />
           <AssociationSet Name="FK_Вопросы_Тесты" Association="Self.FK_Вопросы_Тесты">
             <End Role="Тесты" EntitySet="Тесты" />
             <End Role="Вопросы" EntitySet="Вопросы" />
@@ -634,6 +652,15 @@
                 <ScalarProperty Name="Название_темы_теста" ColumnName="Название темы теста" />
                 <ScalarProperty Name="Количество_вопросов" ColumnName="Количество вопросов" />
                 <ScalarProperty Name="Id_Раздела" ColumnName="Id_Раздела" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Учетные_записи">
+            <EntityTypeMapping TypeName="TestModel.Учетные_записи">
+              <MappingFragment StoreEntitySet="Учетные записи">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Имя_учетной_записи" ColumnName="Имя учетной записи" />
+                <ScalarProperty Name="Пароль" ColumnName="Пароль" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
