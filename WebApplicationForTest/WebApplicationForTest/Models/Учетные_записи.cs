@@ -11,11 +11,12 @@ namespace WebApplicationForTest.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
     public partial class Учетные_записи
     {
         public int id { get; set; }
         public string Имя_учетной_записи { get; set; }
+        [StringLength(10, ErrorMessage = "Длина пароля должна быть до 10 символов")]
         public string Пароль { get; set; }
     }
 }

@@ -26,12 +26,24 @@ namespace WebApplicationForTest.Controllersd
         }
 
         [HttpPost]
-        public async Task<ActionResult> Menu(string Login, string Password, string adminForBack)
+        public async Task<ActionResult> Menu(string Login, string Password, string adminForBack, string redactorForBack, string practiceForBack, string otchetForBack)
         {
 
             if (adminForBack=="1")
             {
                 ViewBag.adminForBack = "1";
+            }
+            else if (redactorForBack=="1")
+            {
+                ViewBag.redactorForBack = "1";
+            }
+            else if (practiceForBack=="1")
+            {
+                ViewBag.practiceForBack = "1";
+            }
+            else if (otchetForBack=="1")
+            {
+                ViewBag.otchetForBack = "1";
             }
             else 
             { 

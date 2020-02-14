@@ -32,44 +32,56 @@
             </td>
 
         </tr>
+        @if (Model.Count() != 0)
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <big> @Html.DisplayFor(m => item.Название_раздела)</big>
 
-        @foreach (var item in Model)
+                    </td>
+                    <td>
+                        @Html.RadioButton("razdel", item.id_Раздела, true)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @if (ViewBag.r == "redactor")
+                        {
+
+                            <small>
+                                @Html.ActionLink("Переименовать", "Edit", new { id = item.id_Раздела }) |
+                            </small>
+                            <small>
+                                @Html.ActionLink("Детали", "Details", new { id = item.id_Раздела }) |
+                            </small>
+                            <small>
+                                @Html.ActionLink("Удалить", "Delete", new { id = item.id_Раздела })
+                            </small>
+
+                            <br />
+
+                        }
+                    </td>
+
+                </tr>
+
+
+            }
+            <tr><td><br /><br /><input type="submit" value="Далее" /> </td><td></td></tr>
+        }
+        else
         {
             <tr>
                 <td>
-                    <big> @Html.DisplayFor(m => item.Название_раздела)</big>
+                    <big> ПУСТО </big>
 
-                </td>
-                <td>
-                    @Html.RadioButton("razdel", item.id_Раздела, true)
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    @if (ViewBag.r == "redactor")
-                    {
-
-                        <small>
-                            @Html.ActionLink("Переименовать", "Edit", new { id = item.id_Раздела }) |
-                        </small>
-                        <small>
-                            @Html.ActionLink("Детали", "Details", new { id = item.id_Раздела }) |
-                        </small>
-                        <small>
-                            @Html.ActionLink("Удалить", "Delete", new { id = item.id_Раздела })
-                        </small>
-
-                        <br />
-
-                    }
                 </td>
 
             </tr>
-
-
         }
 
-        <tr><td><br /><br /><input type="submit" value="Далее" /> </td><td></td></tr>
 
     </table>
 </form>
@@ -80,8 +92,7 @@
         <table class="table">
             <tr>
                 <td>
-                    <input type="hidden" value="redactor" name="Login" />
-                    <input type="hidden" value="redactor12345" name="Password" />
+                    <input type="hidden" value="1" name="redactorForBack" />
                     <input type="submit" value="В меню" />
 
 
@@ -98,8 +109,8 @@
         <table class="table">
             <tr>
                 <td>
-                    <input type="hidden" value="practice" name="Login" />
-                    <input type="hidden" value="practice12345" name="Password" />
+                   
+                    <input type="hidden" value="1" name="practiceForBack" />
                     <input type="submit" value="В меню" />
 
 

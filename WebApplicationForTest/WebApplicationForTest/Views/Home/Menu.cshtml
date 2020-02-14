@@ -12,7 +12,7 @@
     <script src='@Url.Content("~/Scripts/jquery-ui-1.12.1.min.js")' type="text/javascript"></script>
 
 
-    @if ((ViewBag.Login == ViewBag.Redactor) && (ViewBag.Password == ViewBag.RedactorPas))
+    @if (((ViewBag.Login == ViewBag.Redactor) && (ViewBag.Password == ViewBag.RedactorPas) &&(ViewBag.Password!=null)) || (ViewBag.redactorForBack == "1"))
     {
         <input type="hidden" value="redactor" name="redactor" />
         <h3>Вы вошли как редактор</h3><br />
@@ -27,7 +27,7 @@
             </table>
         </form>
     }
-    else if ((ViewBag.Login == ViewBag.Otchet) && (ViewBag.Password == ViewBag.OtchetPas))
+    else if (((ViewBag.Login == ViewBag.Otchet) && (ViewBag.Password == ViewBag.OtchetPas) && (ViewBag.Password != null))||(ViewBag.otchetForBack=="1"))
     {
         <input type="hidden" value="otchet" name="otchet" />
         <h4>Вы вошли в режим отчетности</h4><br />
@@ -38,7 +38,7 @@
             </table>
         </form>
     }
-    else if (((ViewBag.Login == ViewBag.Admin) && (ViewBag.Password == ViewBag.AdminPas)) || (ViewBag.adminForBack == "1"))
+    else if (((ViewBag.Login == ViewBag.Admin) && (ViewBag.Password == ViewBag.AdminPas) && (ViewBag.Password != null)) || (ViewBag.adminForBack == "1"))
     {
         <input type="hidden" value="admin" name="admin" />
         <h5>Вы вошли как администратор</h5><br />
@@ -103,7 +103,7 @@
 
     }
 
-    else if ((ViewBag.Login == ViewBag.Practice) && (ViewBag.Password == ViewBag.PracticePas))
+    else if (((ViewBag.Login == ViewBag.Practice) && (ViewBag.Password == ViewBag.PracticePas) && (ViewBag.Password != null))|| (ViewBag.practiceForBack == "1"))
     {
         <h3>Вы вошли в режим практики</h3><br />
         <input type="hidden" value="practice" name="practice" />
@@ -134,7 +134,7 @@
         }
         else
         {
-            <h3> Неверно введены данные! Вернитесь на страницу входа и ппробуйте еще раз</h3>
+            <h3> Неверно введены данные! Вернитесь на страницу входа и попробуйте еще раз</h3>
             <form method="post" action="~/Home/Index">
 
 
