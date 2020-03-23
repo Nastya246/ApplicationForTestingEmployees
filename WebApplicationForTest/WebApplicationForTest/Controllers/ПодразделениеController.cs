@@ -27,7 +27,7 @@ namespace WebApplicationForTest.Controllers
             }
           
     
-            var подразделения = await db.Подразделение.Include(p => p.ДолжностьПодразделение).ToListAsync();
+            var подразделения = await db.Подразделение.Include(p => p.Должность).ToListAsync();
             ViewBag.Positions = await db.Должность.ToListAsync();
             return View(подразделения);
         }
@@ -88,9 +88,9 @@ namespace WebApplicationForTest.Controllers
             {
                 return HttpNotFound();
             }
-            //   ViewBag.Position = db.Должность.ToList();
+            
             ViewBag.Position = db.Должность.ToList();
-            ViewBag.PositionUnits = await (from c in db.ДолжностьПодразделение where  c.id_подразделения==подразделение.Id_подразделения   select c).ToListAsync();
+          //  ViewBag.PositionUnits = await (from c in db.ДолжностьПодразделение where  c.id_подразделения==подразделение.Id_подразделения   select c).ToListAsync();
             return View(подразделение);
         }
 
@@ -110,7 +110,7 @@ namespace WebApplicationForTest.Controllers
                 
 
                 Подразделение Newподразделение = await db.Подразделение.FindAsync(подразделение.Id_подразделения);
-                Newподразделение.ДолжностьПодразделение.Clear();
+                Newподразделение.Должность.Clear();
                
                 var unit = await (from u in db.Подразделение where u.Название_подразделения.Replace(" ", "").ToLower() == подразделение.Название_подразделения.Replace(" ", "").ToLower() select u).ToListAsync();
                 if (unit.Count() == 0)
@@ -126,12 +126,12 @@ namespace WebApplicationForTest.Controllers
                 {
 
                    
-                    ДолжностьПодразделение должностьПодразделение = new ДолжностьПодразделение();
-                    должностьПодразделение.id_должности = c.Id_должности;
-                    должностьПодразделение.id_подразделения = Newподразделение.Id_подразделения;
-                    db.ДолжностьПодразделение.Add(должностьПодразделение);
+                  //  ДолжностьПодразделение должностьПодразделение = new ДолжностьПодразделение();
+                 //   должностьПодразделение.id_должности = c.Id_должности;
+                //    должностьПодразделение.id_подразделения = Newподразделение.Id_подразделения;
+                //    db.ДолжностьПодразделение.Add(должностьПодразделение);
                     
-                  //  Newподразделение.ДолжностьПодразделение.Add(new ДолжностьПодразделение{  id_должности=d.Id_должности});
+                    Newподразделение.Должность.Add(c);
 
                 }
             }
@@ -170,7 +170,7 @@ namespace WebApplicationForTest.Controllers
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
             Подразделение подразделение = await db.Подразделение.FindAsync(id);
-            подразделение.ДолжностьПодразделение.Clear();
+            подразделение.Должность.Clear();
          //   var relations=await (from r in db.)
             db.Подразделение.Remove(подразделение);
             await db.SaveChangesAsync();

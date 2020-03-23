@@ -1,26 +1,43 @@
 ﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<div>
-    <h3><big><big>Добро пожаловать!</big></big></h3>
-    <h3>Чтобы продолжить, войдите в систему:</h3>
-    <form method="post" action="Menu">
-
+    <div>
         <table>
             <tr>
-                <td><p>Введите логин: </p></td>
-                <td><input type="text" name="Login" /> </td>
-            </tr>
-            <tr>
-                <td><p>Введите пароль:</p></td>
                 <td>
-                    <input type="password" name="Password" />
+                    <div><img src="/Images/logo.png" style="width:130px; height:100px" /></div>
+                </td>
+                <td>
+                    <h3><big><big>Добро пожаловать!</big></big></h3>
+                    <h3>Чтобы продолжить, войдите в систему:</h3>
                 </td>
             </tr>
-            <tr><td><input type="submit" value="Войти" /> </td><td></td></tr>
         </table>
-    </form>
-    <br /><br /><br /><br /><br /><br />
 
-                               
-</div>
+
+        <form method="post" action="Menu">
+
+            <table>
+                <tr>
+                    <td><p>Введите логин: </p></td>
+                    <td><input type="text" name="Login" /> </td>
+                </tr>
+                <tr>
+                    <td><p>Введите пароль:</p></td>
+                    <td>
+                        <input type="password" name="Password" />
+                    </td>
+                </tr>
+                <tr><td><input type="submit" value="Войти" /> </td><td></td></tr>
+
+            </table>
+        </form>
+        <form method="get" action="NewUser">
+
+            <table>
+                <tr><td><input type="submit" value="Новый пользователь" /> </td></tr>
+            </table>
+        </form>
+
+
+    </div>

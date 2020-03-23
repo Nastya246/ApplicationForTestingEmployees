@@ -1,5 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="TestModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Учетные_записи">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Имя_учетной_записи" Type="String" MaxLength="60" FixedLength="true" Unicode="true" />
+    <Property Name="Пароль" Type="String" MaxLength="15" FixedLength="true" Unicode="true" />
+  </EntityType>
   <EntityType Name="sysdiagram">
     <Key>
       <PropertyRef Name="diagram_id" />
@@ -25,20 +33,10 @@
     <Key>
       <PropertyRef Name="Id_должности" />
     </Key>
-    <Property Name="Название_должности" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="Название_должности" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
     <Property Name="Id_должности" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <NavigationProperty Name="ДолжностьПодразделение" Relationship="Self.FK_ДолжностьПодразделение_Должность" FromRole="Должность" ToRole="ДолжностьПодразделение" />
     <NavigationProperty Name="Пользователи" Relationship="Self.FK_Пользователи_Должность" FromRole="Должность" ToRole="Пользователи" />
-  </EntityType>
-  <EntityType Name="ДолжностьПодразделение">
-    <Key>
-      <PropertyRef Name="id_подразделения" />
-      <PropertyRef Name="id_должности" />
-    </Key>
-    <Property Name="id_подразделения" Type="Int32" Nullable="false" />
-    <Property Name="id_должности" Type="Int32" Nullable="false" />
-    <NavigationProperty Name="Должность" Relationship="Self.FK_ДолжностьПодразделение_Должность" FromRole="ДолжностьПодразделение" ToRole="Должность" />
-    <NavigationProperty Name="Подразделение" Relationship="Self.FK_ДолжностьПодразделение_Подразделение" FromRole="ДолжностьПодразделение" ToRole="Подразделение" />
+    <NavigationProperty Name="Подразделение" Relationship="Self.ДолжностьПодразделение" FromRole="Должность" ToRole="Подразделение" />
   </EntityType>
   <EntityType Name="Ответы">
     <Key>
@@ -58,8 +56,8 @@
     </Key>
     <Property Name="Id_подразделения" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Название_подразделения" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
-    <NavigationProperty Name="ДолжностьПодразделение" Relationship="Self.FK_ДолжностьПодразделение_Подразделение" FromRole="Подразделение" ToRole="ДолжностьПодразделение" />
     <NavigationProperty Name="Пользователи" Relationship="Self.FK_Пользователи_Подразделение" FromRole="Подразделение" ToRole="Пользователи" />
+    <NavigationProperty Name="Должность" Relationship="Self.ДолжностьПодразделение" FromRole="Подразделение" ToRole="Должность" />
   </EntityType>
   <EntityType Name="Пользователи">
     <Key>
@@ -136,18 +134,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_ДолжностьПодразделение_Должность">
-    <End Role="Должность" Type="Self.Должность" Multiplicity="1" />
-    <End Role="ДолжностьПодразделение" Type="Self.ДолжностьПодразделение" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Должность">
-        <PropertyRef Name="Id_должности" />
-      </Principal>
-      <Dependent Role="ДолжностьПодразделение">
-        <PropertyRef Name="id_подразделения" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK_Пользователи_Должность">
     <End Role="Должность" Type="Self.Должность" Multiplicity="1" />
     <End Role="Пользователи" Type="Self.Пользователи" Multiplicity="*" />
@@ -157,18 +143,6 @@
       </Principal>
       <Dependent Role="Пользователи">
         <PropertyRef Name="id_должности" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_ДолжностьПодразделение_Подразделение">
-    <End Role="Подразделение" Type="Self.Подразделение" Multiplicity="1" />
-    <End Role="ДолжностьПодразделение" Type="Self.ДолжностьПодразделение" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Подразделение">
-        <PropertyRef Name="Id_подразделения" />
-      </Principal>
-      <Dependent Role="ДолжностьПодразделение">
-        <PropertyRef Name="id_подразделения" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -220,11 +194,15 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="ДолжностьПодразделение">
+    <End Role="Должность" Type="Self.Должность" Multiplicity="*" />
+    <End Role="Подразделение" Type="Self.Подразделение" Multiplicity="*" />
+  </Association>
   <EntityContainer Name="TestEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Учетные_записи" EntityType="Self.Учетные_записи" />
     <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
     <EntitySet Name="Вопросы" EntityType="Self.Вопросы" />
     <EntitySet Name="Должность" EntityType="Self.Должность" />
-    <EntitySet Name="ДолжностьПодразделение" EntityType="Self.ДолжностьПодразделение" />
     <EntitySet Name="Ответы" EntityType="Self.Ответы" />
     <EntitySet Name="Подразделение" EntityType="Self.Подразделение" />
     <EntitySet Name="Пользователи" EntityType="Self.Пользователи" />
@@ -239,17 +217,9 @@
       <End Role="Вопросы" EntitySet="Вопросы" />
       <End Role="Ответы" EntitySet="Ответы" />
     </AssociationSet>
-    <AssociationSet Name="FK_ДолжностьПодразделение_Должность" Association="Self.FK_ДолжностьПодразделение_Должность">
-      <End Role="Должность" EntitySet="Должность" />
-      <End Role="ДолжностьПодразделение" EntitySet="ДолжностьПодразделение" />
-    </AssociationSet>
     <AssociationSet Name="FK_Пользователи_Должность" Association="Self.FK_Пользователи_Должность">
       <End Role="Должность" EntitySet="Должность" />
       <End Role="Пользователи" EntitySet="Пользователи" />
-    </AssociationSet>
-    <AssociationSet Name="FK_ДолжностьПодразделение_Подразделение" Association="Self.FK_ДолжностьПодразделение_Подразделение">
-      <End Role="Подразделение" EntitySet="Подразделение" />
-      <End Role="ДолжностьПодразделение" EntitySet="ДолжностьПодразделение" />
     </AssociationSet>
     <AssociationSet Name="FK_Пользователи_Подразделение" Association="Self.FK_Пользователи_Подразделение">
       <End Role="Подразделение" EntitySet="Подразделение" />
@@ -266,6 +236,10 @@
     <AssociationSet Name="FK_Результат_теста_Тесты" Association="Self.FK_Результат_теста_Тесты">
       <End Role="Тесты" EntitySet="Тесты" />
       <End Role="Результат_теста" EntitySet="Результат_теста" />
+    </AssociationSet>
+    <AssociationSet Name="ДолжностьПодразделение" Association="Self.ДолжностьПодразделение">
+      <End Role="Должность" EntitySet="Должность" />
+      <End Role="Подразделение" EntitySet="Подразделение" />
     </AssociationSet>
   </EntityContainer>
 </Schema>

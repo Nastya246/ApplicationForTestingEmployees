@@ -21,20 +21,7 @@ namespace WebApplicationForTest.Controllers
             return View(await db.Учетные_записи.ToListAsync());
         }
 
-        // GET: Учетные_записи/Details/5
-        public async Task<ActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Учетные_записи учетные_записи = await db.Учетные_записи.FindAsync(id);
-            if (учетные_записи == null)
-            {
-                return HttpNotFound();
-            }
-            return View(учетные_записи);
-        }
+       
 
         // GET: Учетные_записи/Create
         public ActionResult Create()
@@ -67,10 +54,12 @@ namespace WebApplicationForTest.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Учетные_записи учетные_записи = await db.Учетные_записи.FindAsync(id);
+           
             if (учетные_записи == null)
             {
                 return HttpNotFound();
             }
+            учетные_записи.Пароль = учетные_записи.Пароль.TrimEnd();
             return View(учетные_записи);
         }
 
@@ -91,31 +80,7 @@ namespace WebApplicationForTest.Controllers
             return View(учетные_записи);
         }
 
-        // GET: Учетные_записи/Delete/5
-        public async Task<ActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Учетные_записи учетные_записи = await db.Учетные_записи.FindAsync(id);
-            if (учетные_записи == null)
-            {
-                return HttpNotFound();
-            }
-            return View(учетные_записи);
-        }
-
-        // POST: Учетные_записи/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteConfirmed(int id)
-        {
-            Учетные_записи учетные_записи = await db.Учетные_записи.FindAsync(id);
-            db.Учетные_записи.Remove(учетные_записи);
-            await db.SaveChangesAsync();
-            return RedirectToAction("Index");
-        }
+        
 
         protected override void Dispose(bool disposing)
         {

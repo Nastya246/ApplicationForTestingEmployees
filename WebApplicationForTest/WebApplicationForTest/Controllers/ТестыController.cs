@@ -130,8 +130,23 @@ namespace WebApplicationForTest.Controllers
             тесты.Id_Раздела = Id_Раздела;
             if (ModelState.IsValid)
             {
-
-               тесты.Название_темы_теста = тесты.Название_темы_теста.TrimEnd(' ');
+                int flag = 0;
+                int id = тесты.id_теста;
+                var тестыTemp = await db.Тесты.AsNoTracking().ToListAsync();
+                while (flag == 0)
+                {
+                    var existT=тестыTemp.FindAll(x => x.id_теста == id);
+                    if (existT.Count()==0)
+                    {
+                        flag = 1;
+                    }
+                    else
+                    {
+                        id++;
+                    }
+                }
+                тесты.id_теста = id;
+                тесты.Название_темы_теста = тесты.Название_темы_теста.TrimEnd(' ');
                 var temp = from v in db.Тесты where v.Название_темы_теста.Replace(" ", "").ToLower() == тесты.Название_темы_теста.Replace(" ", "").ToLower() select v;
                 if (temp.Count() == 0) //проверяем, есть ли тема с таки же именем, если нет, то добавляем
                 {
@@ -155,6 +170,7 @@ namespace WebApplicationForTest.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Тесты тесты = await db.Тесты.FindAsync(id);
+            тесты.Название_темы_теста = тесты.Название_темы_теста.TrimEnd(' ');
             if (тесты == null)
             {
                 return HttpNotFound();

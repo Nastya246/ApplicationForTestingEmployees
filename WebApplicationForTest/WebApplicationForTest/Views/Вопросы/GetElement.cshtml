@@ -2,7 +2,7 @@
 
 <div class="c">
     <div class="form-group">
-        @Html.Label("Варианты понятий (через запятую, только для типа \"Соотношение\"):")
+        @Html.Label("Варианты понятий (через \";\", только для типа \"Соотношение\"):")
         <div class="col-md-10">
             @if (@ViewBag.Def == true)
             {
@@ -16,7 +16,7 @@
         </div>
     </div>
     <div class="form-group">
-        @Html.Label("Варианты ответов (через запятую):")
+        @Html.Label("Варианты ответов (через \";\"):")
         <div class="col-md-10">
             @if (@ViewBag.Variant == true)
             {
@@ -30,7 +30,7 @@
         </div>
     </div>
     <div class="form-group">
-        @Html.Label("Правильный ответ/ответы (через запятую):")
+        @Html.Label("Правильный ответ/ответы (через \";\"):")
         <div class="col-md-10">
             @if (ViewBag.NULL == '0')
             {

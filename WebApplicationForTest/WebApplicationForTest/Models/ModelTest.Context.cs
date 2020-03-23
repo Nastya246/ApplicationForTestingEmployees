@@ -25,16 +25,15 @@ namespace WebApplicationForTest.Models
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<Учетные_записи> Учетные_записи { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<Вопросы> Вопросы { get; set; }
         public virtual DbSet<Должность> Должность { get; set; }
-        public virtual DbSet<ДолжностьПодразделение> ДолжностьПодразделение { get; set; }
         public virtual DbSet<Ответы> Ответы { get; set; }
         public virtual DbSet<Подразделение> Подразделение { get; set; }
         public virtual DbSet<Пользователи> Пользователи { get; set; }
         public virtual DbSet<Разделы> Разделы { get; set; }
         public virtual DbSet<Результат_теста> Результат_теста { get; set; }
         public virtual DbSet<Тесты> Тесты { get; set; }
-        public virtual DbSet<Учетные_записи> Учетные_записи { get; set; }
     }
 }

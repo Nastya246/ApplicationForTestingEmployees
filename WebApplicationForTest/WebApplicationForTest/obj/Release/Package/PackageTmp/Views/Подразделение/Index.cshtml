@@ -27,9 +27,9 @@
                        </tr>
                        foreach (var itemPosition in ViewBag.Positions)
                        {
-                           foreach (var itemP in item.ДолжностьПодразделение)
+                           foreach (var itemP in item.Должность)
                            {
-                               if (itemPosition.Id_должности == itemP.id_должности)
+                               if (itemPosition.Id_должности == itemP.Id_должности)
                                {
                                    <tr>
                                        <td>
@@ -48,8 +48,7 @@
 
                </table>
     <form method="post" action="~/Home/Menu">
-        <input type="hidden" value="admin" name="Login" />
-        <input type="hidden" value="admin12345" name="Password" />
+        <input type="hidden" value="1" name="adminForBack" />
         <input type="submit" value="В меню" />
 
     </form>
@@ -80,10 +79,9 @@ else
 
         </table>
     </form>
-        <form method="post" action="~/Home/Menu">
-            <input type="hidden" value="otchet" name="Login" />
-            <input type="hidden" value="otchet12345" name="Password" />
-            <input type="submit" value="В меню" />
+    <form method="post" action="~/Home/Menu">
+        <input type="hidden" value="1" name=otchetForBack />
+        <input type="submit" value="В меню" />
 
-        </form>
+    </form>
         }

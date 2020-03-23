@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <parameters>
-  <parameter name="TestEntities-Web.config Connection String" description="TestEntities Строка подключения в web.config, используемая приложением для доступа к базе данных." defaultValue="metadata=res://*/Models.ModelTest.csdl|res://*/Models.ModelTest.ssdl|res://*/Models.ModelTest.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=.\SQLEXPRESS02;attachdbfilename=|DataDirectory|\Test.mdf;integrated security=True;connect timeout=30;MultipleActiveResultSets=True;App=EntityFramework&quot;" tags="SqlConnectionString">
-    <parameterEntry kind="XmlFile" scope="D:\\repositoriy\\WebApplicationForTest\\WebApplicationForTest\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='TestEntities']/@connectionString" />
+  <parameter name="TestEntities-Web.config Connection String" description="TestEntities Строка подключения в web.config, используемая приложением для доступа к базе данных." defaultValue="metadata=res://*/Models.ModelTest.csdl|res://*/Models.ModelTest.ssdl|res://*/Models.ModelTest.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=A-SQL;initial catalog=Test;persist security info=True;user id=fortestdb;password=as32DF45;MultipleActiveResultSets=True;App=EntityFramework&quot;" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="D:\\WebApplicationForTest\\WebApplicationForTest\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='TestEntities']/@connectionString" />
   </parameter>
 </parameters>

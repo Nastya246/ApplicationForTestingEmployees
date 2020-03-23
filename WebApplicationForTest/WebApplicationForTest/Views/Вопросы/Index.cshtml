@@ -50,7 +50,14 @@
                                 <big>
                                     @part
                                 </big>
-                                if (part != item.Текст_вопроса.Replace("  ", "").Split(new string[] { "..." }, StringSplitOptions.RemoveEmptyEntries).Last().ToString())
+                                if (item.Текст_вопроса.Replace("  ", "").Split(new string[] { "..." }, StringSplitOptions.RemoveEmptyEntries).Count() > 1)
+                                {
+                                    if (part != item.Текст_вопроса.Replace("  ", "").Split(new string[] { "..." }, StringSplitOptions.RemoveEmptyEntries).Last().ToString())
+                                    {
+                                        @Html.DropDownList(item.id_вопроса.ToString(), ViewData[T.ToString()] as SelectList, "--Выбор ответа--", new { id = "ans" })
+                                    }
+                                }
+                                else
                                 {
                                     @Html.DropDownList(item.id_вопроса.ToString(), ViewData[T.ToString()] as SelectList, "--Выбор ответа--", new { id = "ans" })
                                 }
@@ -66,8 +73,8 @@
 
                         <tr>
                             <td>
-                                <div style="float:left">@Html.DisplayFor(m => itemO.Текст_ответа)</div>
-                                <div style="margin-left:20%">@Html.RadioButton((item.id_вопроса).ToString(), itemO.Текст_ответа)</div>
+                                <div style="float:left">@Html.DisplayFor(m => itemO.Текст_ответа)</div>                           
+                                <div style="float:right ; margin-left:30%" >@Html.RadioButton((item.id_вопроса).ToString(), itemO.Текст_ответа)</div>
                             </td>
                         </tr>
                     }
@@ -88,7 +95,7 @@
                             <tr>
                                 <td>
                                     <div style="float:left">@Html.DisplayFor(m => itemO.Текст_ответа) </div>
-                                    <div style="margin-left:20%">@Html.DropDownList((itemO.id_ответа.ToString() + "-" + item.id_вопроса.ToString()), ViewData[Soot.ToString()] as SelectList, "--Выбор ответа--", new { id = "ansSoot" })</div>
+                                    <div style="float:right ; margin-left:30%">@Html.DropDownList((itemO.id_ответа.ToString() + "-" + item.id_вопроса.ToString()), ViewData[Soot.ToString()] as SelectList, "--Выбор ответа--", new { id = "ansSoot" })</div>
                                 </td>
                             </tr>
                             //  Soot++;
@@ -107,7 +114,7 @@
                         <tr>
                             <td>
                                 <div style="float:left">@Html.DisplayFor(m => itemO.Текст_ответа)</div>
-                                <div style="margin-left:20%">@Html.CheckBox(item.id_вопроса.ToString(), false)</div>
+                                <div style="float:right ; margin-left:30%">@Html.CheckBox(item.id_вопроса.ToString(), false)</div>
                             </td>
                         </tr>
                     }

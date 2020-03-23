@@ -6,7 +6,9 @@
 }
 @if (ViewBag.Id_user == "redactor")
 {
-    <h2>Темы для тестирования из раздела "@ViewBag.НазваниеРаздела"</h2> <br /><br />
+    <h2>Темы для тестирования из раздела "@ViewBag.НазваниеРаздела"</h2>
+    <br />
+    <br />
     <p>
         @Html.ActionLink("Добавить новую тему", "Create", new { id = @ViewBag.IdРаздела })
         @Html.ActionLink("К списку разделов", "Index", "Разделы", new { redactor = "redactor" }, null)
@@ -17,7 +19,9 @@
 }
 else if (ViewBag.Id_user == "practice")
 {
-    <h2>Выбор темы из раздела "@ViewBag.НазваниеРаздела" для проставления практики</h2> <br /><br />
+    <h2>Выбор темы из раздела "@ViewBag.НазваниеРаздела" для проставления практики</h2>
+    <br />
+    <br />
     <p>
 
         @Html.ActionLink("К списку разделов", "Index", "Разделы", new { practice = "practice" }, null)
@@ -25,13 +29,16 @@ else if (ViewBag.Id_user == "practice")
 }
 else
 {
-    <h2>Доступные темы для тестирования из раздела "@ViewBag.НазваниеРаздела"</h2> <br /><br />
+    <h2>Доступные темы для тестирования из раздела "@ViewBag.НазваниеРаздела"</h2>
+    <br />
+    <br />
 }
 
 @if (ViewBag.Id_user != "practice")
 {
     <form method="post" action="~/Вопросы/Index">
         <table class="table">
+
             <tr>
 
                 <th>
@@ -54,7 +61,7 @@ else
                     </td>
                     <td>
 
-                       @item.Вопросы.Count().ToString()
+                        @item.Вопросы.Count().ToString()
                     </td>
 
                     <td>
@@ -90,16 +97,32 @@ else
                     @if (ViewBag.Id_user == "redactor")
                     {
                         <input type="hidden" value=@ViewBag.Id_user name="redactor" />
-                        <br />
-                        <br /><input type="submit" value="Внести изменения" />
+
+                        if (Model.Count() != 0)
+                        {
+                            <br /> <br /><input type="submit" value="Внести изменения" />
+                        }
+                        else
+                        {
+                            <p>ПУСТО</p>
+
+                        }
                     }
 
                     else
                     {
                         <input type="hidden" value=@ViewBag.Id_user name="id_user" />
                         <input type="hidden" value=@ViewBag.Data name="Data" />
-                        <br />
-                        <br /><input type="submit" value="Начать" />}
+
+                        if (Model.Count() != 0)
+                        {
+                            <br /> <br /><input type="submit" value="Начать" />
+                        }
+                        else
+                        {
+                            <p>ПУСТО</p>
+                        }
+                    }
                 </td>
 
                 <td></td>
@@ -168,8 +191,7 @@ else
         <table class="table">
             <tr>
                 <td>
-                    <input type="hidden" value="redactor" name="Login" />
-                    <input type="hidden" value="redactor12345" name="Password" />
+                    <input type="hidden" value="1" name="redactorForBack" />
                     <input type="submit" value="В меню" />
 
 
@@ -186,8 +208,8 @@ else
         <table class="table">
             <tr>
                 <td>
-                    <input type="hidden" value="practice" name="Login" />
-                    <input type="hidden" value="practice12345" name="Password" />
+                    <input type="hidden" value="1" name="practiceForBack" />
+
                     <input type="submit" value="В меню" />
 
 

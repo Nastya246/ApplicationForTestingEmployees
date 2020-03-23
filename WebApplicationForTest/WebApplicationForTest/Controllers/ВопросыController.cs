@@ -65,7 +65,7 @@ namespace WebApplicationForTest.Controllers
                
                 if (вопросы.Тип_ответа.Replace(" ", "") == "Выбор")
                 {
-                    string[] stringTempList = (variant.Replace("  ", "")).Split(',');
+                    string[] stringTempList = (variant.Replace("  ", "")).Split(';');
                     var resulttemp = stringTempList.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
                     stringTempList = resulttemp;
                     foreach (var t in stringTempList)
@@ -97,11 +97,11 @@ namespace WebApplicationForTest.Controllers
                 }
                 else if (вопросы.Тип_ответа.Replace(" ", "") == "Несколько")
                 {
-                    string[] stringTempListVar = (variant.Replace("  ", "")).Split(','); //разделяем варианты ответов
+                    string[] stringTempListVar = (variant.Replace("  ", "")).Split(';'); //разделяем варианты ответов
                     var resulttemp = stringTempListVar.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
                     stringTempListVar = resulttemp;
 
-                    string[] stringTempListCor = (correct.Replace("  ", "")).Split(',');
+                    string[] stringTempListCor = (correct.Replace("  ", "")).Split(';');
                     resulttemp = stringTempListCor.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
                     stringTempListCor = resulttemp;
                     int flag = 0;
@@ -164,11 +164,11 @@ namespace WebApplicationForTest.Controllers
                 else if (вопросы.Тип_ответа.Replace(" ", "") == "Соотношение")
                 {
 
-                    string[] stringTempListCor = (correct.Replace("  ","")).Split(',');//разделяем корректные варианты ответов
+                    string[] stringTempListCor = (correct.Replace("  ","")).Split(';');//разделяем корректные варианты ответов
                     var resulttemp = stringTempListCor.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
                     stringTempListCor = resulttemp;
 
-                    string[] stringTempListDef = (def.Replace("  ", "")).Split(',');//разделяем понятия
+                    string[] stringTempListDef = (def.Replace("  ", "")).Split(';');//разделяем понятия
                     resulttemp = stringTempListDef.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
                     stringTempListDef = resulttemp;
                     
@@ -248,7 +248,7 @@ namespace WebApplicationForTest.Controllers
                         db.SaveChanges();
                     }
 
-                    string[] stringTempListVar = (correct.Replace("  ", "")).Split(',');//подготавливаем для составления списка с вариантами ответов
+                    string[] stringTempListVar = (correct.Replace("  ", "")).Split(';');//подготавливаем для составления списка с вариантами ответов
                     var resulttemp = stringTempListVar.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
                     stringTempListVar = resulttemp;
                     Random rand = new Random();
@@ -295,7 +295,7 @@ namespace WebApplicationForTest.Controllers
             }
         }
         //метод выбора вопросов для конкретной темы
-        public IQueryable<Вопросы> QuestionChoose( IQueryable <Вопросы> вопросы, ref SelectList ans) 
+        public List<Вопросы> QuestionChoose( List <Вопросы> вопросы, ref SelectList ans) 
         {
             int q = 1;
             int countRazr = 0;
@@ -349,13 +349,21 @@ namespace WebApplicationForTest.Controllers
                 SelectList ans1=null;
                 var вопросы = db.Вопросы.Include(в => в.Тесты).Include(в => в.Ответы);
                 вопросы =  (from v in db.Вопросы where v.id_Теста == id_Topic select v).Include(v => v.Ответы);
-                вопросы = QuestionChoose(вопросы, ref ans1);
-                return View(await вопросы.ToListAsync());
+                List<Вопросы> вопросы1 = new List<Вопросы>();
+                foreach (var t in вопросы)
+                {
+
+                    вопросы1.Add(t);
+
+                }
+                вопросы1 = QuestionChoose(вопросы1, ref ans1);
+                return View( вопросы1);
             }
             else
             {
                 int q = 1;
                 var вопросы = db.Вопросы.Include(в => в.Тесты).Include(в => в.Ответы);
+                List<Вопросы> вопросы1 = new List<Вопросы>();
                 foreach (var temp in вопросы)
                 {
                     temp.Текст_вопроса = q.ToString() + " " + temp.Текст_вопроса;
@@ -363,7 +371,13 @@ namespace WebApplicationForTest.Controllers
                     q++;
 
                 }
-                return View(await вопросы.ToListAsync());
+                foreach (var t in вопросы)
+                {
+
+                    вопросы1.Add(t);
+
+                }
+                return View( вопросы1);
             }
         }
         [HttpPost] // доступные вопросы по выбранному тесту
@@ -392,15 +406,35 @@ namespace WebApplicationForTest.Controllers
             ViewBag.IdТеста = userТестId;
             var вопросы = db.Вопросы.Include(в => в.Тесты).Include(в => в.Ответы);
             вопросы = (from v in db.Вопросы where v.id_Теста == userТестId select v).Include(v => v.Ответы); //выбираем вопросы для кокретного теста по id теста
-
+            List<Вопросы> вопросы1 = new List<Вопросы>();
+            if (redactor != "redactor")
+            {
+                foreach (var t in вопросы)
+                {
+                    foreach (var t1 in t.Ответы)
+                    {
+                        if (t1.Флаг_правильного_ответа==true)
+                        {
+                            вопросы1.Add(t);
+                            break;
+                        }
+                    }
+                }
+            }
             if (redactor == "redactor")
             {
                 ViewBag.User = "redactor";
+                foreach (var t in вопросы)
+                {
+                   
+                            вопросы1.Add(t);
+                          
+                }
 
             }
-            вопросы = QuestionChoose(вопросы, ref ans);
+            вопросы1 = QuestionChoose(вопросы1, ref ans);
 
-            return View(await вопросы.ToListAsync());
+            return View( вопросы1);
 
         }
         // GET: Вопросы/Details/5
@@ -548,18 +582,20 @@ namespace WebApplicationForTest.Controllers
                 var answer = from v in db.Ответы where v.id_Вопроса == вопросы.id_вопроса select v;
                 foreach (var variant in answer)
                 {
-                    variantStr = variantStr+ variant.Текст_ответа.Replace("  ", "").TrimStart(' ').TrimEnd(' ') + ", ";
+                    variantStr = variantStr+ variant.Текст_ответа.Replace("  ", "").TrimStart(' ').TrimEnd(' ') + "; ";
                   
                     if (variant.Флаг_правильного_ответа)
                     {
-                        correctStr = correctStr+ variant.Текст_ответа.Replace("  ", "").TrimStart(' ').TrimEnd(' ') + ", ";
+                        correctStr = correctStr+ variant.Текст_ответа.Replace("  ", "").TrimStart(' ').TrimEnd(' ') + "; ";
 
                     }
                 }
 
                     variantStr = variantStr.Substring(0, variantStr.Length-2);
-                    correctStr =correctStr.Substring(0, correctStr.Length-2); //убираем лишнюю запятую
-                
+                if (correctStr != "")
+                {
+                    correctStr = correctStr.Substring(0, correctStr.Length - 2); //убираем лишнюю запятую
+                }
                 ViewBag.Варианты = variantStr;
                 вопросОтветРедактор.Варианты_ответов = variantStr;
 
@@ -573,14 +609,14 @@ namespace WebApplicationForTest.Controllers
                 var answerS = from v in db.Ответы where (v.id_Вопроса == вопросы.id_вопроса && v.Флаг_подвопроса==true) select v;
                 foreach (var variant in answerS)
                 {
-                    Def = Def+ variant.Текст_ответа.Replace("  ", "").TrimStart(' ').TrimEnd(' ') + ", ";
+                    Def = Def+ variant.Текст_ответа.Replace("  ", "").TrimStart(' ').TrimEnd(' ') + "; ";
                     
-                    CorrectAnsw = CorrectAnsw + variant.Правильный_ответ.Replace("  ", "").TrimStart(' ').TrimEnd(' ') + ", ";
+                    CorrectAnsw = CorrectAnsw + variant.Правильный_ответ.Replace("  ", "").TrimStart(' ').TrimEnd(' ') + "; ";
                     
                 }
 
                 Def = Def.Substring(0, Def.Length - 2);
-                CorrectAnsw = CorrectAnsw.Substring(0, CorrectAnsw.Length-2); //убираем лишнюю запятую
+                CorrectAnsw = CorrectAnsw.Substring(0, CorrectAnsw.Length-2); //убираем лишнюю точку с запятой
 
                 вопросОтветРедактор.Понятия = Def;
                 ViewBag.Понятия = Def;

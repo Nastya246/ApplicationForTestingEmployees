@@ -130,7 +130,7 @@ namespace WebApplicationForTest.Controllers
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
             Должность должность = await db.Должность.FindAsync(id);
-            должность.ДолжностьПодразделение.Clear();
+            должность.Подразделение.Clear();
 
             db.Должность.Remove(должность);
             await db.SaveChangesAsync();

@@ -102,14 +102,26 @@ namespace WebApplicationForTest.Controllers
             string textQ = "";
             string textA = "";
             var AllQuestion = (from question in db.Вопросы where question.id_Теста == id_Test select question).ToList(); //получаем все вопросы из теста
-           
+            var вопросыСОтветом = new List<Вопросы>();
+            foreach (var t in AllQuestion)
+            {
+                foreach (var t1 in t.Ответы)
+                {
+                    if (t1.Флаг_правильного_ответа == true)
+                    {
+                        вопросыСОтветом.Add(t);
+                        break;
+                    }
+                }
+            }
+
             int nQ = 1; // для перечисления вопросов
             int Answ = 0; //число правильных ответов
-            int QuestC = AllQuestion.Count();       //число вопросов тесте
+            int QuestC = вопросыСОтветом.Count();       //число вопросов тесте
             
             Dictionary<string, string> resultAnswerUser = new Dictionary<string, string>(QuestC); //для хранения конечных результатов пользователя
             string tempAnsw = "";
-            foreach (var qList in AllQuestion) //получаем вопросы и верные к ним ответы
+            foreach (var qList in вопросыСОтветом) //получаем вопросы и верные к ним ответы
             {
                 textQ = qList.Текст_вопроса.Replace("  ", "");
 
@@ -164,7 +176,7 @@ namespace WebApplicationForTest.Controllers
                     QuestionAnswer.Add("Вопрос: " + textQ + "\n" + "Правильный ответ: " + tempSelectR[0].Текст_ответа.Replace("  ", "") + "\n");
                 }
             }
-            foreach (var q1 in AllQuestion) //проверка на пустые поля в ответах
+            foreach (var q1 in вопросыСОтветом) //проверка на пустые поля в ответах
             { 
                 if ((!(resultA.ContainsKey(q1.id_вопроса.ToString()))) && (q1.Тип_ответа.Replace(" ", "") != "Соотношение")) //если нет записи в словаре под таким ключом, то пользователь не ответил на этот вопрос, фиксируем это
                 {
@@ -376,7 +388,7 @@ namespace WebApplicationForTest.Controllers
                             var resultR = mystringTempR.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray(); //убираем нулевые и пустые элементы
 
                             var AnswRstring = (from textAnsw in tempSelect where textAnsw.id_Вопроса == Convert.ToInt32(id_q.Key) && textAnsw.Флаг_правильного_ответа == true select textAnsw).ToList();//правильные ответы в виде текста
-                            string[] stringAnswTempR = AnswRstring[0].Текст_ответа.Split(',');
+                            string[] stringAnswTempR = AnswRstring[0].Текст_ответа.Split(';');
                             var AnswR = stringAnswTempR.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
                             int flagA = 0;
                             string strR = "";
@@ -447,7 +459,12 @@ namespace WebApplicationForTest.Controllers
             }
             else //если нет, то добавляем новую запись в бд
             {
+
                 Результат_теста результат_Теста = new Результат_теста();
+             
+                    while (await db.Результат_теста.FindAsync(результат_Теста.id_результата_теста) != null)
+                    результат_Теста.id_результата_теста++;
+                
                 результат_Теста.id_User = id_User;
                 результат_Теста.id_Теста = id_Test;
                 результат_Теста.Дата_сдачи_теории = Convert.ToDateTime(data);

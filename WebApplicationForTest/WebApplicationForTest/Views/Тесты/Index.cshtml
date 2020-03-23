@@ -6,7 +6,9 @@
 }
 @if (ViewBag.Id_user == "redactor")
 {
-    <h2>Темы для тестирования из раздела "@ViewBag.НазваниеРаздела"</h2> <br /><br />
+    <h2>Темы для тестирования из раздела "@ViewBag.НазваниеРаздела"</h2>
+    <br />
+    <br />
     <p>
         @Html.ActionLink("Добавить новую тему", "Create", new { id = @ViewBag.IdРаздела })
         @Html.ActionLink("К списку разделов", "Index", "Разделы", new { redactor = "redactor" }, null)
@@ -17,7 +19,9 @@
 }
 else if (ViewBag.Id_user == "practice")
 {
-    <h2>Выбор темы из раздела "@ViewBag.НазваниеРаздела" для проставления практики</h2> <br /><br />
+    <h2>Выбор темы из раздела "@ViewBag.НазваниеРаздела" для проставления практики</h2>
+    <br />
+    <br />
     <p>
 
         @Html.ActionLink("К списку разделов", "Index", "Разделы", new { practice = "practice" }, null)
@@ -25,7 +29,9 @@ else if (ViewBag.Id_user == "practice")
 }
 else
 {
-    <h2>Доступные темы для тестирования из раздела "@ViewBag.НазваниеРаздела"</h2> <br /><br />
+    <h2>Доступные темы для тестирования из раздела "@ViewBag.НазваниеРаздела"</h2>
+    <br />
+    <br />
 }
 
 @if (ViewBag.Id_user != "practice")
@@ -55,7 +61,7 @@ else
                     </td>
                     <td>
 
-                       @item.Вопросы.Count().ToString()
+                        @item.Вопросы.Count().ToString()
                     </td>
 
                     <td>
@@ -203,7 +209,7 @@ else
             <tr>
                 <td>
                     <input type="hidden" value="1" name="practiceForBack" />
-                  
+
                     <input type="submit" value="В меню" />
 
 

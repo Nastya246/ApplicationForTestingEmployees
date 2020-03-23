@@ -16,7 +16,7 @@ namespace WebApplicationForTest.Models
     {
         public int id { get; set; }
         public string Имя_учетной_записи { get; set; }
-        [StringLength(10, ErrorMessage = "Длина пароля должна быть до 10 символов")]
+        [StringLength(15, ErrorMessage = "Длина пароля не более 15 символов")]
         public string Пароль { get; set; }
     }
 }

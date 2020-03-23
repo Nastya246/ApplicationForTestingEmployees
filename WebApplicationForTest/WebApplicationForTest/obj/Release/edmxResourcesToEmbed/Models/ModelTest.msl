@@ -1,6 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="Хранилище TestModelContainer" CdmEntityContainer="TestEntities">
+    <EntitySetMapping Name="Учетные_записи">
+      <EntityTypeMapping TypeName="TestModel.Учетные_записи">
+        <MappingFragment StoreEntitySet="Учетные записи">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="Имя_учетной_записи" ColumnName="Имя учетной записи" />
+          <ScalarProperty Name="Пароль" ColumnName="Пароль" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="sysdiagrams">
       <EntityTypeMapping TypeName="TestModel.sysdiagram">
         <MappingFragment StoreEntitySet="sysdiagrams">
@@ -27,14 +36,6 @@
         <MappingFragment StoreEntitySet="Должность">
           <ScalarProperty Name="Название_должности" ColumnName="Название должности" />
           <ScalarProperty Name="Id_должности" ColumnName="Id_должности" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="ДолжностьПодразделение">
-      <EntityTypeMapping TypeName="TestModel.ДолжностьПодразделение">
-        <MappingFragment StoreEntitySet="ДолжностьПодразделение">
-          <ScalarProperty Name="id_подразделения" ColumnName="id_подразделения" />
-          <ScalarProperty Name="id_должности" ColumnName="id_должности" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -104,5 +105,13 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <AssociationSetMapping Name="ДолжностьПодразделение" TypeName="TestModel.ДолжностьПодразделение" StoreEntitySet="ДолжностьПодразделение">
+      <EndProperty Name="Должность">
+        <ScalarProperty Name="Id_должности" ColumnName="id_должности" />
+      </EndProperty>
+      <EndProperty Name="Подразделение">
+        <ScalarProperty Name="Id_подразделения" ColumnName="id_подразделения" />
+      </EndProperty>
+    </AssociationSetMapping>
   </EntityContainerMapping>
 </Mapping>
