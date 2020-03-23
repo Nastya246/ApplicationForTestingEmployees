@@ -1,0 +1,262 @@
+﻿@model IEnumerable<WebApplicationForTest.Models.Пользователи>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Отчет по подразделению "@ViewBag.Units"</h2>
+
+<p>
+
+    @Html.ActionLink("К списку подразделений", "Index", "Подразделение", new { otchet = "otchet" }, null)
+    <br />
+</p>
+
+<form method="post" action="~/Отчеты/Index">
+
+    <table class="table">
+        <tr>
+
+            <td>
+                @Html.Label("Пользователи, которые успешно сдали теорию и практику")
+
+            </td>
+            <td>
+                @if (ViewBag.Choose == "1")
+                {
+                    <input checked="checked" id="us" name="us" type="radio" value="1" />
+                }
+                else
+                {
+                    @Html.RadioButton("us", "1")
+                }
+            </td>
+
+        </tr>
+        <tr>
+            <td>
+                @Html.Label("Пользователи, которые успешно сдали теорию")
+            </td>
+            <td>
+                @if (ViewBag.Choose == "2")
+                {
+                    <input checked="checked" id="us" name="us" type="radio" value="2" />
+                }
+                else
+                {
+                    @Html.RadioButton("us", "2")
+                }
+            </td>
+        </tr>
+        <tr>
+            <td>
+
+                @Html.Label("Пользователи, которые не сдали теорию и практику")
+            </td>
+            <td>
+                @if (ViewBag.Choose == "3")
+                {
+                    <input checked="checked" id="us" name="us" type="radio" value="3" />
+                }
+                else
+                {
+                    @Html.RadioButton("us", "3")
+                }
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.Label("Пользователи, которые не сдали практику")
+            </td>
+            <td>
+                @if (ViewBag.Choose == "6")
+                {
+                    <input checked="checked" id="us" name="us" type="radio" value="6" />
+                }
+                else
+                {
+                    @Html.RadioButton("us", "6")
+                }
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.Label("Пользователи, которые не сдавали практику")
+            </td>
+            <td>
+                @if (ViewBag.Choose == "4")
+                {
+                    <input checked="checked" id="us" name="us" type="radio" value="4" />
+                }
+                else
+                {
+                    @Html.RadioButton("us", "4")
+                }
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.Label("Все пользователи подразделения, сдававшие тесты")
+            </td>
+            <td>
+                @if ((ViewBag.Choose == "5") || (ViewBag.Choose == ""))
+                {
+                    <input checked="checked" id="us" name="us" type="radio" value="5" />
+                }
+                else
+                {
+                    @Html.RadioButton("us", "5")
+                }
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>
+                    Дата начала: <input type="date" name="beginCalendar">
+
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>
+                    Дата окончания: <input type="date" name="endCalendar">
+
+                </p>
+                <input type="submit" value="Генерация отчета" />
+                <br />
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="hidden" value=@ViewBag.UnitsId name="units" />
+
+            </td>
+
+        </tr>
+    </table>
+</form>
+
+
+
+@if (Model != null)
+{
+    foreach (var item in Model)
+    {
+
+
+
+        <br />
+
+
+        <ul>
+            <li>
+
+                <b>
+                    @item.Фамилия.Replace("  ", "").ToUpper()
+
+
+                    @item.Имя.Replace("  ", "").ToUpper()
+
+                    @item.Отчество.Replace("  ", "").ToUpper()
+                </b>
+
+
+
+
+
+                <small>@item.Должность.Название_должности.Replace("  ", "")</small>
+            </li>
+
+        </ul>
+        <table class="table">
+            <tr>
+
+                <th>Тема теста</th>
+                <th>Оценка за теорию  </th>
+                <th>Дата сдачи теории  </th>
+                <th>Оценка за практику  </th>
+                <th>Дата сдачи практики  </th>
+                <th>Общий результат  </th>
+
+
+            </tr>
+            @foreach (var itemR in item.Результат_теста)
+            {
+
+                <tr>
+
+                    <td>
+
+                        @Html.DisplayFor(m => itemR.id_Теста)
+
+                    </td>
+                    <td>
+
+                        @itemR.Оценка_за_теорию
+
+
+                    </td>
+                    <td>
+
+                        @itemR.Дата_сдачи_теории.ToString().Substring(0, 10)
+
+                    </td>
+                    <td>
+
+                        @if (@itemR.Отметка_о_практике == true)
+                        {
+                            <p>Сдано </p>
+                        }
+                        else if (@itemR.Отметка_о_практике == false)
+                        {
+                            <p>Не сдано </p>
+                        }
+                        else if (@itemR.Отметка_о_практике == null)
+                        {
+                            <p>Не сдавалось </p>
+                        }
+
+
+                    </td>
+                    <td>
+                        @if (@itemR.Отметка_о_практике != null)
+                        {
+                            @itemR.Дата_сдачи_практики.ToString().Substring(0, 10)
+                        }
+                        else
+                        {
+                            <b>-</b>
+                        }
+
+
+                    </td>
+                    <td>
+
+                        @itemR.Общий_результат
+
+                    </td>
+                </tr>
+
+            }
+        </table>
+    }
+}
+
+
+
+
+        <table>
+            <tr>
+                <td>
+                <form method="post" action="~/Home/Menu">
+                    <input type="hidden" value="1" name="otchetForBack" />
+                    <input type="submit" value="В меню" />
+
+                </form>
+                </td>
+            </tr>
+        </table>
