@@ -11,7 +11,7 @@ namespace WebApplicationForTest.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
     public partial class Вопросы
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -22,6 +22,7 @@ namespace WebApplicationForTest.Models
     
         public int id_вопроса { get; set; }
         public int id_Теста { get; set; }
+        [Required(ErrorMessage = "Введите текст вопроса")]
         public string Текст_вопроса { get; set; }
         public string Тип_ответа { get; set; }
     

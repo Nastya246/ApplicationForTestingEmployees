@@ -41,14 +41,11 @@
         <input id="id_Теста" name="id_Теста" type="hidden" value=@ViewBag.Тест class="form-control" />
         <div class="form-horizontal">
             <h4>Вопросы</h4>
-
             <hr />
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
             <div class="form-group">
                 @Html.LabelFor(model => model.вопросыРедактор.Тип_ответа, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-
                     <select id="Тип_ответа" name="Тип_ответа" autofocus required>
                         <option value="--Выбор типа вопроса--">--Выбор типа вопроса--</option>
                         <option value="Выбор">Выбор</option>
@@ -56,13 +53,11 @@
                         <option value="Несколько">Несколько</option>
                         <option value="Разрыв">Разрыв</option>
                         <option value="Соотношение">Соотношение</option>
-
                     </select>
                     @Html.ValidationMessageFor(model => model.вопросыРедактор.Тип_ответа, "", new { @class = "text-danger" })
                     <br />
                 </div>
             </div>
-
 
             <div class="form-group">
                 @Html.LabelFor(model => model.вопросыРедактор.Текст_вопроса, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -72,60 +67,77 @@
                     <br />
                 </div>
             </div>
-            <div class="c">
-                <div class="form-group">
-                    @Html.Label("Варианты понятий (через запятую, только для типа \"Соотношение\"):")
-                    <div class="col-md-10">
-                        @Html.TextBoxFor(model => model.Понятия, new { @class = "form-control", @style = "width:500px", @disabled = "disabled" })
-                        <!--Html.TextBox("def", null, new { class = "form-control", style = "width:500px", disabled = "disabled" })-->
-                    </div>
-                </div>
-                <div class="form-group">
-                    @Html.Label("Варианты ответов (через запятую):")
-                    <div class="col-md-10">
-                        @Html.TextBoxFor(model => model.Варианты_ответов, new { @class = "form-control", @style = "width:500px", @disabled = "disabled" })
-                        <!--Html.TextBox("variant", null, new { class = "form-control", style = "width:500px", disabled = "disabled" }) -->
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.Label("Правильный ответ/ответы (через запятую):")
-                    <div class="col-md-10">
-                        @Html.TextBoxFor(model=>model.Правильный_ответ, new { @class = "form-control", @style = "width:500px", @disabled = "disabled" })
-                        @Html.ValidationMessageFor(model=>model.Правильный_ответ, "", new { @class = "text-danger" })
-                        <br />
-
-                    </div>
-                </div>
-            </div>
-
 
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" id="Submit" name="Submit" value="Добавить" class="btn btn-default" />
+                    <input type="button" id="plusButton" name="plusButton" value="+ вариант" class="btn btn-default" style="display:none" />
+                </div>
+                <div class="c">
+                    <div id="newVariant">  </div>
+
+
+                    <div class="form-group">
+                        @Html.Label("Варианты понятий (через \";\"):", new { @style = "display:none" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(model => model.Понятия, new { @id = "Def", @class = "form-control", @style = "display:none", @disabled = "disabled" })
+                            <!--Html.TextBox("def", null, new { class = "form-control", style = "width:500px", disabled = "disabled" })-->
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.Label("Правильный ответ/ответы (через \";\"):", new { @style = "display:none" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(model => model.Правильный_ответ, new { @id = "correctAnsw", @class = "form-control", @style = "display:none", @disabled = "disabled" })
+                            @Html.ValidationMessageFor(model => model.Правильный_ответ, "", new { @class = "text-danger", @style = "display:none" })
+                            <br />
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="button" id="deleteButton" name="deleteButton" value="- вариант" class="btn btn-default" style="display:none" />
+                </div>
+
+               
+                    <div class="col-md-offset-2 col-md-10">
+                        <br />  <br /><input type="submit" id="Submit" name="Submit" value="Добавить" class="btn btn-default" disabled="disabled" />
+                    </div>
                 </div>
             </div>
-        </div>
-    }
+            }
 
-    <div>
+            <div>
+                <form method="post" action="~/Home/Menu">
+                    <input type="hidden" value="1" name="redactorForBack" />
 
-        <form method="post" action="~/Home/Menu">
-            <input type="hidden" value="1" name="redactorForBack" />
-          
-            <input type="submit" value="В меню" />
-
-        </form>
-    </div>
-    @section Scripts {
-        @Scripts.Render("~/bundles/jqueryval")
-        <script type="text/javascript">
-        $(function () {
+                    <input type="submit" value="В меню" />
+                </form>
+            </div>
+            @section Scripts {
+                @Scripts.Render("~/bundles/jqueryval")
+                <script type="text/javascript">
+                    $(function () {
 
            $('#Тип_ответа').change(function()
         {
             // получаем выбранное значение
-            var id = $(this).val();
+               var id = $(this).val();
+               if ($('#Тип_ответа').val() == "--Выбор типа вопроса--") {
+                   document.getElementById('Submit').disabled = true;
+               }
+               else { document.getElementById('Submit').disabled = false; }
+               if ($('#Тип_ответа').val() == "Выбор" || $('#Тип_ответа').val() == "Несколько") {
+                   document.getElementById('plusButton').style.display = "block";
+                   document.getElementById('deleteButton').style.display = "block";
+               }
+               else {
+                   document.getElementById('plusButton').style.display = "none";
+                   document.getElementById('deleteButton').style.display = "none";
+               }
+
                      $.ajax({
                 type: 'GET',
                 url: '@Url.Action("GetElement")/' + id,
@@ -139,9 +151,45 @@
             });
         });
         })
-
-
-        </script>
+                    var n = 0;
+                    var arCount = 0;
+                    let ar = new Array();
+ $(function () {
     
-        }
-    </div>
+     $('#plusButton').click(function ()
+           {
+               
+               if ($('#Тип_ответа').val() == "Выбор" || $('#Тип_ответа').val() == "Несколько") {
+                  
+                   if ($('#Тип_ответа').val() == "Выбор") {
+                       document.getElementById('newVariant').insertAdjacentHTML('beforeend', '   <br /> <input type=text id="id_' + n + '" name="InputVariant" ><input checked="checked" id="id' + n + '" name="RadioB" type="radio" value="' + n + '" />');
+                   }
+                   else {
+                       document.getElementById('newVariant').insertAdjacentHTML('beforeend', '<br /> <input type=text id="id_' + n + '" name="InputVariant" > <input id="id' + n + '" name="Checkbox" type="checkbox" value="true" /> <input id="id' + n + '" name = "Checkbox" type = "hidden" value = "false" />  ');
+                   }
+                   ar[n] = "id_" + n;
+                   
+                   n++
+                   document.getElementById('correctAnsw').style.display="none";
+                   document.getElementById('Def').style.display = "none";
+                    }
+            });
+        })
+                    $(function () {
+
+                        $('#deleteButton').click(function () {
+
+                            if ($('#Тип_ответа').val() == "Выбор" || $('#Тип_ответа').val() == "Несколько") {
+                               
+                                document.getElementById(ar[arCount]).remove();
+                                arCount++;
+                                document.getElementById('correctAnsw').style.display = "none";
+                                document.getElementById('Def').style.display = "none";
+                               
+                            }
+                        });
+                    })
+                </script>
+
+            }
+        </div>

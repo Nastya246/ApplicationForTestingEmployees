@@ -23,8 +23,9 @@ namespace WebApplicationForTest.Controllers
                 ViewBag.Def = false;
                 ViewBag.Variant = false;
                 ViewBag.Correct = true;
-                    }
-            else if ((id=="Выбор"))
+                ViewBag.Type = "Ввод";
+            }
+            else if (id=="Выбор")
             {
                 ViewBag.Def = false;
                 ViewBag.Variant = true;
@@ -41,12 +42,14 @@ namespace WebApplicationForTest.Controllers
                 ViewBag.Def = false;
                 ViewBag.Variant = false;
                 ViewBag.Correct = true;
+                ViewBag.Type = "Разрыв";
             }
             else if (id == "Соотношение")
             {
                 ViewBag.Def = true;
                 ViewBag.Variant = false;
                 ViewBag.Correct = true;
+                ViewBag.Type = "Соотношение";
             }
             else if (id == "--Выбор типа вопроса--") 
             {
@@ -57,6 +60,9 @@ namespace WebApplicationForTest.Controllers
             }
             return PartialView();
         }
+
+        
+
         // метод добавления ответов к вопросу
         public void ProcessingTypeAnswer(Вопросы вопросы, string func, string variant = "", string def = "", string correct = "")
         {
@@ -65,7 +71,7 @@ namespace WebApplicationForTest.Controllers
                
                 if (вопросы.Тип_ответа.Replace(" ", "") == "Выбор")
                 {
-                    string[] stringTempList = (variant.Replace("  ", "")).Split(',');
+                    string[] stringTempList = (variant.Replace("  ", "")).Split(';');
                     var resulttemp = stringTempList.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
                     stringTempList = resulttemp;
                     foreach (var t in stringTempList)
@@ -97,11 +103,11 @@ namespace WebApplicationForTest.Controllers
                 }
                 else if (вопросы.Тип_ответа.Replace(" ", "") == "Несколько")
                 {
-                    string[] stringTempListVar = (variant.Replace("  ", "")).Split(','); //разделяем варианты ответов
+                    string[] stringTempListVar = (variant.Replace("  ", "")).Split(';'); //разделяем варианты ответов
                     var resulttemp = stringTempListVar.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
                     stringTempListVar = resulttemp;
 
-                    string[] stringTempListCor = (correct.Replace("  ", "")).Split(',');
+                    string[] stringTempListCor = (correct.Replace("  ", "")).Split(';');
                     resulttemp = stringTempListCor.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
                     stringTempListCor = resulttemp;
                     int flag = 0;
@@ -164,11 +170,11 @@ namespace WebApplicationForTest.Controllers
                 else if (вопросы.Тип_ответа.Replace(" ", "") == "Соотношение")
                 {
 
-                    string[] stringTempListCor = (correct.Replace("  ","")).Split(',');//разделяем корректные варианты ответов
+                    string[] stringTempListCor = (correct.Replace("  ","")).Split(';');//разделяем корректные варианты ответов
                     var resulttemp = stringTempListCor.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
                     stringTempListCor = resulttemp;
 
-                    string[] stringTempListDef = (def.Replace("  ", "")).Split(',');//разделяем понятия
+                    string[] stringTempListDef = (def.Replace("  ", "")).Split(';');//разделяем понятия
                     resulttemp = stringTempListDef.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
                     stringTempListDef = resulttemp;
                     
@@ -248,7 +254,7 @@ namespace WebApplicationForTest.Controllers
                         db.SaveChanges();
                     }
 
-                    string[] stringTempListVar = (correct.Replace("  ", "")).Split(',');//подготавливаем для составления списка с вариантами ответов
+                    string[] stringTempListVar = (correct.Replace("  ", "")).Split(';');//подготавливаем для составления списка с вариантами ответов
                     var resulttemp = stringTempListVar.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
                     stringTempListVar = resulttemp;
                     Random rand = new Random();
@@ -437,26 +443,54 @@ namespace WebApplicationForTest.Controllers
         // сведения см. в статье https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(int id_Теста, ВопросОтветРедактор вопросОтветРедактор, string Тип_ответа)
+        public async Task<ActionResult> Create(string[] InputVariant, string RadioB, string [] Checkbox, int id_Теста, ВопросОтветРедактор вопросОтветРедактор, string Тип_ответа)
         {
             if (Тип_ответа != null)
             {
-                вопросОтветРедактор.вопросыРедактор.Тип_ответа = Тип_ответа.Replace(" ", "");
+                вопросОтветРедактор.вопросыРедактор.Тип_ответа = Тип_ответа.Replace(" ", ""); 
             }
             Вопросы вопросы = вопросОтветРедактор.вопросыРедактор;
           
             string variant="", def="", correct="";
-            if (вопросОтветРедактор.Варианты_ответов != null)
-            {
-                variant = вопросОтветРедактор.Варианты_ответов.Replace("\r\n", " ");
-                variant = вопросОтветРедактор.Варианты_ответов.Replace("  ", "");
-                variant = вопросОтветРедактор.Варианты_ответов.TrimEnd(' ');
-            }
-            
 
-            correct = вопросОтветРедактор.Правильный_ответ.Replace("\r\n", " ");
-            correct = вопросОтветРедактор.Правильный_ответ.Replace("  ", "");
-            correct = вопросОтветРедактор.Правильный_ответ.TrimEnd(' ');
+            if (Тип_ответа.Replace(" ", "") != "Несколько" && Тип_ответа.Replace(" ", "") != "Выбор")
+            {
+                correct = вопросОтветРедактор.Правильный_ответ.Replace("\r\n", " ");
+                correct = вопросОтветРедактор.Правильный_ответ.Replace("  ", "");
+                correct = вопросОтветРедактор.Правильный_ответ.TrimEnd(' ');
+            }
+            else if (Тип_ответа.Replace(" ", "") == "Выбор")
+            {
+                correct = InputVariant[Convert.ToInt32(RadioB)].Replace("\r\n", " ").Replace("  ", "").TrimEnd(' ');
+                foreach (var variantInput in InputVariant)
+                {
+                    variant += variantInput + ";";
+                }
+
+            }
+
+            else if (Тип_ответа.Replace(" ", "") == "Несколько")
+            {
+                List<string> VariantMin = new List<string>();
+                foreach (var variantInput in InputVariant)
+                {
+                    variant += variantInput + ";";
+                }
+
+                for (int i=0; i<Checkbox.Count();i++)
+                {
+                    VariantMin.Add(Checkbox[i]);
+                    if (Checkbox[i] == "true") i++; //убрали лишние false
+                }
+
+                for (int i=0; i<VariantMin.Count();i++)
+                {
+                    if (VariantMin[i]=="true") correct += InputVariant[i] + ";";
+                }
+                
+                correct = correct.Replace("\r\n", " ").Replace("  ", "").TrimEnd(' ');
+            }
+
 
             if (вопросОтветРедактор.Понятия != null)
             {
@@ -466,7 +500,7 @@ namespace WebApplicationForTest.Controllers
             }
            
             
-                if ((вопросОтветРедактор.вопросыРедактор.Текст_вопроса!=null)&&(вопросОтветРедактор.Правильный_ответ != null)&&(вопросОтветРедактор.вопросыРедактор.Тип_ответа != null))
+                if (вопросОтветРедактор.вопросыРедактор.Текст_вопроса!=null && вопросОтветРедактор.вопросыРедактор.Тип_ответа != null)
                 {
                     try
                     {
