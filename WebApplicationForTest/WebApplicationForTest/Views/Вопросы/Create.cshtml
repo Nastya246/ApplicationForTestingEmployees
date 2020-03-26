@@ -152,7 +152,7 @@
         });
         })
                     var n = 0;
-                    var arCount = 0;
+                   
                     let ar = new Array();
  $(function () {
     
@@ -162,12 +162,12 @@
                if ($('#Тип_ответа').val() == "Выбор" || $('#Тип_ответа').val() == "Несколько") {
                   
                    if ($('#Тип_ответа').val() == "Выбор") {
-                       document.getElementById('newVariant').insertAdjacentHTML('beforeend', '   <br /> <input type=text id="id_' + n + '" name="InputVariant" ><input checked="checked" id="id' + n + '" name="RadioB" type="radio" value="' + n + '" />');
+                       document.getElementById('newVariant').insertAdjacentHTML('beforeend', '  <div id="id' + n + '">  <input type=text id="id_' + n + '" name="InputVariant" ><input checked="checked" id="id_' + n + '" name="RadioB" type="radio" value="' + n + '" />  </div>');
                    }
                    else {
-                       document.getElementById('newVariant').insertAdjacentHTML('beforeend', '<br /> <input type=text id="id_' + n + '" name="InputVariant" > <input id="id' + n + '" name="Checkbox" type="checkbox" value="true" /> <input id="id' + n + '" name = "Checkbox" type = "hidden" value = "false" />  ');
+                       document.getElementById('newVariant').insertAdjacentHTML('beforeend', '<div id="id' + n + '"> <input type=text id="id_' + n + '" name="InputVariant" > <input id="id_' + n + '" name="Checkbox" type="checkbox" value="true" /> <input id="id_' + n + '" name = "Checkbox" type = "hidden" value = "false" />   </div>');
                    }
-                   ar[n] = "id_" + n;
+                   ar[n] = "id" + n;
                    
                    n++
                    document.getElementById('correctAnsw').style.display="none";
@@ -181,8 +181,11 @@
 
                             if ($('#Тип_ответа').val() == "Выбор" || $('#Тип_ответа').val() == "Несколько") {
                                
-                                document.getElementById(ar[arCount]).remove();
-                                arCount++;
+                                document.getElementById(ar[n - 1]).remove();
+                                ar.splice(n - 1, 1);
+                                if (n > 0) {
+                                    n--;
+                                }
                                 document.getElementById('correctAnsw').style.display = "none";
                                 document.getElementById('Def').style.display = "none";
                                
