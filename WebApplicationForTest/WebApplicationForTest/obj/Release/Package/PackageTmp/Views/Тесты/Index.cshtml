@@ -2,14 +2,25 @@
 
 @{
     ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    if (ViewBag.Id_user == "redactor" || ViewBag.Id_user == "practice")
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_LayoutScriptNotBack.cshtml";
+    }
 }
-@if (ViewBag.Id_user == "redactor")
-{
-    <h2>Темы для тестирования из раздела "@ViewBag.НазваниеРаздела"</h2>
-    <br />
-    <br />
-    <p>
+
+   <br /> <p>
+    <small><a href="~/Home/Index">Сменить пользователя</a></small>
+</p>
+    @if (ViewBag.Id_user == "redactor")
+    {
+        <h2>Темы для тестирования из раздела "@ViewBag.НазваниеРаздела"</h2>
+        <br />
+        <br />
+<p>
         @Html.ActionLink("Добавить новую тему", "Create", new { id = @ViewBag.IdРаздела })
         @Html.ActionLink("К списку разделов", "Index", "Разделы", new { redactor = "redactor" }, null)
     </p>
@@ -29,6 +40,11 @@ else if (ViewBag.Id_user == "practice")
 }
 else
 {
+<p>
+    
+    @Html.ActionLink("К списку разделов", "Index", "Разделы", new { id_user = @ViewBag.Id_user, Data=@ViewBag.Data }, null)
+    
+</p>
     <h2>Доступные темы для тестирования из раздела "@ViewBag.НазваниеРаздела"</h2>
     <br />
     <br />

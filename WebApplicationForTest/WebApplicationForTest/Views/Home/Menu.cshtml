@@ -7,7 +7,7 @@
 
     <div>
 
-   
+
 
 
         @if (((ViewBag.Login == ViewBag.Redactor) && (ViewBag.Password == ViewBag.RedactorPas) && (ViewBag.Password != null)) || (ViewBag.redactorForBack == "1"))
@@ -25,8 +25,8 @@
                 </table>
             </form>
         }
-        else if (((ViewBag.Login == ViewBag.Otchet) && (ViewBag.Password == ViewBag.OtchetPas) && (ViewBag.Password != null))||(ViewBag.otchetForBack=="1"))
-    {
+        else if (((ViewBag.Login == ViewBag.Otchet) && (ViewBag.Password == ViewBag.OtchetPas) && (ViewBag.Password != null)) || (ViewBag.otchetForBack == "1"))
+        {
             <input type="hidden" value="otchet" name="otchet" />
             <h4>Вы вошли в режим отчетности</h4><br />
             <form method="post" action="ActionOtchet">
@@ -37,24 +37,24 @@
             </form>
         }
         else if (((ViewBag.Login == ViewBag.Admin) && (ViewBag.Password == ViewBag.AdminPas) && (ViewBag.Password != null)) || (ViewBag.adminForBack == "1"))
-    {
+        {
             <input type="hidden" value="admin" name="admin" />
             <h5>Вы вошли как администратор</h5><br />
-                                               <table>
-                                                   <tr> <td> <p>@Html.ActionLink("Управление паролями учетных записей", "Index", "Учетные_записи", new { uchet = "uchet" }, new { @style = "font-size:20px;" }) </p></td></tr>
-                                                   <tr> <td> <p><a style="font-size:20px;" href="~/Пользователи/Index">Пользователи</a> </p></td> </tr>
-                                                   <tr> <td> <p><a style="font-size:20px;" href="~/Подразделение/Index">Подразделения</a> </p></td> </tr>
-                                                   <tr> <td> <p><a style="font-size:20px;" href="~/Должность/Index">Должности</a> </p></td> </tr>
+            <table>
+                <tr> <td> <p>@Html.ActionLink("Управление паролями учетных записей", "Index", "Учетные_записи", new { uchet = "uchet" }, new { @style = "font-size:20px;" }) </p></td></tr>
+                <tr> <td> <p><a style="font-size:20px;" href="~/Пользователи/Index">Пользователи</a> </p></td> </tr>
+                <tr> <td> <p><a style="font-size:20px;" href="~/Подразделение/Index">Подразделения</a> </p></td> </tr>
+                <tr> <td> <p><a style="font-size:20px;" href="~/Должность/Index">Должности</a> </p></td> </tr>
 
-                                                   <tr> <td> <p><br /><small><a href="~/Home/Index">Сменить пользователя</a></small></p></td> </tr>
+                <tr> <td> <p><br /><small><a href="~/Home/Index">Сменить пользователя</a></small></p></td> </tr>
 
-                                               </table>
+            </table>
 
         }
-      
 
-        else if (((ViewBag.Login == ViewBag.Practice) && (ViewBag.Password == ViewBag.PracticePas) && (ViewBag.Password != null))|| (ViewBag.practiceForBack == "1"))
-    {
+
+        else if (((ViewBag.Login == ViewBag.Practice) && (ViewBag.Password == ViewBag.PracticePas) && (ViewBag.Password != null)) || (ViewBag.practiceForBack == "1"))
+        {
             <h3>Вы вошли в режим практики</h3><br />
             <input type="hidden" value="practice" name="practice" />
             <table>
@@ -71,6 +71,7 @@
         {
             if (ViewBag.LogPas == "Success")
             {
+                <p><br /><small><a href="~/Home/Index">Сменить пользователя</a></small></p>
                 <h3> Вы успешно вошли в систему!</h3>
                 <form method="post" action="~/Разделы/Index">
                     <input type="hidden" value="@ViewBag.Login" name="Login" />
@@ -112,4 +113,3 @@
         </form>
             }
     -->
-       

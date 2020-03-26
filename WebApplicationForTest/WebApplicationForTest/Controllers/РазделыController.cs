@@ -16,7 +16,7 @@ namespace WebApplicationForTest.Controllers
         private TestEntities db = new TestEntities();
 
         // GET: Разделы
-        public async Task<ActionResult> Index(string redactor = "", string practice = "")
+        public async Task<ActionResult> Index(string redactor = "", string practice = "", int id_user=-1, string Data="")
         {
             if (redactor.Replace(" ", "") == "redactor")
             {
@@ -25,6 +25,14 @@ namespace WebApplicationForTest.Controllers
             else if (practice.Replace(" ","")=="practice")
             {
                 ViewBag.r = "practice";
+            }
+            else
+            {
+                if (id_user>-1 && Data!="")
+                        {
+                    ViewBag.Id_user = id_user;
+                    ViewBag.Data = Data;
+                }
             }
             
             var  разделы = db.Разделы.Include(т => т.Тесты);
